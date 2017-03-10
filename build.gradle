@@ -1,0 +1,9 @@
+apply plugin: "java"
+
+sourceSets {
+    main.java.srcDir "src"
+}
+
+jar {
+    manifest.attributes "Main-Class": "se.liu.ida.noahe116.tddd78.swarm.Swarm"
+}
