@@ -37,6 +37,7 @@ public class GamePanel extends JPanel {
     
     public GamePanel() {
         this.game = new Game();
+        this.setKeyBinds();
 
         this.thread = new Thread(this::gameLoop);
         this.thread.start();
@@ -47,16 +48,17 @@ public class GamePanel extends JPanel {
      * @param interpolation ration of time that has been passed since last tick until next.
      **/
     private void drawGame(double interpolation) {
-
+        System.out.println(this.game.player.getX()); 
     }
     
     private void sleepUntil(long time) {
         long sleepPeriod = time - System.nanoTime();
 
         if (sleepPeriod >= 0) {
-            final int NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND / MILLISECONDS_PER_SECOND;
+            final int NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
+                                                  / MILLISECONDS_PER_SECOND;
             try {
-                Thread.sleep(sleepPeriod/NANOSECONDS_PER_MILLISECOND);
+                Thread.sleep(sleepPeriod);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, e.toString(), e); 
             }
@@ -65,12 +67,10 @@ public class GamePanel extends JPanel {
 
     /**
      * Run the main loop that updates and draws the game.
-     *
      * <p> The game is updated depending on the TICKRATE constant. The drawing
      * of the game, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the game state between updates of the game is
      * done by interpolation. The framerate must be higher than the game's tickrate.
-     *
      **/
     private void gameLoop() {
         long nextTick = System.nanoTime();
@@ -92,5 +92,21 @@ public class GamePanel extends JPanel {
                             / TICK_PERIOD;
             this.drawGame(interpolation);
         }
+    }
+
+    private void setKeyBinds() {
+        this.bindKey(KeyStroke.SPACEBAR, this.game.player::enableThrust);
+    }
+    
+    private void BindKey(KeyStroke key, Runnable bind) {
+        final Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bind.run();
+            }
+        };
+
+        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, keyStroke);
+        this.getActionMap().put(keyStroke, action);
     }
 }
