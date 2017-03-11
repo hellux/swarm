@@ -5,7 +5,6 @@ import java.util.logging.*;
 import java.io.IOException;
 
 public class Swarm {
-    private static final Logger LOGGER = Logger.getLogger(Swarm.class.getName());
     private static final String WINDOW_TITLE = "Swarm";
 
     public static void main(String args[]) throws IOException {
@@ -14,8 +13,7 @@ public class Swarm {
         JFrame frame = new JFrame(WINDOW_TITLE);
         
         frame.add(new MainPanel());
-
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }        
