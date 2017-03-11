@@ -10,6 +10,8 @@ public class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
 
     private static final long NANOSECONDS_PER_SECOND = 1000000000;
+    private static final long MILLISECONDS_PER_SECOND = 1000;
+
     /**
      * Amount of times the game will be updated (tick) per second.
      **/
@@ -52,8 +54,9 @@ public class GamePanel extends JPanel {
         long sleepPeriod = time - System.nanoTime();
 
         if (sleepPeriod >= 0) {
+            final int NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND / MILLISECONDS_PER_SECOND;
             try {
-                Thread.sleep(sleepPeriod/1000000);
+                Thread.sleep(sleepPeriod/NANOSECONDS_PER_MILLISECOND);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, e.toString(), e); 
             }
@@ -63,7 +66,7 @@ public class GamePanel extends JPanel {
     /**
      * Run the main loop that updates and draws the game.
      *
-     * <p> The game is updated dependent on the TICKRATE constant. The drawing
+     * <p> The game is updated depending on the TICKRATE constant. The drawing
      * of the game, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the game state between updates of the game is
      * done by interpolation. The framerate must be higher than the game's tickrate.
