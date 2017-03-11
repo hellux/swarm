@@ -5,5 +5,5 @@ sourceSets {
 }
 
 jar {
-    manifest.attributes "Main-Class": "se.liu.ida.noahe116.tddd78.swarm.Swarm"
+    manifest.attributes "Main-Class": "se.liu.ida.noahe116.tddd78.swarm.ui.Swarm"
 }
