@@ -2,10 +2,14 @@ package se.liu.ida.noahe116.tddd78.swarm.ui;
 
 import javax.swing.JPanel;
 import java.lang.Thread;
+import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.Game;
 
 public class GamePanel extends JPanel {
+    private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
+
+    private static final long NANOSECONDS_PER_SECOND = 1000000000;
     /**
      * Amount of times the game will be updated (tick) per second.
      **/
@@ -14,7 +18,7 @@ public class GamePanel extends JPanel {
     /**
      * Time between ticks in milliseconds.
      **/
-    private static final double TICK_PERIOD = 1000.0 / TICKRATE;
+    private static final long TICK_PERIOD = NANOSECONDS_PER_SECOND/ TICKRATE;
 
     /**
      * Maximum frames per second that will be rendered.
@@ -24,12 +28,16 @@ public class GamePanel extends JPanel {
     /**
      * Minimum time between frames in milliseconds.
      **/
-    private static final double MIN_FRAME_PERIOD = 1000.0 / MAX_FPS;
+    private static final long MIN_FRAME_PERIOD = NANOSECONDS_PER_SECOND / MAX_FPS;
 
     private Game game;
+    private Thread thread;
     
     public GamePanel() {
         this.game = new Game();
+
+        this.thread = new Thread(this::gameLoop);
+        this.thread.start();
     }
 
     /**
@@ -40,43 +48,46 @@ public class GamePanel extends JPanel {
 
     }
     
+    private void sleepUntil(long time) {
+        long sleepPeriod = time - System.nanoTime();
+
+        if (sleepPeriod >= 0) {
+            try {
+                Thread.sleep(sleepPeriod/1000000);
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.WARNING, e.toString(), e); 
+            }
+        }
+    }
+
     /**
      * Run the main loop that updates and draws the game.
      *
      * <p> The game is updated dependent on the TICKRATE constant. The drawing
      * of the game, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the game state between updates of the game is
-     * done by interpolation.
+     * done by interpolation. The framerate must be higher than the game's tickrate.
      *
      **/
     private void gameLoop() {
-        double nextTick = System.currentTimeMillis();
-        double nextFrame = nextTick;
-        double sleepPeriod;
+        long nextTick = System.nanoTime();
+        long nextFrame = nextTick;
         double interpolation;
 
         while (true) {
-            nextFrame = System.currentTimeMillis() + MIN_FRAME_PERIOD;
-            if (System.currentTimeMillis() > nextTick) {
+            sleepUntil(nextFrame);
+            nextFrame = System.nanoTime() + MIN_FRAME_PERIOD;
+
+            if (System.nanoTime() > nextTick) {
                 this.game.tick();
                 nextTick += TICK_PERIOD;
             } else {
-                nextTick = System.currentTimeMillis();
+                nextTick = System.nanoTime();
             }
             
-            interpolation = (System.currentTimeMillis() + TICK_PERIOD - nextTick )
+            interpolation = (System.nanoTime() + TICK_PERIOD - nextTick )
                             / TICK_PERIOD;
             this.drawGame(interpolation);
-
-            sleepPeriod = nextFrame - System.currentTimeMillis();
-            if (sleepPeriod >= 0) {
-                try {
-                    Thread.sleep((long) sleepPeriod);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.out.println("sleep was interrupted: " + e.getMessage());
-                }
-            } 
         }
     }
 }
