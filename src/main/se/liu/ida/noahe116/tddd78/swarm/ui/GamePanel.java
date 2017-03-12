@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.lang.Thread;
 import java.util.logging.*;
+import java.util.function.Consumer;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.Game;
 
@@ -94,11 +95,19 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * FIXME: Do not use strings for keys (modify all three methods below).
+     **/
     private void setKeyBinds() {
-        this.bindKey(KeyStroke.getKeyStroke("SPACE"), this.game.getPlayer()::enableThrust);
+        this.bindKeyToggle("SPACE", this.game.getPlayer()::setThrust);
     }
     
-    private void bindKey(KeyStroke key, Runnable bind) {
+    private void bindKeyToggle(String key, Consumer<Boolean> bind) {
+        this.bindKey("pressed " + key, () -> bind.accept(true));
+        this.bindKey("released " + key, () -> bind.accept(false));
+    }
+
+    private void bindKey(String key, Runnable bind) {
         final Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,7 +115,9 @@ public class GamePanel extends JPanel {
             }
         };
 
-        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(key, key);
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
+
+        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, key);
         this.getActionMap().put(key, action);
     }
 }
