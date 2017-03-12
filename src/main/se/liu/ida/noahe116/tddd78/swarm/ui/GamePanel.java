@@ -95,19 +95,16 @@ public class GamePanel extends JPanel {
         }
     }
 
-    /**
-     * FIXME: Do not use strings for keys (modify all three methods below).
-     **/
     private void setKeyBinds() {
-        this.bindKeyToggle("SPACE", this.game.getPlayer()::setThrust);
+        this.bindKeyToggle(KeyEvent.VK_SPACE, this.game.getPlayer()::setThrust);
     }
     
-    private void bindKeyToggle(String key, Consumer<Boolean> bind) {
-        this.bindKey("pressed " + key, () -> bind.accept(true));
-        this.bindKey("released " + key, () -> bind.accept(false));
+    private void bindKeyToggle(int keyCode, Consumer<Boolean> bind) {
+        this.bindKey(KeyStroke.getKeyStroke(keyCode, 0, false), () -> bind.accept(true));
+        this.bindKey(KeyStroke.getKeyStroke(keyCode, 0, true), () -> bind.accept(false));
     }
 
-    private void bindKey(String key, Runnable bind) {
+    private void bindKey(KeyStroke keyStroke, Runnable bind) {
         final Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +112,7 @@ public class GamePanel extends JPanel {
             }
         };
 
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
+        int key = keyStroke.hashCode() ^ bind.hashCode();
 
         this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, key);
         this.getActionMap().put(key, action);
