@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.ui;
 
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.event.*;
 import java.lang.Thread;
 import java.util.logging.*;
 
@@ -48,17 +49,17 @@ public class GamePanel extends JPanel {
      * @param interpolation ration of time that has been passed since last tick until next.
      **/
     private void drawGame(double interpolation) {
-        System.out.println(this.game.player.getX()); 
+        System.out.println("x: " + this.game.getPlayer().getX() + ", int: " + interpolation); 
     }
     
     private void sleepUntil(long time) {
         long sleepPeriod = time - System.nanoTime();
 
         if (sleepPeriod >= 0) {
-            final int NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
-                                                  / MILLISECONDS_PER_SECOND;
+            final long NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
+                                                   / MILLISECONDS_PER_SECOND;
             try {
-                Thread.sleep(sleepPeriod);
+                Thread.sleep(sleepPeriod / NANOSECONDS_PER_MILLISECOND);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, e.toString(), e); 
             }
@@ -75,8 +76,9 @@ public class GamePanel extends JPanel {
     private void gameLoop() {
         long nextTick = System.nanoTime();
         long nextFrame = nextTick;
-        double interpolation;
 
+        double interpolation;
+        
         while (true) {
             sleepUntil(nextFrame);
             nextFrame = System.nanoTime() + MIN_FRAME_PERIOD;
@@ -84,21 +86,19 @@ public class GamePanel extends JPanel {
             if (System.nanoTime() > nextTick) {
                 this.game.tick();
                 nextTick += TICK_PERIOD;
-            } else {
-                nextTick = System.nanoTime();
-            }
+            } 
             
-            interpolation = (System.nanoTime() + TICK_PERIOD - nextTick )
+            interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick )
                             / TICK_PERIOD;
             this.drawGame(interpolation);
         }
     }
 
     private void setKeyBinds() {
-        this.bindKey(KeyStroke.SPACEBAR, this.game.player::enableThrust);
+        this.bindKey(KeyStroke.getKeyStroke("SPACE"), this.game.getPlayer()::enableThrust);
     }
     
-    private void BindKey(KeyStroke key, Runnable bind) {
+    private void bindKey(KeyStroke key, Runnable bind) {
         final Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel {
             }
         };
 
-        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, keyStroke);
-        this.getActionMap().put(keyStroke, action);
+        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(key, key);
+        this.getActionMap().put(key, action);
     }
 }
