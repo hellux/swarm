@@ -1,12 +1,15 @@
 package se.liu.ida.noahe116.tddd78.swarm.ui;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.event.*;
 import java.lang.Thread;
 import java.util.logging.*;
 import java.util.function.Consumer;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.Game;
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
@@ -34,12 +37,29 @@ public class GamePanel extends JPanel {
      **/
     private static final long MIN_FRAME_PERIOD = NANOSECONDS_PER_SECOND / MAX_FPS;
 
+    /**
+     * Ratio of radius of the cursor's area to the min of the component's width and height.
+     **/
+    private static final double CURSOR_RADIUS_RATIO = 0.2;
+
+    private Robot robot;
     private Game game;
     private Thread thread;
+
+    private Vector2D center;
+    private int cursorAreaRadius;
     
     public GamePanel() {
+        this.setBackground(Color.BLACK);
         this.game = new Game();
         this.setKeyBinds();
+        this.createComponentListener();
+
+        try {
+            this.robot = new Robot();
+        } catch (AWTException e) {
+            LOGGER.log(Level.SEVERE, "failed to create robot for mouse: " + e.getMessage(), e);
+        }
 
         this.thread = new Thread(this::gameLoop);
         this.thread.start();
@@ -47,10 +67,39 @@ public class GamePanel extends JPanel {
 
     /**
      * Render an interpolated frame of the game's current state.
-     * @param interpolation ration of time that has been passed since last tick until next.
+     * @param interpolation ratio of the time that has passed since the last tick to the
+     *                      period between ticks. Used to interpolate movement between ticks.
      **/
     private void drawGame(double interpolation) {
-        System.out.println("x: " + this.game.getPlayer().getX() + ", int: " + interpolation); 
+        //System.out.println("x: " + this.game.getPlayer().getX() + ", int: " + interpolation); 
+    }
+
+    /**
+     * Update all variables that are dependent on the sive of the component.
+     **/
+    private void updateDimensions() {
+        this.center = new Vector2D(this.getWidth()/2, this.getHeight()/2);
+        this.cursorAreaRadius =
+            (int) (CURSOR_RADIUS_RATIO*Math.min(this.getWidth(), this.getHeight()));
+    }
+    
+    private void handleMouse() {
+        Point2D mousePos = this.getMousePosition();
+        if (mousePos != null) {
+            this.limitMouse(new Vector2D(mousePos));
+        }
+    }
+
+    private void limitMouse(Vector2D mousePos) {
+        if (this.center.distance(mousePos) > this.cursorAreaRadius) {
+            Vector2D translatedMouse = this.center.subtract(mousePos).multiply(-1);
+            Vector2D newMouse = this.center.add(
+                translatedMouse.multiply(
+                this.cursorAreaRadius/translatedMouse.length())).add(
+                this.getLocationOnScreen()
+            );
+            this.robot.mouseMove((int) newMouse.x, (int) newMouse.y);
+        }
     }
     
     private void sleepUntil(long time) {
@@ -92,6 +141,7 @@ public class GamePanel extends JPanel {
             interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick )
                             / TICK_PERIOD;
             this.drawGame(interpolation);
+            this.handleMouse();
         }
     }
 
@@ -117,4 +167,27 @@ public class GamePanel extends JPanel {
         this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, key);
         this.getActionMap().put(key, action);
     }
+
+    private void createComponentListener() {
+        final ComponentListener dimensionUpdater = new ComponentListener() {
+            public void componentResized(ComponentEvent e) {
+                updateDimensions();
+            }
+
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            public void componentShown(ComponentEvent e) {
+                
+            }
+
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        };
+
+        this.addComponentListener(dimensionUpdater);
+    }
 }
+
