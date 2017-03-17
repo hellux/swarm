@@ -3,7 +3,7 @@ package se.liu.ida.noahe116.tddd78.swarm.common;
 import java.awt.geom.Point2D;
 
 public class Vector2D {
-    public double x, y;
+    public final double x, y;
 
     public Vector2D(double x, double y) {
         this.x = x;
@@ -12,6 +12,10 @@ public class Vector2D {
 
     public Vector2D(Point2D p) {
         this(p.getX(), p.getY());
+    }
+
+    public Vector2D() {
+        this(0, 0);
     }
 
     public Vector2D subtract(double x, double y) {
@@ -26,11 +30,11 @@ public class Vector2D {
         return new Vector2D(this.x*multiplier, this.y*multiplier);
     }
 
-    public double length() {
-        return Math.sqrt(this.lengthSq());
+    public double magnitude() {
+        return Math.sqrt(this.magnitudeSq());
     }
 
-    public double lengthSq() {
+    public double magnitudeSq() {
         return this.x*this.x + this.y*this.y;
     }
 
@@ -40,6 +44,14 @@ public class Vector2D {
 
     public double distanceSq(double x, double y) {
         return Math.pow((y-this.y), 2) + Math.pow(x-this.x, 2);
+    }
+
+    public double rotation() {
+        return Math.atan2(this.x, this.y);
+    }
+
+    public Vector2D copy() {
+        return new Vector2D(this.x, this.y);
     }
 
     public Vector2D add(Vector2D v) {
@@ -72,6 +84,10 @@ public class Vector2D {
 
     public double distanceSq(Point2D p) {
         return this.distanceSq(p.getX(), p.getY());
+    }
+
+    public static Vector2D fromLengthRotation(double length, double rotation) {
+        return new Vector2D(Math.cos(rotation)*length, Math.sin(rotation)*length);
     }
 
     public String toString() {
