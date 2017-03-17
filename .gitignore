@@ -1,2 +1,12 @@
 # compiler build files
 build/
+.gradle/
+
+# resource files
+resources
+
+#log files
+log/
+
+#compiler script
+cr.sh
