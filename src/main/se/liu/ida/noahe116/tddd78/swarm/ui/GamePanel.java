@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.Game;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.render.Scene;
 
 public class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
