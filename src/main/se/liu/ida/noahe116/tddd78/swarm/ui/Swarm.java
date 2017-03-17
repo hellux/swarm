@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.ui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.logging.*;
 import java.io.IOException;
 
@@ -12,8 +13,10 @@ public class Swarm {
 
         JFrame frame = new JFrame(WINDOW_TITLE);
         
-        frame.add(new MainPanel());
+        frame.setLayout(new BorderLayout());
+        frame.add(new GamePanel(), BorderLayout.CENTER);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+
 }        

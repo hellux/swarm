@@ -1,48 +1,36 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
-public class Player {
-    private static double DRAG = 0.01;
-    private static double THRUST = 2.0;
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
-    private int x = 0, y = 0;
-    private int dx = 0, dy = 0;
-    private int rotation = 0;
+public class Player extends MovingEntity {
+    private static double DRAG = 0.9;
+    private static double MAX_THRUST = 0.5;
+    private static double MAX_SPEED = 1;
+
+    private double thrustPower = 0;
     private boolean thrust = false;
 
+    @Override
     public void tick() { 
         if (this.thrust) {
-            this.dx += Math.cos(rotation)*THRUST;
-            this.dy += Math.sin(rotation)*THRUST;
+            Vector2D acceleration =
+                Vector2D.fromLengthRotation(this.thrustPower*MAX_THRUST, this.rotation);
+            this.accelerate(acceleration);
         }
 
-        this.dx -= this.dx*DRAG;
-        this.dy -= this.dy*DRAG;
-
-        this.x += this.dx;
-        this.y += this.dy;
+        this.velocity = this.velocity.multiply(DRAG);
+        this.position = this.position.add(this.velocity);
     }
 
-    public void setRotation(int rotation) {
+    public void setRotation(double rotation) {
         this.rotation = rotation;
     }
 
-    public int getRotation() {
-        return this.rotation;
+    public void setThrust(boolean t) {
+        this.thrust = t;
     }
 
-    public void enableThrust() {
-        this.thrust = true;
-    }
-
-    public void disableThrust() {
-        this.thrust = false;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
+    public void setThrustPower(double tp) {
+        this.thrustPower = tp;
     }
 }
