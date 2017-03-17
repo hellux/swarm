@@ -44,14 +44,18 @@ public class GamePanel extends JPanel {
 
     private Robot robot;
     private Game game;
+    private Scene scene;
     private Thread thread;
 
     private Vector2D center;
     private int cursorAreaRadius;
+
+    private double interpolation;
     
     public GamePanel() {
         this.setBackground(Color.BLACK);
         this.game = new Game();
+        this.scene = new Scene(game);
         this.setKeyBinds();
         this.createComponentListener();
 
@@ -66,15 +70,6 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Render an interpolated frame of the game's current state.
-     * @param interpolation ratio of the time that has passed since the last tick to the
-     *                      period between ticks. Used to interpolate movement between ticks.
-     **/
-    private void drawGame(double interpolation) {
-        //System.out.println("x: " + this.game.getPlayer().getX() + ", int: " + interpolation); 
-    }
-
-    /**
      * Update all variables that are dependent on the sive of the component.
      **/
     private void updateDimensions() {
@@ -86,18 +81,26 @@ public class GamePanel extends JPanel {
     private void handleMouse() {
         Point2D mousePos = this.getMousePosition();
         if (mousePos != null) {
+            Vector2D thrustVector = this.center.subtract(mousePos).multiply(-1);
+            this.game.getPlayer().setThrustPower(thrustVector.magnitude()/cursorAreaRadius);
+            this.game.getPlayer().setRotation(thrustVector.rotation());
             this.limitMouse(new Vector2D(mousePos));
         }
     }
 
+    /**
+     * Prevent the mouse from leaving a radius in the center of the screen.
+     * <p>If the mouse is outside the radius it will be moved to the closest point
+     * inside the radius.
+     * @param mousePos current position of the mouse.
+     **/
     private void limitMouse(Vector2D mousePos) {
         if (this.center.distance(mousePos) > this.cursorAreaRadius) {
             Vector2D translatedMouse = this.center.subtract(mousePos).multiply(-1);
             Vector2D newMouse = this.center.add(
-                translatedMouse.multiply(
-                this.cursorAreaRadius/translatedMouse.length())).add(
-                this.getLocationOnScreen()
-            );
+                Vector2D.fromLengthRotation(cursorAreaRadius,
+                                            translatedMouse.rotation())
+            ).add(this.getLocationOnScreen());
             this.robot.mouseMove((int) newMouse.x, (int) newMouse.y);
         }
     }
@@ -138,11 +141,17 @@ public class GamePanel extends JPanel {
                 nextTick += TICK_PERIOD;
             } 
             
-            interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick )
-                            / TICK_PERIOD;
-            this.drawGame(interpolation);
+            this.interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick)
+                                        / TICK_PERIOD;
+            this.repaint();
             this.handleMouse();
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        this.scene.render((Graphics2D) g, this.interpolation);
     }
 
     private void setKeyBinds() {
@@ -174,17 +183,9 @@ public class GamePanel extends JPanel {
                 updateDimensions();
             }
 
-            public void componentMoved(ComponentEvent e) {
-
-            }
-
-            public void componentShown(ComponentEvent e) {
-                
-            }
-
-            public void componentHidden(ComponentEvent e) {
-
-            }
+            public void componentMoved(ComponentEvent e) {}
+            public void componentShown(ComponentEvent e) {}
+            public void componentHidden(ComponentEvent e) {}
         };
 
         this.addComponentListener(dimensionUpdater);
