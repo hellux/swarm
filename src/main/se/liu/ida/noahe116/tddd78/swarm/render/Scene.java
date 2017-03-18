@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class Scene {
-    private class RenderComponent<T extends Entity> {
-        private Sprite<T> sprite;
-        private T entity;
+    private class RenderComponent {
+        private Sprite sprite;
+        private Entity entity;
 
-        private RenderComponent(Sprite<T> sprite, T entity) {
+        private RenderComponent(Sprite sprite, Entity entity) {
             this.sprite = sprite;
             this.entity = entity;
         }
@@ -22,7 +22,7 @@ public class Scene {
     }
 
     private Game game;
-    private List<RenderComponent<Entity>> renderComponents = new ArrayList<>();
+    private List<RenderComponent> renderComponents = new ArrayList<>();
 
     public Scene(Game game) {
         this.game = game;
@@ -38,7 +38,7 @@ public class Scene {
         for (Entity e : this.game.getEntities()) {
             //add render component for visible entities
         }
-        for (RenderComponent<Entity> rc : this.renderComponents) {
+        for (RenderComponent rc : this.renderComponents) {
             rc.draw(g2d, interpolation);
         }
     }
