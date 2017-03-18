@@ -25,9 +25,11 @@ public class Entity {
     }
 
     /** Replace a component of the same class.
+     * FIXME: Will not compile because 'inference variable T1 has
+     * incompatible bounds'. The type that returns from remove
+     * doesn't seem to be recognized as the same as T.
      * @param component new component.
      * @return old component if it existed, otherwise null.
-     ***/
     /**
     public <T extends Component> T replace(T component) {
         T oldComponent = this.remove(component.getClass());
