@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class Game {
-    Player player;
+    Entity player;
     List<Entity> entities = new LinkedList<>();
-    
+
     public Game() {
-        this.player = new Player();
+        this.player = EntityCreator.createPlayer();
         this.entities.add(this.player);
     }
 
-    public Player getPlayer() {
+    public Entity getPlayer() {
         return this.player;
     }
 
@@ -20,7 +20,9 @@ public class Game {
         return this.entities;
     }
 
-    public void tick() {
-        this.player.tick();
+    public void update() {
+        for (Entity entity : this.entities) {
+            entity.update();
+        }
     }
 }
