@@ -5,6 +5,9 @@ public class HealthComponent extends Component {
     private int shieldStrength;
 
     public HealthComponent(int hp, int shield) {
+        if (hp < 1) throw new IllegalArgumentException("hp < 1: " + hp);
+        if (shield < 0) throw new IllegalArgumentException("shield < 0: " + shield);
+
         this.healthPoints = hp;
         this.shieldStrength = shield;
     }
