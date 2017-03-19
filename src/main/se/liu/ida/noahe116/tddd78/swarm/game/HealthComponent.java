@@ -15,9 +15,9 @@ public class HealthComponent extends Component {
 
     public void hurt(int damage) {
         if (this.shieldStrength > 0) {
-            this.shieldStrength -= damage;
+            this.shieldStrength = Math.max(this.shieldStrength - damage, 0);
         } else {
-            this.healthPoints -= damage;
+            this.healthPoints = Math.max(this.healthPoints - damage, 0);
         }
         // die if healthPoints <= 0;
     }
