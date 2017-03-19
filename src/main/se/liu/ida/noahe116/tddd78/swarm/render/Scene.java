@@ -1,8 +1,8 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import java.awt.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.AbstractMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
@@ -22,7 +22,8 @@ public class Scene {
     }
 
     private Game game;
-    private List<RenderComponent> renderComponents = new ArrayList<>();
+    private AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
+    private Camera camera;
 
     public Scene(Game game) {
         this.game = game;
@@ -34,11 +35,17 @@ public class Scene {
      *                      period between ticks.
      **/
     public void render(Graphics2D g2d, double interpolation) {
-        System.out.println(this.game.getPlayer().get(PositionComponent.class).getPosititon());
         for (Entity e : this.game.getEntities()) {
-            //add render component for visible entities
+            if (true) { //TODO check if entity needs to be drawn
+                if (!renderComponents.containsKey(e)) {
+                    Sprite sprite = new PlayerSprite(); //TODO create correct sprite
+                    renderComponents.put(e, new RenderComponent(sprite, e));
+                }
+            } else {
+                renderComponents.remove(e);
+            }
         }
-        for (RenderComponent rc : this.renderComponents) {
+        for (RenderComponent rc : this.renderComponents.values()) {
             rc.draw(g2d, interpolation);
         }
     }

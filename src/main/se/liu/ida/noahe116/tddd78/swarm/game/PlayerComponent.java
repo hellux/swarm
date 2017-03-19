@@ -4,7 +4,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class PlayerComponent extends Component {
     private static double DRAG = 0.9;
-    private static double MAX_THRUST = 0.5;
+    private static double MAX_THRUST = 2;
     private static double MAX_SPEED = 1;
 
     private double thrustPower = 0;
