@@ -95,7 +95,8 @@ public class GamePanel extends JPanel {
      * Prevent the mouse from leaving a radius in the center of the screen.
      * <p>If the mouse is outside the radius it will be moved to the closest point
      * inside the radius.
-     * @param mousePos current position of the mouse.
+     * @param mouseVector current position of the mouse relative to the center
+     *                    of the panel.
      **/
     private void limitMouse(Vector2D mouseVector) {
         if (mouseVector.magnitude() > this.cursorAreaRadius) {
