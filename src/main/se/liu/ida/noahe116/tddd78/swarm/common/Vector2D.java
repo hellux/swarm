@@ -3,7 +3,7 @@ package se.liu.ida.noahe116.tddd78.swarm.common;
 import java.awt.geom.Point2D;
 
 public class Vector2D {
-    public final double x, y;
+    public double x, y;
 
     public Vector2D(double x, double y) {
         this.x = x;
@@ -18,16 +18,19 @@ public class Vector2D {
         this(0, 0);
     }
 
-    public Vector2D subtract(double x, double y) {
-        return new Vector2D(this.x-x, this.y-y);
-    }
-    
-    public Vector2D add(double x, double y) {
-        return new Vector2D(this.x+x, this.y+y);
+    public void add(double x, double y) {
+        this.x += x;
+        this.y += y;
     }
 
-    public Vector2D multiply(double multiplier) {
-        return new Vector2D(this.x*multiplier, this.y*multiplier);
+    public void subtract(double x, double y) {
+        this.x -= x;
+        this.y -= y;
+    }
+    
+    public void multiply(double multiplier) {
+        this.x *= multiplier;
+        this.y *= multiplier;
     }
 
     public double magnitude() {
@@ -54,12 +57,12 @@ public class Vector2D {
         return new Vector2D(this.x, this.y);
     }
 
-    public Vector2D add(Vector2D v) {
-        return this.add(v.x, v.y);
+    public void add(Vector2D v) {
+        this.add(v.x, v.y);
     }
 
-    public Vector2D subtract(Vector2D v) {
-        return this.subtract(v.x, v.y);
+    public void subtract(Vector2D v) {
+        this.subtract(v.x, v.y);
     }
 
     public double distance(Vector2D v) {
@@ -70,12 +73,12 @@ public class Vector2D {
         return this.distanceSq(v.x, v.y);
     }
 
-    public Vector2D add(Point2D p) {
-        return this.add(p.getX(), p.getY());
+    public void add(Point2D p) {
+        this.add(p.getX(), p.getY());
     }
 
-    public Vector2D subtract(Point2D p) {
-        return this.subtract(p.getX(), p.getY());
+    public void subtract(Point2D p) {
+        this.subtract(p.getX(), p.getY());
     }
 
     public double distance(Point2D p) {
@@ -86,11 +89,23 @@ public class Vector2D {
         return this.distanceSq(p.getX(), p.getY());
     }
 
+    public String toString() {
+        return String.format("(%f, %f)", this.x, this.y);
+    }
+
     public static Vector2D fromLengthRotation(double length, double rotation) {
         return new Vector2D(Math.cos(rotation)*length, Math.sin(rotation)*length);
     }
+    
+    public static Vector2D add(Vector2D v1, Vector2D v2) {
+        return new Vector2D(v1.x+v2.x, v1.y+v2.y);
+    }
 
-    public String toString() {
-        return String.format("(%f, %f)", this.x, this.y);
+    public static Vector2D subtract(Vector2D v1, Vector2D v2) {
+        return new Vector2D(v1.x-v2.x, v1.y-v2.y);
+    }
+
+    public static Vector2D multiply(Vector2D v, double multiplier) {
+        return new Vector2D(v.x*multiplier, v.y*multiplier);
     }
 }

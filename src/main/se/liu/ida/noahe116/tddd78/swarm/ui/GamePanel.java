@@ -82,12 +82,12 @@ public class GamePanel extends JPanel {
     private void handleMouse() {
         Point2D mousePos = this.getMousePosition();
         if (mousePos != null) {
-            Vector2D thrustVector = this.center.subtract(mousePos).multiply(-1);
+            Vector2D mouseVector = Vector2D.subtract(new Vector2D(mousePos), this.center);
             this.game.getPlayer().get(PlayerComponent.class).
-                setThrustPower(thrustVector.magnitude()/cursorAreaRadius);
+                setThrustPower(mouseVector.magnitude()/cursorAreaRadius);
             this.game.getPlayer().get(PlayerComponent.class).
-                setRotation(thrustVector.rotation());
-            this.limitMouse(new Vector2D(mousePos));
+                setRotation(mouseVector.rotation());
+            this.limitMouse(mouseVector);
         }
     }
 
@@ -97,13 +97,12 @@ public class GamePanel extends JPanel {
      * inside the radius.
      * @param mousePos current position of the mouse.
      **/
-    private void limitMouse(Vector2D mousePos) {
-        if (this.center.distance(mousePos) > this.cursorAreaRadius) {
-            Vector2D translatedMouse = this.center.subtract(mousePos).multiply(-1);
-            Vector2D newMouse = this.center.add(
+    private void limitMouse(Vector2D mouseVector) {
+        if (mouseVector.magnitude() > this.cursorAreaRadius) {
+            Vector2D newMouse = Vector2D.add(this.center, Vector2D.add(
                 Vector2D.fromLengthRotation(cursorAreaRadius,
-                                            translatedMouse.rotation())
-            ).add(this.getLocationOnScreen());
+                                            mouseVector.rotation()),
+                new Vector2D(this.getLocationOnScreen())));
             this.robot.mouseMove((int) newMouse.x, (int) newMouse.y);
         }
     }

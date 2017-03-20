@@ -12,11 +12,11 @@ public class PositionComponent extends Component {
     }
 
     public void update() {
-        this.position = this.position.add(this.velocity);
+        this.position.add(this.velocity);
     }
 
     public void accelerate(Vector2D acceleration) {
-        this.velocity = this.velocity.add(acceleration);
+        this.velocity.add(acceleration);
     }
 
     public void setRotation(double rotation) {
