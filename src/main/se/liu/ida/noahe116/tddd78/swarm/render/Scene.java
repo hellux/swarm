@@ -3,8 +3,11 @@ package se.liu.ida.noahe116.tddd78.swarm.render;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.AbstractMap;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class Scene {
     private class RenderComponent {
@@ -17,7 +20,7 @@ public class Scene {
         }
 
         public void draw(Graphics2D g2d, double interpolation) {
-            this.sprite.draw(this.entity, g2d, interpolation);
+            this.sprite.draw(this.entity, g2d, interpolation, Scene.this);
         }
     }
 
@@ -27,6 +30,8 @@ public class Scene {
 
     public Scene(Game game) {
         this.game = game;
+        this.camera = new Camera(this.game.getPlayer().
+            get(PositionComponent.class).getPosititon());
     }
 
     /**
@@ -48,5 +53,20 @@ public class Scene {
         for (RenderComponent rc : this.renderComponents.values()) {
             rc.draw(g2d, interpolation);
         }
+    }
+
+    public void drawImage(Graphics2D g2d, BufferedImage img,
+                          Vector2D pos, double rotation) {
+        Vector2D translatedPos = this.camera.translate(pos);
+        int imageX = (int) (translatedPos.x - img.getWidth()/2);
+        int imageY = (int) (translatedPos.y - img.getHeight()/2);
+        AffineTransform oldTransform = g2d.getTransform();
+        g2d.rotate(rotation, translatedPos.x, translatedPos.y);
+        g2d.drawImage(img, imageX, imageY, null);
+        g2d.setTransform(oldTransform);
+    }
+
+    public Camera getCamera() {
+        return this.camera;
     }
 }

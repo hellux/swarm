@@ -9,8 +9,8 @@ import java.util.logging.*;
 import java.util.function.Consumer;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.render.Scene;
 
 public class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
@@ -74,9 +74,12 @@ public class GamePanel extends JPanel {
      * Update all variables that are dependent on the sive of the component.
      **/
     private void updateDimensions() {
-        this.center = new Vector2D(this.getWidth()/2, this.getHeight()/2);
+        int width = this.getWidth();
+        int height = this.getHeight();
+        this.center = new Vector2D(width/2, height/2);
         this.cursorAreaRadius =
-            (int) (CURSOR_RADIUS_RATIO*Math.min(this.getWidth(), this.getHeight()));
+            (int) (CURSOR_RADIUS_RATIO*Math.min(width, height));
+        this.scene.getCamera().updateSize(width, height);
     }
     
     private void handleMouse() {
@@ -184,7 +187,7 @@ public class GamePanel extends JPanel {
     private void createComponentListener() {
         final ComponentListener dimensionUpdater = new ComponentListener() {
             public void componentResized(ComponentEvent e) {
-                updateDimensions();
+                GamePanel.this.updateDimensions();
             }
 
             public void componentMoved(ComponentEvent e) {}
