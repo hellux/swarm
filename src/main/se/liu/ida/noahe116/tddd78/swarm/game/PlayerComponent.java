@@ -3,15 +3,15 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class PlayerComponent extends Component {
-    private static double DRAG = 0.9;
-    private static double MAX_THRUST = 2;
-    private static double MAX_SPEED = 1;
+    private static double DRAG = 0.03;
+    private static double MAX_THRUST = 10;
 
     private double thrustPower = 0;
     private boolean thrust = false;
 
-    public PlayerComponent() { 
+    public PlayerComponent(Entity entity) { 
         this.isActive = true;
+        entity.get(PositionComponent.class).setDrag(DRAG);
     }
 
     @Override

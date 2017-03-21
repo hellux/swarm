@@ -7,12 +7,15 @@ public class PositionComponent extends Component {
     private Vector2D velocity = new Vector2D();
     private double rotation = 0;
 
+    private double drag;
+
     public PositionComponent() {
         this.isActive = true;
     }
 
     public void update() {
         this.position.add(this.velocity);
+        this.velocity.multiply(1-this.drag);
     }
 
     public void accelerate(Vector2D acceleration) {
@@ -21,6 +24,10 @@ public class PositionComponent extends Component {
 
     public void setRotation(double rotation) {
         this.rotation = rotation; 
+    }
+
+    public void setDrag(double drag) {
+        this.drag = drag;
     }
 
     public double getRotation() {

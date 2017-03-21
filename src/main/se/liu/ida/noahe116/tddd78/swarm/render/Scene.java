@@ -60,8 +60,14 @@ public class Scene {
         Vector2D translatedPos = this.camera.translate(pos);
         int imageX = (int) (translatedPos.x - img.getWidth()/2);
         int imageY = (int) (translatedPos.y - img.getHeight()/2);
+
+        Vector2D camera = this.camera.translate(new Vector2D(0, 0));
+        g2d.drawImage(img, (int)camera.x, (int)camera.y, null);
         AffineTransform oldTransform = g2d.getTransform();
-        g2d.rotate(rotation, translatedPos.x, translatedPos.y);
+        g2d.translate(translatedPos.x, translatedPos.y);
+        g2d.scale(this.camera.getScale(), this.camera.getScale());
+        g2d.rotate(rotation);
+        g2d.translate(-translatedPos.x, -translatedPos.y);
         g2d.drawImage(img, imageX, imageY, null);
         g2d.setTransform(oldTransform);
     }
