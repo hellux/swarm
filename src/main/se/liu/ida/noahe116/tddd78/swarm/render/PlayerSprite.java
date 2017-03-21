@@ -21,7 +21,6 @@ public class PlayerSprite implements Sprite {
     }
 
     public void draw(Entity entity, Graphics2D g2d, double interpolation, Scene scene) {
-        PositionComponent posComp = entity.get(PositionComponent.class);
-        scene.drawImage(g2d, this.base, posComp.getPosititon(), posComp.getRotation()); 
+        scene.drawImage(g2d, this.base, entity.get(PositionComponent.class), interpolation);
     }
 }

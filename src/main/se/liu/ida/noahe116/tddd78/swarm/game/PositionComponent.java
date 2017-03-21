@@ -18,6 +18,10 @@ public class PositionComponent extends Component {
         this.velocity.multiply(1-this.drag);
     }
 
+    public Vector2D futurePos(double interpolation) {
+        return Vector2D.add(this.position, Vector2D.multiply(this.velocity, interpolation));
+    }
+
     public void accelerate(Vector2D acceleration) {
         this.velocity.add(acceleration);
     }

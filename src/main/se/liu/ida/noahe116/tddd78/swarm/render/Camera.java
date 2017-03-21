@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class Camera {
     private static double DEFAULT_SCALE = 0.2;
@@ -8,7 +9,7 @@ public class Camera {
     /**
      * Center of camera's view.
      **/
-    private Vector2D position;
+    private PositionComponent posComp;
 
     /**
      * Vector representing size of camera view
@@ -21,12 +22,12 @@ public class Camera {
      **/
     private double scale = DEFAULT_SCALE;
 
-    public Camera(Vector2D position) {
-        this.position = position;
+    public Camera(PositionComponent posComp) {
+        this.posComp = posComp;
     }
 
-    public void setPosition(Vector2D position) {
-        this.position = position;
+    public void setPosition(PositionComponent posComp) {
+        this.posComp = posComp;
     }
 
     public void changeScale(double scale) {
@@ -40,8 +41,8 @@ public class Camera {
         this.size.y = componentHeight/this.scale;
     }
 
-    public Vector2D getPosititon() {
-        return this.position;
+    public PositionComponent getPositionComp() {
+        return this.posComp;
     }
     
     public Vector2D getSize() {
@@ -90,7 +91,7 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
-        Vector2D componentOrigin = Vector2D.subtract(this.position,
+        Vector2D componentOrigin = Vector2D.subtract(this.posComp.getPosititon(),
                                                     Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
             Vector2D.subtract(gameCoordinate, componentOrigin),

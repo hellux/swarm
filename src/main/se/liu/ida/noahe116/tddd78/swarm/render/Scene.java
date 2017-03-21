@@ -28,10 +28,11 @@ public class Scene {
     private AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private Camera camera;
 
+    private Vector2D cameraInterpolation;
+
     public Scene(Game game) {
         this.game = game;
-        this.camera = new Camera(this.game.getPlayer().
-            get(PositionComponent.class).getPosititon());
+        this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
     }
 
     /**
@@ -40,6 +41,18 @@ public class Scene {
      *                      period between ticks.
      **/
     public void render(Graphics2D g2d, double interpolation) {
+        this.updateCameraInterpolation(interpolation);
+        this.addRenderComponents();
+        this.drawRenderComponents(g2d, interpolation);
+    }
+
+    private void updateCameraInterpolation(double interpolation) {
+        PositionComponent posComp = this.camera.getPositionComp();
+        this.cameraInterpolation = Vector2D.subtract(posComp.futurePos(interpolation),
+                                                     posComp.getPosititon());
+    }
+
+    private void addRenderComponents() {
         for (Entity e : this.game.getEntities()) {
             if (true) { //TODO check if entity needs to be drawn
                 if (!renderComponents.containsKey(e)) {
@@ -50,25 +63,49 @@ public class Scene {
                 renderComponents.remove(e);
             }
         }
+    }
+
+    private void drawRenderComponents(Graphics2D g2d, double interpolation) {
         for (RenderComponent rc : this.renderComponents.values()) {
             rc.draw(g2d, interpolation);
         }
     }
 
-    public void drawImage(Graphics2D g2d, BufferedImage img,
-                          Vector2D pos, double rotation) {
-        Vector2D translatedPos = this.camera.translate(pos);
-        int imageX = (int) (translatedPos.x - img.getWidth()/2);
-        int imageY = (int) (translatedPos.y - img.getHeight()/2);
+    private Vector2D interpolate(PositionComponent posComp, double interpolation) {
+        Vector2D interpolatedPos = posComp.futurePos(interpolation); 
+        return Vector2D.subtract(interpolatedPos, this.cameraInterpolation);
+    }
 
-        Vector2D camera = this.camera.translate(new Vector2D(0, 0));
-        g2d.drawImage(img, (int)camera.x, (int)camera.y, null);
+    public void drawImage(Graphics2D g2d,
+                          BufferedImage img,
+                          PositionComponent posComp,
+                          double interpolation) {
+        //TEMP indicator
+        Vector2D cam = this.camera.translate(this.interpolate(new PositionComponent(), interpolation));
+        this.drawImage(g2d, img, (int) cam.x, (int) cam.y, 0);
+
+        Vector2D interpolatedPos = this.interpolate(posComp, interpolation);
+        Vector2D translatedPos = this.camera.translate(interpolatedPos);
+        this.drawImage(g2d, img,
+                       (int) translatedPos.x,
+                       (int) translatedPos.y, 
+                       posComp.getRotation());   
+    }
+
+    public void drawImage(Graphics2D g2d, BufferedImage img,
+                          int centerX, int centerY, double rotation) {
+        int leftX = centerX - img.getWidth()/2;
+        int topY = centerY - img.getHeight()/2;
+
         AffineTransform oldTransform = g2d.getTransform();
-        g2d.translate(translatedPos.x, translatedPos.y);
+
+        g2d.translate(centerX, centerY);
         g2d.scale(this.camera.getScale(), this.camera.getScale());
         g2d.rotate(rotation);
-        g2d.translate(-translatedPos.x, -translatedPos.y);
-        g2d.drawImage(img, imageX, imageY, null);
+        g2d.translate(-centerX, -centerY);
+
+        g2d.drawImage(img, leftX, topY, null);
+
         g2d.setTransform(oldTransform);
     }
 
