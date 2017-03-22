@@ -4,15 +4,27 @@ public abstract class Component {
     /**
      * If the part needs to be updated every tick
      **/
-    protected boolean isActive = false;
+    protected boolean active;
     
     /**
      * The entity that the component is added to.
      **/
     protected Entity entity;
+    
+    public Component(boolean active) {
+        this.active = active;
+    }
+
+    public Component() {
+        this(false);
+    }
 
     public boolean isActive() {
-        return isActive;
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setEntity(Entity entity) {
@@ -23,5 +35,7 @@ public abstract class Component {
         return this.entity;
     }
 
-    public abstract void update();
+    public void update() {
+
+    }
 }

@@ -6,6 +6,7 @@ public final class EntityCreator {
     public static Entity createPlayer() {
         Entity entity = new Entity();
         entity.add(new PositionComponent());
+        entity.add(new HealthComponent(1, 100));
         entity.add(new PlayerComponent(entity));
         return entity;
     }

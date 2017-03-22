@@ -10,7 +10,7 @@ public class PositionComponent extends Component {
     private double drag;
 
     public PositionComponent() {
-        this.isActive = true;
+        super(true);
     }
 
     public void update() {

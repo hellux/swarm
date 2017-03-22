@@ -92,7 +92,7 @@ public class Camera {
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
         Vector2D componentOrigin = Vector2D.subtract(this.posComp.getPosititon(),
-                                                    Vector2D.multiply(this.size, 0.5));
+                                                    Vector2D.multiply(this.size, .5));
         Vector2D translatedCoordinate = Vector2D.multiply(
             Vector2D.subtract(gameCoordinate, componentOrigin),
             this.scale);

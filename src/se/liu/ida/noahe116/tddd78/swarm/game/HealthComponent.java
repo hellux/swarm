@@ -24,6 +24,4 @@ public class HealthComponent extends Component {
         }
         // die if healthPoints <= 0;
     }
-    
-    public void update() {};
 }

@@ -10,7 +10,7 @@ public class PlayerComponent extends Component {
     private boolean thrust = false;
 
     public PlayerComponent(Entity entity) { 
-        this.isActive = true;
+        super(true);
         entity.get(PositionComponent.class).setDrag(DRAG);
     }
 

@@ -7,8 +7,6 @@ public class Entity {
     private AbstractMap<Class<? extends Component>, Component> components =
         new HashMap<>();
     
-    private boolean isActive = false;
-
     /** Add a component.
      * @param component component to be added
      * @return true if added, false if a component of the same class
