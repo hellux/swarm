@@ -2,16 +2,12 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
-public class PositionComponent extends Component {
+public class PositionComponent extends LiveComponent {
     private Vector2D position = new Vector2D();
     private Vector2D velocity = new Vector2D();
     private double rotation = 0;
 
     private double drag;
-
-    public PositionComponent() {
-        super(true);
-    }
 
     public void update() {
         this.position.add(this.velocity);

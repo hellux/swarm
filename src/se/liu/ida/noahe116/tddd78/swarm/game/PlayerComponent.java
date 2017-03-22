@@ -2,7 +2,7 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
-public class PlayerComponent extends Component {
+public class PlayerComponent extends LiveComponent {
     private static double DRAG = 0.03;
     private static double MAX_THRUST = 10;
 
@@ -10,11 +10,9 @@ public class PlayerComponent extends Component {
     private boolean thrust = false;
 
     public PlayerComponent(Entity entity) { 
-        super(true);
         entity.get(PositionComponent.class).setDrag(DRAG);
     }
 
-    @Override
     public void update() { 
         if (this.thrust) {
             Vector2D acceleration =

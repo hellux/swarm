@@ -68,8 +68,11 @@ public class Entity {
      **/
     public void update() {
         for (Component component : this.components.values()) {
-            if (component.isActive()) {
-                component.update();
+            if (component instanceof LiveComponent) {
+                LiveComponent liveComponent = (LiveComponent) component;
+                if (liveComponent.isActive()) {
+                    liveComponent.update();
+                }
             }
         }
     }
