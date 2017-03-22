@@ -4,12 +4,12 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class Camera {
-    private static double DEFAULT_SCALE = 0.2;
+    private static final double DEFAULT_SCALE = 0.2;
 
     /**
      * Center of camera's view.
      **/
-    private PositionComponent posComp;
+    private transient PositionComponent posComp;
 
     /**
      * Vector representing size of camera view

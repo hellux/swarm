@@ -73,22 +73,6 @@ public class Vector2D {
         return this.distanceSq(v.x, v.y);
     }
 
-    public void add(Point2D p) {
-        this.add(p.getX(), p.getY());
-    }
-
-    public void subtract(Point2D p) {
-        this.subtract(p.getX(), p.getY());
-    }
-
-    public double distance(Point2D p) {
-        return this.distance(p.getX(), p.getY());
-    }
-
-    public double distanceSq(Point2D p) {
-        return this.distanceSq(p.getX(), p.getY());
-    }
-
     public String toString() {
         return String.format("(%f, %f)", this.x, this.y);
     }

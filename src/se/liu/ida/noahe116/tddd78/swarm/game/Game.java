@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class Game {
-    Entity player;
-    List<Entity> entities = new LinkedList<>();
+    private Entity player;
+    private final List<Entity> entities = new LinkedList<>();
 
     public Game() {
         this.player = EntityCreator.createPlayer();

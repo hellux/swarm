@@ -10,11 +10,17 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class Scene {
-    private class RenderComponent {
-        private Sprite sprite;
-        private Entity entity;
+    private final transient Game game;
+    private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
+    private final Camera camera;
 
-        private RenderComponent(Sprite sprite, Entity entity) {
+    private Vector2D cameraInterpolation;
+
+    private class RenderComponent {
+        private final Sprite sprite;
+        private final Entity entity;
+
+        public RenderComponent(Sprite sprite, Entity entity) {
             this.sprite = sprite;
             this.entity = entity;
         }
@@ -23,12 +29,6 @@ public class Scene {
             this.sprite.draw(this.entity, g2d, interpolation, Scene.this);
         }
     }
-
-    private Game game;
-    private AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
-    private Camera camera;
-
-    private Vector2D cameraInterpolation;
 
     public Scene(Game game) {
         this.game = game;

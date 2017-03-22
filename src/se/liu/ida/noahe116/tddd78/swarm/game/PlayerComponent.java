@@ -3,11 +3,11 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class PlayerComponent extends LiveComponent {
-    private static double DRAG = 0.03;
-    private static double MAX_THRUST = 10;
+    private static final double DRAG = 0.03;
+    private static final double MAX_THRUST = 10;
 
-    private double thrustPower = 0;
-    private boolean thrust = false;
+    private double thrustPower;
+    private boolean thrust;
 
     public PlayerComponent(Entity entity) { 
         entity.get(PositionComponent.class).setDrag(DRAG);

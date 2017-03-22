@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.AbstractMap;
 
 public class Entity {
-    private AbstractMap<Class<? extends Component>, Component> components =
+    private final AbstractMap<Class<? extends Component>, Component> components =
         new HashMap<>();
     
     /** Add a component.
@@ -13,12 +13,12 @@ public class Entity {
      *         already exists.
      **/
     public boolean add(Component component) {
-        if (!this.has(component.getClass())) {
+        if (this.has(component.getClass())) {
+            return false;
+        } else {
             this.components.put(component.getClass(), component);
             component.setEntity(this);
             return true;
-        } else {
-            return false;
         }
     }
 

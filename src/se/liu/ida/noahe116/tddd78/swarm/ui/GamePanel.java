@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.event.*;
-import java.lang.Thread;
 import java.util.logging.*;
 import java.util.function.Consumer;
 
@@ -44,9 +43,9 @@ public class GamePanel extends JPanel {
     private static final double CURSOR_RADIUS_RATIO = 0.2;
 
     private Robot robot;
-    private Game game;
-    private Scene scene;
-    private Thread thread;
+    private final Game game;
+    private final Scene scene;
+    private final Thread thread;
 
     private Vector2D center;
     private int cursorAreaRadius;
@@ -71,7 +70,7 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Update all variables that are dependent on the sive of the component.
+     * Update all variables that are dependent on the size of the component.
      **/
     private void updateDimensions() {
         int width = this.getWidth();
@@ -136,8 +135,6 @@ public class GamePanel extends JPanel {
         long nextTick = System.nanoTime();
         long nextFrame = nextTick;
 
-        double interpolation;
-        
         while (true) {
             sleepUntil(nextFrame);
             nextFrame = System.nanoTime() + MIN_FRAME_PERIOD;
@@ -185,14 +182,11 @@ public class GamePanel extends JPanel {
     }
 
     private void createComponentListener() {
-        final ComponentListener dimensionUpdater = new ComponentListener() {
+        final ComponentListener dimensionUpdater = new ComponentAdapter() {
+            @Override
             public void componentResized(ComponentEvent e) {
                 GamePanel.this.updateDimensions();
             }
-
-            public void componentMoved(ComponentEvent e) {}
-            public void componentShown(ComponentEvent e) {}
-            public void componentHidden(ComponentEvent e) {}
         };
 
         this.addComponentListener(dimensionUpdater);
