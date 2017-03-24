@@ -9,7 +9,7 @@ public class Camera {
     /**
      * Center of camera's view.
      **/
-    private transient PositionComponent posComp;
+    private PositionComponent positionComponent;
 
     /**
      * Vector representing size of camera view
@@ -23,11 +23,11 @@ public class Camera {
     private double scale = DEFAULT_SCALE;
 
     public Camera(PositionComponent posComp) {
-        this.posComp = posComp;
+        this.positionComponent = posComp;
     }
 
-    public void setPosition(PositionComponent posComp) {
-        this.posComp = posComp;
+    public void setPositionComponent(PositionComponent posComp) {
+        this.positionComponent = posComp;
     }
 
     public void changeScale(double scale) {
@@ -41,8 +41,8 @@ public class Camera {
         this.size.y = componentHeight/this.scale;
     }
 
-    public PositionComponent getPositionComp() {
-        return this.posComp;
+    public PositionComponent getPositionComponent() {
+        return this.positionComponent;
     }
     
     public Vector2D getSize() {
@@ -91,8 +91,8 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
-        Vector2D componentOrigin = Vector2D.subtract(this.posComp.getPosititon(),
-                                                    Vector2D.multiply(this.size, .5));
+        Vector2D componentOrigin = Vector2D.subtract(this.positionComponent.getPosititon(),
+                                                    Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
             Vector2D.subtract(gameCoordinate, componentOrigin),
             this.scale);

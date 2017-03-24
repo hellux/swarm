@@ -10,7 +10,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class Scene {
-    private final transient Game game;
+    private final Game game;
     private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private final Camera camera;
 
@@ -47,7 +47,7 @@ public class Scene {
     }
 
     private void updateCameraInterpolation(double interpolation) {
-        PositionComponent posComp = this.camera.getPositionComp();
+        PositionComponent posComp = this.camera.getPositionComponent();
         this.cameraInterpolation = Vector2D.subtract(posComp.futurePos(interpolation),
                                                      posComp.getPosititon());
     }

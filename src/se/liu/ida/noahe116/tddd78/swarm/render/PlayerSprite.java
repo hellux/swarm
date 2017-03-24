@@ -3,11 +3,9 @@ package se.liu.ida.noahe116.tddd78.swarm.render;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.io.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class PlayerSprite implements Sprite {
     private BufferedImage base;

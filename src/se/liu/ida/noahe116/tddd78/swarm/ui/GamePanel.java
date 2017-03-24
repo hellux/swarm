@@ -114,9 +114,9 @@ public class GamePanel extends JPanel {
         long sleepPeriod = time - System.nanoTime();
 
         if (sleepPeriod >= 0) {
-            final long NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
-                                                   / MILLISECONDS_PER_SECOND;
             try {
+                final long NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
+                                                         / MILLISECONDS_PER_SECOND;
                 Thread.sleep(sleepPeriod / NANOSECONDS_PER_MILLISECOND);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, e.toString(), e); 
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel {
 
         int key = keyStroke.hashCode() ^ bind.hashCode();
 
-        this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, key);
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(keyStroke, key);
         this.getActionMap().put(key, action);
     }
 

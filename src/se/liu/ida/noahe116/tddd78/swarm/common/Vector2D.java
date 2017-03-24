@@ -73,6 +73,7 @@ public class Vector2D {
         return this.distanceSq(v.x, v.y);
     }
 
+    @Override
     public String toString() {
         return String.format("(%f, %f)", this.x, this.y);
     }
