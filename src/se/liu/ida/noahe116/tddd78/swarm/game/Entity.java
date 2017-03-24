@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.AbstractMap;
 
 public class Entity {
-    private final AbstractMap<Class<? extends Component>, Component> components =
-        new HashMap<>();
+    /**
+     * Map of entity's components. Key is class of component. Therefore, two components of the same class
+     * can never used simultaneously.
+     */
+    private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
     
     /** Add a component.
      * @param component component to be added
@@ -41,6 +44,7 @@ public class Entity {
      * @return the removed component or null, if it doesn't exist.
      **/
     public <T extends Component> T remove(Class<T> componentClass) {
+        // remove always returns instance of componentClass (or null)
         T oldComponent = (T) this.components.remove(componentClass);
         if (oldComponent != null) oldComponent.setEntity(null);
         return oldComponent;
@@ -51,6 +55,7 @@ public class Entity {
      * @return the component or null, if it doesn't exist.
      **/
     public <T extends Component> T get(Class<T> componentClass) {
+        // key always represent type of value
         return (T) this.components.get(componentClass);
     }
 
@@ -59,7 +64,7 @@ public class Entity {
      * @param componentClass class of component.
      * @return whether entity has component.
      **/
-        public <T extends Component> boolean has(Class<T> componentClass) {
+    public <T extends Component> boolean has(Class<T> componentClass) {
         return this.components.containsKey(componentClass);
     }
 

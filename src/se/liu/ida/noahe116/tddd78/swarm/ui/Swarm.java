@@ -10,7 +10,7 @@ public final class Swarm {
 
     private Swarm() {}
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         Logger.getLogger("").addHandler(new FileHandler("log/log_swarm.txt"));
 
         JFrame frame = new JFrame(WINDOW_TITLE);
