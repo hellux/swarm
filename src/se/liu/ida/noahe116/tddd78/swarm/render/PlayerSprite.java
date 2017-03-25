@@ -1,24 +1,24 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;  
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.io.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
-public class PlayerSprite implements Sprite {
-    private BufferedImage base;
+public class PlayerSprite extends Sprite {
+    private static final String BASE = "ship_base.png";
+    private static final String DEFAULT = "ship_default.png";
+    private static final String RED_LASER = "ship_red_laser.png";
+    private static final String MISSILE = "ship_missile.png";
+    private static final String QUAD_LASER = "ship_quad.png";
+    private static final String SPREAD_GUN = "ship_spread.png";
 
     public PlayerSprite() {
-        try {
-            this.base = ImageIO.read(new File("resources/img/ship_base.png"));
-        } catch (IOException e) {
-
-        }
+        super(BASE, DEFAULT, RED_LASER, MISSILE, QUAD_LASER, SPREAD_GUN);
     }
-
-    public void draw(Entity entity, Graphics2D g2d, double interpolation, Scene scene) {
-        scene.drawImage(g2d, this.base, entity.get(PositionComponent.class), interpolation);
+    
+    @Override
+    public BufferedImage[] getImages(Entity entity) {
+        return this.getImageArray(BASE, DEFAULT);
     }
 }
