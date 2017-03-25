@@ -15,7 +15,8 @@ public class PositionComponent extends LiveComponent {
     }
 
     public Vector2D futurePos(double interpolation) {
-        return Vector2D.add(this.position, Vector2D.multiply(this.velocity, interpolation));
+        return Vector2D.add(this.position,
+                            Vector2D.multiply(this.velocity, interpolation));
     }
 
     public void accelerate(Vector2D acceleration) {

@@ -8,6 +8,7 @@ public class PlayerComponent extends LiveComponent {
 
     private double thrustPower;
     private boolean thrust;
+    private WeaponComponent equippedWeapon;
 
     public PlayerComponent(Entity entity) { 
         entity.get(PositionComponent.class).setDrag(DRAG);
@@ -32,5 +33,9 @@ public class PlayerComponent extends LiveComponent {
 
     public void setRotation(double rotation) {
         this.entity.get(PositionComponent.class).setRotation(rotation);
+    }
+
+    public WeaponComponent getEquippedWeapon() {
+        return this.equippedWeapon;
     }
 }

@@ -119,7 +119,7 @@ public class GamePanel extends JPanel {
                                                          / MILLISECONDS_PER_SECOND;
                 Thread.sleep(sleepPeriod / NANOSECONDS_PER_MILLISECOND);
             } catch (InterruptedException e) {
-                LOGGER.log(Level.WARNING, e.toString(), e); 
+                LOGGER.log(Level.WARNING, e.getMessage(), e); 
             }
         }
     }
