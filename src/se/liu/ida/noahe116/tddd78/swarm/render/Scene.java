@@ -1,5 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
+import java.util.logging.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.AbstractMap;
@@ -9,7 +10,12 @@ import java.awt.geom.AffineTransform;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
+/**
+ * Handles visualization of the game.
+ **/
 public class Scene {
+    private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
+
     private final Game game;
     private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private final Camera camera;
@@ -26,7 +32,15 @@ public class Scene {
         }
 
         public void draw(Graphics2D g2d, double interpolation) {
-            this.sprite.draw(this.entity, g2d, interpolation, Scene.this);
+            BufferedImage[] images = this.sprite.getImages(this.entity);
+            for (BufferedImage image : images) {
+                if (image != null) {
+                    Scene.this.drawImage(g2d,
+                                         image,
+                                         this.entity.get(PositionComponent.class),
+                                         interpolation);
+                }
+            }
         }
     }
 
@@ -82,13 +96,13 @@ public class Scene {
                           double interpolation) {
         //TEMP indicator
         Vector2D cam = this.camera.translate(this.interpolate(new PositionComponent(), interpolation));
-        this.drawImage(g2d, img, (int) cam.x, (int) cam.y, 0);
+        this.drawImage(g2d, img, (int) Math.round(cam.x), (int) Math.round(cam.y), 0);
 
         Vector2D interpolatedPos = this.interpolate(posComp, interpolation);
         Vector2D translatedPos = this.camera.translate(interpolatedPos);
         this.drawImage(g2d, img,
-                       (int) translatedPos.x,
-                       (int) translatedPos.y, 
+                       (int) Math.round(translatedPos.x),
+                       (int) Math.round(translatedPos.y), 
                        posComp.getRotation());   
     }
 
