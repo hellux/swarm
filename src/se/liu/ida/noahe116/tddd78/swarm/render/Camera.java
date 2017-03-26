@@ -4,7 +4,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class Camera {
-    private static final double DEFAULT_SCALE = 0.2;
+    private static final double DEFAULT_SCALE = 0.5;
 
     /**
      * Center of camera's view.
