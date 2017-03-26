@@ -33,6 +33,9 @@ public abstract class Sprite {
         BufferedImage[] imageArray = new BufferedImage[imageNames.length];
         for (int i = 0; i < imageNames.length; i++) {
             imageArray[i] = this.images.get(imageNames[i]);
+            if (imageNames[i] == null) {
+                continue;
+            }
             if (imageArray[i] == null) {
                 LOGGER.log(Level.WARNING, "image is not loaded: " + imageNames[i]);
             }
