@@ -12,13 +12,15 @@ public class PlayerSprite extends Sprite {
     private static final String MISSILE = "ship_missile.png";
     private static final String QUAD_LASER = "ship_quad.png";
     private static final String SPREAD_GUN = "ship_spread.png";
+    private static final String THRUST = "ship_thrust.png";
 
     public PlayerSprite() {
-        super(BASE, DEFAULT, RED_LASER, MISSILE, QUAD_LASER, SPREAD_GUN);
+        super(BASE, THRUST, DEFAULT, RED_LASER, MISSILE, QUAD_LASER, SPREAD_GUN);
     }
     
     @Override
     public BufferedImage[] getImages(Entity entity) {
-        return this.getImageArray(BASE, DEFAULT);
+        String thrust = entity.get(PlayerComponent.class).isThrust() ? THRUST : null;
+        return this.getImageArray(thrust, BASE, DEFAULT);
     }
 }
