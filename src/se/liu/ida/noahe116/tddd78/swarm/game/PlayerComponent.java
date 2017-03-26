@@ -27,6 +27,10 @@ public class PlayerComponent extends LiveComponent {
         this.thrust = t;
     }
 
+    public boolean isThrust() {
+        return this.thrust;
+    }
+
     public void setThrustPower(double tp) {
         this.thrustPower = tp;
     }
