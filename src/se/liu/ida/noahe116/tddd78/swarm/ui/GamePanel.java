@@ -11,7 +11,8 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
-public class GamePanel extends JPanel {
+@SuppressWarnings("serial")
+public final class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
 
     private static final long NANOSECONDS_PER_SECOND = 1000000000;

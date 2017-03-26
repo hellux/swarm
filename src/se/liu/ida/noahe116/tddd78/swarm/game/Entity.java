@@ -32,19 +32,19 @@ public class Entity {
      * @return the removed component or null, if it doesn't exist.
      **/
     public <T extends Component> T remove(Class<T> componentClass) {
-        // remove always returns instance of componentClass (or null)
+        @SuppressWarnings("unchecked") // remove always returns instance of componentClass (or null)
         T oldComponent = (T) this.components.remove(componentClass);
         if (oldComponent != null) oldComponent.setEntity(null);
         return oldComponent;
     }
 
+    @SuppressWarnings("unchecked") // key always represent type of value
     /**
      * Get a component of a certain class.
      * @param componentClass class of component to get.
      * @return the component or null, if it doesn't exist.
      **/
     public <T extends Component> T get(Class<T> componentClass) {
-        // key always represent type of value
         return (T) this.components.get(componentClass);
     }
 

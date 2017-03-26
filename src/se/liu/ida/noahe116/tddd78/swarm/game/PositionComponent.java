@@ -35,7 +35,7 @@ public class PositionComponent extends LiveComponent {
         return this.rotation;
     }
 
-    public Vector2D getPosititon() {
+    public Vector2D getPosition() {
         return this.position;
     }
 

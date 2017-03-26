@@ -22,28 +22,6 @@ public class Scene {
 
     private Vector2D cameraInterpolation;
 
-    private class RenderComponent {
-        private final Sprite sprite;
-        private final Entity entity;
-
-        public RenderComponent(Sprite sprite, Entity entity) {
-            this.sprite = sprite;
-            this.entity = entity;
-        }
-
-        public void draw(Graphics2D g2d, double interpolation) {
-            BufferedImage[] images = this.sprite.getImages(this.entity);
-            for (BufferedImage image : images) {
-                if (image != null) {
-                    Scene.this.drawImage(g2d,
-                                         image,
-                                         this.entity.get(PositionComponent.class),
-                                         interpolation);
-                }
-            }
-        }
-    }
-
     public Scene(Game game) {
         this.game = game;
         this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
@@ -63,7 +41,7 @@ public class Scene {
     private void updateCameraInterpolation(double interpolation) {
         PositionComponent posComp = this.camera.getPositionComponent();
         this.cameraInterpolation = Vector2D.subtract(posComp.futurePos(interpolation),
-                                                     posComp.getPosititon());
+                                                     posComp.getPosition());
     }
 
     private void addRenderComponents() {
@@ -71,7 +49,9 @@ public class Scene {
             if (true) { //TODO check if entity needs to be drawn
                 if (!renderComponents.containsKey(e)) {
                     Sprite sprite = new PlayerSprite(); //TODO create correct sprite
-                    renderComponents.put(e, new RenderComponent(sprite, e));
+                    renderComponents.put(e, new RenderComponent(sprite,
+                                                                e,
+                                                                RenderPriority.PLAYER));
                 }
             } else {
                 renderComponents.remove(e);
@@ -81,7 +61,16 @@ public class Scene {
 
     private void drawRenderComponents(Graphics2D g2d, double interpolation) {
         for (RenderComponent rc : this.renderComponents.values()) {
-            rc.draw(g2d, interpolation);
+            BufferedImage[] images = rc.getImages();
+            PositionComponent posComp = rc.getPositionComponent();
+            for (BufferedImage image : images) {
+                if (image != null) {
+                    Scene.this.drawImage(g2d,
+                                         image,
+                                         posComp,
+                                         interpolation);
+                }
+            }
         }
     }
 
