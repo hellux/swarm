@@ -9,7 +9,12 @@ public class Entity {
      * Key is class of component, value is instance.
      **/
     private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
+    private final EntityType type;
     
+    public Entity(EntityType type) {
+        this.type = type;
+    }
+
     /**
      * Add a component.
      * @param component component to be added
@@ -69,6 +74,10 @@ public class Entity {
                 }
             }
         }
+    }
+
+    public EntityType getType() {
+        return this.type;
     }
 
     /**

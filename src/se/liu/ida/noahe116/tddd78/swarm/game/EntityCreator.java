@@ -4,7 +4,7 @@ public final class EntityCreator {
     private EntityCreator() {}
 
     public static Entity createPlayer() {
-        Entity entity = new Entity();
+        Entity entity = new Entity(EntityType.PLAYER);
         entity.add(new PositionComponent());
         entity.add(new HealthComponent(1, 100));
         entity.add(new PlayerComponent(entity));

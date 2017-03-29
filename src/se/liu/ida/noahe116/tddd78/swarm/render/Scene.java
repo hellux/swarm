@@ -17,14 +17,17 @@ public class Scene {
     private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
 
     private final Game game;
-    private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
+    private final AbstractMap<Entity, RenderComponent> renderComponents; 
     private final Camera camera;
+    private final RcCreator rcCreator;
 
     private Vector2D cameraInterpolation;
 
     public Scene(Game game) {
         this.game = game;
+        this.renderComponents = new HashMap<>();
         this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
+        this.rcCreator = new RcCreator();
     }
 
     /**
@@ -46,12 +49,10 @@ public class Scene {
 
     private void addRenderComponents() {
         for (Entity e : this.game.getEntities()) {
-            if (true) { //TODO check if entity needs to be drawn
+            if (true) { //TODO determine if entity needs to be drawn
                 if (!renderComponents.containsKey(e)) {
-                    Sprite sprite = new PlayerSprite(); //TODO create correct sprite
-                    renderComponents.put(e, new RenderComponent(sprite,
-                                                                e,
-                                                                RenderPriority.PLAYER));
+                    RenderComponent rc = this.rcCreator.createRenderComponent(e);
+                    renderComponents.put(e, rc); 
                 }
             } else {
                 renderComponents.remove(e);
