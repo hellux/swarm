@@ -6,36 +6,23 @@ import java.util.EnumMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public final class RcCreator {
-    private final AbstractMap<EntityType, Sprite> sprites;
-    private final AbstractMap<EntityType, RenderPriority> renderPriorities;
+    private RcCreator() {}
 
-    public RcCreator() {
-        this.sprites = this.createSprites();
-        this.renderPriorities = this.createRenderPriorities();
-    }
+    private static final AbstractMap<EntityType, Sprite> sprites =
+        new EnumMap(EntityType.class) {{
+            put(EntityType.PLAYER, new PlayerSprite());
+            put(EntityType.ASTEROID, new Sprite("junk_1.png"));
+    }};
 
-    private AbstractMap<EntityType, Sprite> createSprites() {
-        @SuppressWarnings({"rawtypes", "unchecked", "serial"})
-        AbstractMap<EntityType, Sprite> sprites =
-            new EnumMap(EntityType.class) {{
-                put(EntityType.PLAYER, new PlayerSprite());
-        }};
-        return sprites;
-    }
+    private static final AbstractMap<EntityType, RenderPriority> renderPriorities =
+        new EnumMap(EntityType.class) {{
+            put(EntityType.PLAYER, RenderPriority.PLAYER);
+            put(EntityType.ASTEROID, RenderPriority.STATIC);
+    }};
 
-    private AbstractMap<EntityType, RenderPriority> createRenderPriorities() {
-        @SuppressWarnings({"rawtypes", "unchecked", "serial"})
-        AbstractMap<EntityType, RenderPriority> renderPriorities =
-            new EnumMap(EntityType.class) {{
-                put(EntityType.PLAYER, RenderPriority.PLAYER);
-        }};
-        return renderPriorities;
-    }
-
-    public RenderComponent createRenderComponent(Entity e) {
-        return new RenderComponent(this.sprites.get(e.getType()),
+    public static RenderComponent createRenderComponent(Entity e) {
+        return new RenderComponent(sprites.get(e.getType()),
                                    e,
-                                   this.renderPriorities.get(e.getType()));
+                                   renderPriorities.get(e.getType()));
     }
-
 }
