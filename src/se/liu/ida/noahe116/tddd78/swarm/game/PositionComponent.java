@@ -9,6 +9,15 @@ public class PositionComponent extends LiveComponent {
 
     private double drag;
 
+    public PositionComponent(double x, double y) {
+        this.position.x = x;
+        this.position.y = y;
+    }
+
+    public PositionComponent() {
+        this(0, 0);
+    }
+
     public void update() {
         this.position.add(this.velocity);
         this.velocity.multiply(1-this.drag);

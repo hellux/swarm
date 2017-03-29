@@ -6,23 +6,25 @@ import java.util.EnumMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public final class RcCreator {
-    private RcCreator() {}
-
-    private static final AbstractMap<EntityType, Sprite> sprites =
+    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    private static final AbstractMap<EntityType, Sprite> SPRITES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
             put(EntityType.ASTEROID, new Sprite("junk_1.png"));
     }};
 
-    private static final AbstractMap<EntityType, RenderPriority> renderPriorities =
+    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    private static final AbstractMap<EntityType, RenderPriority> RENDER_PRIORITIES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, RenderPriority.PLAYER);
             put(EntityType.ASTEROID, RenderPriority.STATIC);
     }};
 
+    private RcCreator() {}
+
     public static RenderComponent createRenderComponent(Entity e) {
-        return new RenderComponent(sprites.get(e.getType()),
+        return new RenderComponent(SPRITES.get(e.getType()),
                                    e,
-                                   renderPriorities.get(e.getType()));
+                                   RENDER_PRIORITIES.get(e.getType()));
     }
 }

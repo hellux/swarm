@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 
-public abstract class Sprite {
+public class Sprite {
     private static final Logger LOGGER = Logger.getLogger(Sprite.class.getName());
     
     private static final String imageDir = "resources/img/";

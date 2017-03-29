@@ -8,8 +8,9 @@ public class Game {
     private final List<Entity> entities = new LinkedList<>();
 
     public Game() {
-        this.player = EntityCreator.createPlayer();
+        this.player = EntityCreator.create(EntityType.PLAYER);
         this.entities.add(this.player);
+        this.entities.add(EntityCreator.create(EntityType.ASTEROID));
     }
 
     public Entity getPlayer() {

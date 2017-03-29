@@ -82,10 +82,6 @@ public class Scene {
                           BufferedImage img,
                           PositionComponent posComp,
                           double interpolation) {
-        //TEMP indicator
-        Vector2D cam = this.camera.translate(this.interpolate(new PositionComponent(), interpolation));
-        this.drawImage(g2d, img, (int) Math.round(cam.x), (int) Math.round(cam.y), 0);
-
         Vector2D interpolatedPos = this.interpolate(posComp, interpolation);
         Vector2D translatedPos = this.camera.translate(interpolatedPos);
         this.drawImage(g2d, img,

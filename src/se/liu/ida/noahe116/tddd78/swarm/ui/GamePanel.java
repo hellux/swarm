@@ -130,7 +130,7 @@ public final class GamePanel extends JPanel {
      * <p> The game is updated depending on the TICKRATE constant. The drawing
      * of the game, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the game state between updates of the game is
-     * done by interpolation. The framerate must be higher than the game's tickrate.
+     * done by interpolation. The max framerate must be higher than max the game's tickrate.
      **/
     private void gameLoop() {
         long nextTick = System.nanoTime();
