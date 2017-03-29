@@ -19,7 +19,6 @@ public class Scene {
     private final Game game;
     private final AbstractMap<Entity, RenderComponent> renderComponents; 
     private final Camera camera;
-    private final RcCreator rcCreator;
 
     private Vector2D cameraInterpolation;
 
@@ -27,7 +26,6 @@ public class Scene {
         this.game = game;
         this.renderComponents = new HashMap<>();
         this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
-        this.rcCreator = new RcCreator();
     }
 
     /**
@@ -51,7 +49,7 @@ public class Scene {
         for (Entity e : this.game.getEntities()) {
             if (true) { //TODO determine if entity needs to be drawn
                 if (!renderComponents.containsKey(e)) {
-                    RenderComponent rc = this.rcCreator.createRenderComponent(e);
+                    RenderComponent rc = RcCreator.createRenderComponent(e);
                     renderComponents.put(e, rc); 
                 }
             } else {
