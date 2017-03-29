@@ -1,3 +1,5 @@
+#!/bin/bash
+
 RESOURCE_DIR="resources"
 
 svg_files=$(find $RESOURCE_DIR -name "*.svg")
@@ -6,11 +8,11 @@ function parse_layer_name {
     svg=$1
     layer_id=$2
 
-    echo $(cat $svg \
-           | grep $layer -A 1 \
-           | sed -n s/inkscape:label=\"//p \
-           | sed s/\"// \
-           | sed s/\>//)
+    cat $svg \
+     | grep $layer -A 1 \
+     | sed -n s/inkscape:label=\"//p \
+     | sed s/\"// \
+     | sed s/\>//
 }
 
 function export_image {
