@@ -4,6 +4,8 @@ import java.util.AbstractMap;
 import java.util.EnumMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.render.sprites.PlayerSprite;
+import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
 public final class RcCreator {
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})

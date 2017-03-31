@@ -8,6 +8,7 @@ import java.util.logging.*;
 import java.util.function.Consumer;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 

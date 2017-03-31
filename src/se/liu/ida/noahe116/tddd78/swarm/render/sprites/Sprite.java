@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.render;
+package se.liu.ida.noahe116.tddd78.swarm.render.sprites;
 
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -16,7 +16,7 @@ public class Sprite {
 
     protected final AbstractMap<String, BufferedImage> images = new HashMap<>();
     
-    protected Sprite(String...fileNames) {
+    public Sprite(String...fileNames) {
         for (String fileName : fileNames) {
             String imagePath = imageDir + fileName;
             BufferedImage image = null;

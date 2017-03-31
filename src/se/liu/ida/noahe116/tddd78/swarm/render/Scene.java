@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 
 /**
  * Handles visualization of the game.
@@ -20,7 +21,7 @@ public class Scene {
     private final AbstractMap<Entity, RenderComponent> renderComponents; 
     private final Camera camera;
 
-    private Vector2D cameraInterpolation;
+    private Vector2D cameraInterpolation = null;
 
     public Scene(Game game) {
         this.game = game;
@@ -64,7 +65,7 @@ public class Scene {
             PositionComponent posComp = rc.getPositionComponent();
             for (BufferedImage image : images) {
                 if (image != null) {
-                    Scene.this.drawImage(g2d,
+                    this.drawImage(g2d,
                                          image,
                                          posComp,
                                          interpolation);

@@ -1,7 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 
 public class Camera {
     private static final double DEFAULT_SCALE = 0.5;

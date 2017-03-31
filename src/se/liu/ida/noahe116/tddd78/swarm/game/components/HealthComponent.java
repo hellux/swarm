@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 public class HealthComponent extends Component {
     private int healthPoints;
