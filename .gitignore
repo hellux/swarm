@@ -2,9 +2,6 @@
 build/
 .gradle/
 
-# resource files
-resources/svg
-
 #log files
 log/
 
