@@ -1,5 +1,8 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.LiveComponent;
+
 import java.util.HashMap;
 import java.util.AbstractMap;
 

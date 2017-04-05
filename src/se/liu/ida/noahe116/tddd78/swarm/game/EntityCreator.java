@@ -1,5 +1,9 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.components.HealthComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+
 import java.util.function.Consumer;
 import java.util.AbstractMap;
 import java.util.EnumMap;

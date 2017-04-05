@@ -1,6 +1,7 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 
 public class PlayerComponent extends LiveComponent {
     private static final double DRAG = 0.03;
@@ -10,7 +11,7 @@ public class PlayerComponent extends LiveComponent {
     private boolean thrust;
     private WeaponComponent equippedWeapon;
 
-    public PlayerComponent(Entity entity) { 
+    public PlayerComponent(Entity entity) {
         entity.get(PositionComponent.class).setDrag(DRAG);
     }
 

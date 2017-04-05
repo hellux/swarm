@@ -1,9 +1,9 @@
-package se.liu.ida.noahe116.tddd78.swarm.render;  
+package se.liu.ida.noahe116.tddd78.swarm.render.sprites;
 
 import java.awt.image.BufferedImage;
-import java.awt.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
 
 public class PlayerSprite extends Sprite {
     private static final String BASE = "ship_base.png";

@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
