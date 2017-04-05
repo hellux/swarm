@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 import java.util.AbstractMap;
 import java.util.EnumMap;
 
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+
 public final class EntityCreator {
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
@@ -23,6 +25,7 @@ public final class EntityCreator {
 
     private static void createAsteroid(Entity e) {
         e.add(new PositionComponent());
+        e.get(PositionComponent.class).accelerate(new Vector2D(1, 1));
         e.add(new HealthComponent(30));
     }
 

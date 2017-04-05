@@ -21,7 +21,9 @@ public class HealthComponent extends Component {
             this.shieldStrength = Math.max(this.shieldStrength - damage, 0);
         } else {
             this.healthPoints = Math.max(this.healthPoints - damage, 0);
+            if (this.healthPoints == 0) {
+                this.entity.kill();
+            }
         }
-        // die if healthPoints <= 0;
     }
 }

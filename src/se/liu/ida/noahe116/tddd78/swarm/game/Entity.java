@@ -10,6 +10,7 @@ public class Entity {
      **/
     private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
     private final EntityType type;
+    private boolean killed;
     
     public Entity(EntityType type) {
         this.type = type;
@@ -75,9 +76,17 @@ public class Entity {
             }
         }
     }
+    
+    public void kill() {
+        this.killed = true;
+    }
 
     public EntityType getType() {
         return this.type;
+    }
+
+    public boolean isKilled() {
+        return this.killed;
     }
 
     /**

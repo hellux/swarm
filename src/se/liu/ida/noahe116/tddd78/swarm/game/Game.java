@@ -23,6 +23,9 @@ public class Game {
 
     public void update() {
         for (Entity entity : this.entities) {
+            if (entity.isKilled()) {
+                this.entities.remove(entities);
+            }
             entity.update();
         }
     }
