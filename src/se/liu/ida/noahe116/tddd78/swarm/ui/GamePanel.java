@@ -54,6 +54,8 @@ public final class GamePanel extends JPanel {
 
     private double interpolation;
     private long delay;
+
+    private boolean showFPS = true;
     
     public GamePanel() {
         this.setBackground(Color.BLACK);
@@ -164,7 +166,9 @@ public final class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.scene.render((Graphics2D) g, this.interpolation);
-        this.displayFPS(g);
+        if (this.showFPS) {
+            this.displayFPS(g);
+        }
     }
 
     private void displayFPS(Graphics g) {
@@ -178,6 +182,8 @@ public final class GamePanel extends JPanel {
     private void setKeyBinds() {
         this.bindKeyToggle(KeyEvent.VK_SPACE,
             this.game.getPlayer().get(PlayerComponent.class)::setThrust);
+        this.bindKey(KeyStroke.getKeyStroke("F3"),
+            () -> this.showFPS = !this.showFPS);
     }
     
     private void bindKeyToggle(int keyCode, Consumer<Boolean> bind) {
