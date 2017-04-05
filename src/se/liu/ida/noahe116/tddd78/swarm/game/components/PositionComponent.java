@@ -5,6 +5,8 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 public class PositionComponent extends LiveComponent {
     private final Vector2D position = new Vector2D();
     private final Vector2D velocity = new Vector2D();
+    private final Vector2D acceleration = new Vector2D();
+
     private double rotation = 0;
 
     private double drag;
@@ -20,16 +22,26 @@ public class PositionComponent extends LiveComponent {
 
     public void update() {
         this.position.add(this.velocity);
+        this.velocity.add(this.acceleration);
         this.velocity.multiply(1-this.drag);
     }
 
     public Vector2D futurePos(double interpolation) {
+        Vector2D futureVel = Vector2D.multiply(
+            Vector2D.add(this.velocity, this.acceleration),
+            (1-this.drag)*interpolation
+        );
         return Vector2D.add(this.position,
-                            Vector2D.multiply(this.velocity, interpolation));
+                            Vector2D.multiply(futureVel, interpolation));
     }
 
-    public void accelerate(Vector2D acceleration) {
-        this.velocity.add(acceleration);
+    public void setAcceleration(double x, double y) {
+        this.acceleration.x = x;
+        this.acceleration.y = y;
+    }
+
+    public void setAcceleration(Vector2D acc) {
+        this.setAcceleration(acc.x, acc.y);
     }
 
     public void setRotation(double rotation) {

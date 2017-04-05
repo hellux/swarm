@@ -17,10 +17,14 @@ public class PlayerComponent extends LiveComponent {
 
     public void update() { 
         if (this.thrust) {
-            Vector2D acceleration =
-                Vector2D.fromLengthRotation(this.thrustPower*MAX_THRUST,
-                    this.entity.get(PositionComponent.class).getRotation());
-            this.entity.get(PositionComponent.class).accelerate(acceleration);
+            this.entity.get(PositionComponent.class).setAcceleration(
+                Vector2D.fromLengthRotation(
+                    this.thrustPower*MAX_THRUST,
+                    this.entity.get(PositionComponent.class).getRotation()
+                )
+            );
+        } else {
+            this.entity.get(PositionComponent.class).setAcceleration(0, 0);
         }
     }
 

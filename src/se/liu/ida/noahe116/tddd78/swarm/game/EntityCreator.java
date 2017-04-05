@@ -29,7 +29,7 @@ public final class EntityCreator {
 
     private static void createAsteroid(Entity e) {
         e.add(new PositionComponent());
-        e.get(PositionComponent.class).accelerate(new Vector2D(1, 1));
+        e.get(PositionComponent.class).setAcceleration(0.1, 0.1);
         e.add(new HealthComponent(30));
     }
 
