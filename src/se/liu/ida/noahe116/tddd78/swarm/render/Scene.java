@@ -20,8 +20,6 @@ public class Scene {
     private final AbstractMap<Entity, RenderComponent> renderComponents; 
     private final Camera camera;
 
-    private Vector2D cameraInterpolation;
-
     public Scene(Game game) {
         this.game = game;
         this.renderComponents = new HashMap<>();
@@ -34,15 +32,9 @@ public class Scene {
      *                      period between ticks.
      **/
     public void render(Graphics2D g2d, double interpolation) {
-        this.updateCameraInterpolation(interpolation);
+        this.camera.updateInterpolation(interpolation);
         this.addRenderComponents();
         this.drawRenderComponents(g2d, interpolation);
-    }
-
-    private void updateCameraInterpolation(double interpolation) {
-        PositionComponent posComp = this.camera.getPositionComponent();
-        this.cameraInterpolation = Vector2D.subtract(posComp.futurePos(interpolation),
-                                                     posComp.getPosition());
     }
 
     private void addRenderComponents() {
@@ -73,17 +65,12 @@ public class Scene {
         }
     }
 
-    private Vector2D interpolate(PositionComponent posComp, double interpolation) {
-        Vector2D interpolatedPos = posComp.futurePos(interpolation); 
-        return Vector2D.subtract(interpolatedPos, this.cameraInterpolation);
-    }
-
+    
     public void drawImage(Graphics2D g2d,
                           BufferedImage img,
                           PositionComponent posComp,
                           double interpolation) {
-        Vector2D interpolatedPos = this.interpolate(posComp, interpolation);
-        Vector2D translatedPos = this.camera.translate(interpolatedPos);
+        Vector2D translatedPos = this.camera.translate(posComp.futurePos(interpolation));
         this.drawImage(g2d, img,
                        (int) Math.round(translatedPos.x),
                        (int) Math.round(translatedPos.y), 

@@ -21,6 +21,7 @@ public class Camera {
      * scale * size = component size
      **/
     private double scale = DEFAULT_SCALE;
+    private Vector2D interpolatedPos;
 
     public Camera(PositionComponent posComp) {
         this.positionComponent = posComp;
@@ -39,6 +40,10 @@ public class Camera {
     public void updateSize(int componentWidth, int componentHeight) {
         this.size.x = componentWidth/this.scale;
         this.size.y = componentHeight/this.scale;
+    }
+
+    public void updateInterpolation(double interpolation) {
+        this.interpolatedPos = this.positionComponent.futurePos(interpolation);
     }
 
     public PositionComponent getPositionComponent() {
@@ -91,8 +96,8 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
-        Vector2D componentOrigin = Vector2D.subtract(this.positionComponent.getPosition(),
-                                                    Vector2D.multiply(this.size, 0.5));
+        Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
+                                                     Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
             Vector2D.subtract(gameCoordinate, componentOrigin),
             this.scale);
