@@ -8,11 +8,12 @@ function parse_layer_name {
     svg=$1
     layer_id=$2
 
-    cat $svg \
+    echo $(cat $svg \
      | grep $layer -A 1 \
      | sed -n s/inkscape:label=\"//p \
      | sed s/\"// \
      | sed s/\>//
+     )
 }
 
 function export_image {
@@ -22,7 +23,9 @@ function export_image {
     layer_name=$(parse_layer_name $svg $layer_id)
     svg_name=$(basename $1 .svg)
     filename=${svg_name}_${layer_name}.png
-
+    
+    echo "$layer_name"
+    echo $filename
     inkscape $svg \
         --without-gui \
         --export-id-only \
