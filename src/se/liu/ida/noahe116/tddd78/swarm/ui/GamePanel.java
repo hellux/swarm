@@ -53,6 +53,7 @@ public final class GamePanel extends JPanel {
     private int cursorAreaRadius;
 
     private double interpolation;
+    private long delay;
     
     public GamePanel() {
         this.setBackground(Color.BLACK);
@@ -135,13 +136,19 @@ public final class GamePanel extends JPanel {
      **/
     private void gameLoop() {
         long nextTick = System.nanoTime();
+        long lastFrame = nextTick;
+        long currentFrame = nextTick;
         long nextFrame = nextTick;
 
         while (true) {
             sleepUntil(nextFrame);
-            nextFrame = System.nanoTime() + MIN_FRAME_PERIOD;
 
-            if (System.nanoTime() > nextTick) {
+            currentFrame = System.nanoTime();
+            this.delay = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+            nextFrame = currentFrame + MIN_FRAME_PERIOD;
+
+            if (currentFrame > nextTick) {
                 this.game.update();
                 nextTick += TICK_PERIOD;
             } 
@@ -157,6 +164,15 @@ public final class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.scene.render((Graphics2D) g, this.interpolation);
+        this.displayFPS(g);
+    }
+
+    private void displayFPS(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.drawString(Integer.toString(
+            (int) (NANOSECONDS_PER_SECOND/this.delay)),
+            0, g.getFont().getSize()
+        );
     }
 
     private void setKeyBinds() {
