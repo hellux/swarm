@@ -1,11 +1,12 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
+import java.awt.Graphics2D;
 import java.util.logging.*;
-import java.awt.*;
-import java.util.HashMap;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
+import java.util.Map;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
@@ -18,12 +19,11 @@ public class Scene {
     private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
 
     private final Game game;
-    private final AbstractMap<Entity, RenderComponent> renderComponents; 
+    private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private final Camera camera;
 
     public Scene(Game game) {
         this.game = game;
-        this.renderComponents = new HashMap<>();
         this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
     }
 
@@ -52,22 +52,30 @@ public class Scene {
     }
 
     private void drawRenderComponents(Graphics2D g2d, double interpolation) {
-        for (RenderComponent rc : this.renderComponents.values()) {
+        this.renderComponents.entrySet()
+                             .stream()
+                             .sorted(Map.Entry.comparingByValue())
+                             .forEach(entry -> {
+            RenderComponent rc = entry.getValue();
             BufferedImage[] images = rc.getImages();
             PositionComponent posComp = rc.getPositionComponent();
             for (BufferedImage image : images) {
                 if (image != null) {
                     this.drawImage(g2d,
-                                         image,
-                                         posComp,
-                                         interpolation);
+                                   image,
+                                   posComp,
+                                   interpolation);
                 }
             }
-        }
+        });
+    }
+
+    private void drawRenderComponent(Graphics2D g2d, double interpolation, RenderComponent rc) {
+
     }
 
     
-    public void drawImage(Graphics2D g2d,
+    private void drawImage(Graphics2D g2d,
                           BufferedImage img,
                           PositionComponent posComp,
                           double interpolation) {
@@ -78,7 +86,7 @@ public class Scene {
                        posComp.getRotation());   
     }
 
-    public void drawImage(Graphics2D g2d, BufferedImage img,
+    private void drawImage(Graphics2D g2d, BufferedImage img,
                           int centerX, int centerY, double rotation) {
         int leftX = centerX - img.getWidth()/2;
         int topY = centerY - img.getHeight()/2;
