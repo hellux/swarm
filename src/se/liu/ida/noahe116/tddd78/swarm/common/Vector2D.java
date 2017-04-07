@@ -41,14 +41,6 @@ public class Vector2D {
         return this.x*this.x + this.y*this.y;
     }
 
-    public double distance(double x, double y) {
-        return Math.sqrt(this.distanceSq(x, y));
-    }
-
-    public double distanceSq(double x, double y) {
-        return Math.pow((y-this.y), 2) + Math.pow(x-this.x, 2);
-    }
-
     public double rotation() {
         return Math.atan2(this.y, this.x);
     }
@@ -63,14 +55,6 @@ public class Vector2D {
 
     public void subtract(Vector2D v) {
         this.subtract(v.x, v.y);
-    }
-
-    public double distance(Vector2D v) {
-        return this.distance(v.x, v.y);
-    }
-
-    public double distanceSq(Vector2D v) {
-        return this.distanceSq(v.x, v.y);
     }
 
     @Override
@@ -92,5 +76,13 @@ public class Vector2D {
 
     public static Vector2D multiply(Vector2D v, double multiplier) {
         return new Vector2D(v.x*multiplier, v.y*multiplier);
+    }
+
+    public static double distance(Vector2D v1, Vector2D v2) {
+        return Math.sqrt(distanceSq(v1, v2));
+    }
+
+    public static double distanceSq(Vector2D v1, Vector2D v2) {
+        return Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2);
     }
 }
