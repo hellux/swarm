@@ -12,4 +12,7 @@ public abstract class Component {
         this.entity = entity;
     }
 
+    public Entity getEntity() {
+        return this.entity;
+    }
 }

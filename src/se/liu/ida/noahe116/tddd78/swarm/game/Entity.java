@@ -41,7 +41,8 @@ public class Entity {
      * @return the removed component or null, if it doesn't exist.
      **/
     public <T extends Component> T remove(Class<T> componentClass) {
-        @SuppressWarnings("unchecked") // remove always returns instance of componentClass (or null)
+        // remove always returns instance of componentClass (or null)
+        @SuppressWarnings("unchecked") 
         T oldComponent = (T) this.components.remove(componentClass);
         if (oldComponent != null) oldComponent.setEntity(null);
         return oldComponent;
@@ -80,6 +81,9 @@ public class Entity {
         }
     }
     
+    /**
+     * Flag the entity as killed.
+     **/
     public void kill() {
         this.killed = true;
     }
