@@ -12,7 +12,7 @@ public final class RcCreator {
     private static final AbstractMap<EntityType, Sprite> SPRITES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
-            put(EntityType.ASTEROID, new Sprite("junk_1.png"));
+            put(EntityType.ASTEROID, new Sprite("asteroid_.png"));
     }};
 
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
