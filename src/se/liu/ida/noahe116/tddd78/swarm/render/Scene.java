@@ -58,32 +58,27 @@ public class Scene {
                              .forEach(entry -> {
             RenderComponent rc = entry.getValue();
             BufferedImage[] images = rc.getImages();
-            PositionComponent posComp = rc.getPositionComponent();
+            PositionComponent pc = rc.getPositionComponent();
             for (BufferedImage image : images) {
                 if (image != null) {
                     this.drawImage(g2d,
                                    image,
-                                   posComp,
+                                   pc,
                                    interpolation);
                 }
             }
         });
     }
 
-    private void drawRenderComponent(Graphics2D g2d, double interpolation, RenderComponent rc) {
-
-    }
-
-    
     private void drawImage(Graphics2D g2d,
                           BufferedImage img,
-                          PositionComponent posComp,
+                          PositionComponent pc,
                           double interpolation) {
-        Vector2D translatedPos = this.camera.translate(posComp.futurePos(interpolation));
+        Vector2D translatedPos = this.camera.translate(pc.futurePos(interpolation));
         this.drawImage(g2d, img,
                        (int) Math.round(translatedPos.x),
                        (int) Math.round(translatedPos.y), 
-                       posComp.getRotation());   
+                       pc.getRotation());   
     }
 
     private void drawImage(Graphics2D g2d, BufferedImage img,
