@@ -1,8 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.components.HealthComponent;
-import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
-import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 import java.util.function.Consumer;
 import java.util.AbstractMap;
@@ -28,15 +26,23 @@ public final class EntityCreator {
     }
 
     private static void createAsteroid(Entity e) {
-        e.add(new PositionComponent());
-        e.get(PositionComponent.class).setAcceleration(0.1, 0.1);
-        e.add(new HealthComponent(30));
+        PositionComponent pc = new PositionComponent();
+        pc.setActive(false);
+        e.add(pc);
+        e.add(new HealthComponent(100));
+
+        CollisionComponent cc = new CollisionComponent(200);
+        cc.setKnockback(true);
+        e.add(cc);
     }
 
     private static void createPlayer(Entity e) {
-        e.add(new PositionComponent());
+        e.add(new PositionComponent(301, 0));
         e.add(new HealthComponent(1, 100));
         e.add(new PlayerComponent(e));
+
+        CollisionComponent cc = new CollisionComponent(100);
+        cc.setKnockback(true);
+        e.add(cc);
     }
-    
 }
