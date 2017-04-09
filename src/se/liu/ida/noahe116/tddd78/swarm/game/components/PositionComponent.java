@@ -27,12 +27,24 @@ public class PositionComponent extends LiveComponent {
     }
 
     public Vector2D futurePos(double interpolation) {
-        Vector2D futureVel = Vector2D.multiply(
-            Vector2D.add(this.velocity, this.acceleration),
-            (1-this.drag)*interpolation
-        );
-        return Vector2D.add(this.position,
-                            Vector2D.multiply(futureVel, interpolation));
+        if (this.active) {
+            Vector2D futureVel = Vector2D.multiply(
+                Vector2D.add(this.velocity, this.acceleration),
+                (1-this.drag)*interpolation
+            );
+            return Vector2D.add(this.position,
+                                Vector2D.multiply(futureVel, interpolation));
+        } else {
+            return this.position;
+        }
+    }
+
+    public void move(Vector2D movement) {
+        this.position.add(movement);
+    }
+
+    public void accelerate(Vector2D acc) {
+        this.velocity.add(acc);
     }
 
     public void setAcceleration(double x, double y) {
