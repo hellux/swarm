@@ -26,9 +26,8 @@ public class CollisionComponent extends Component {
      * @param cc other collision component
      * @return vector I of collision intersection pointing towards this,
      *         if no collision; return null.
-     *
-     * Diagram:
-     *
+     * <p>Diagram</p>
+     * <pre> {@code
      *          , - ~ - ,
      *      , '           ' ,
      *    ,                   ,
@@ -47,11 +46,10 @@ public class CollisionComponent extends Component {
      *           ,              , '
      *             ' - , _ ,  '
      *
-     *
      * D = (this.center() - cc.center())
-     *
      *     ^       _
      * I = D * abs(D-this.radius-cc.radius)
+     * } </pre>
      **/
     public Vector2D intersection(CollisionComponent cc) {
         if (Vector2D.distanceSq(this.center(), cc.center()) <
