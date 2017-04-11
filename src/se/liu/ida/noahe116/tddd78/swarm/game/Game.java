@@ -13,6 +13,7 @@ public class Game {
     public Game() {
         this.player = EntityCreator.create(EntityType.PLAYER);
         this.entities.add(this.player);
+        this.entities.add(EntityCreator.create(EntityType.PLAYER));
         this.entities.add(EntityCreator.create(EntityType.ASTEROID));
     }
 
@@ -40,12 +41,17 @@ public class Game {
 
     private void checkCollisions() {
         for (int e1 = 0; e1 < this.entities.size(); e1++) {
-            CollisionComponent cc1 = this.entities.get(e1).get(CollisionComponent.class);
+            Entity ent1 = this.entities.get(e1);
+            CollisionComponent cc1 = ent1.get(CollisionComponent.class);
             if (cc1 == null) continue;
+
             for (int e2 = e1+1; e2 < this.entities.size(); e2++) {
-                CollisionComponent cc2 = this.entities.get(e2).get(CollisionComponent.class);
+                Entity ent2 = this.entities.get(e2);
+                if (ent1.getType() == ent2.getType()) continue;
+                CollisionComponent cc2 = ent2.get(CollisionComponent.class);
                 if (cc2 == null) continue;
-                Vector2D intersection = cc1.collidesWith(cc2);
+
+                Vector2D intersection = cc1.intersection(cc2);
                 if (intersection != null) {
                     cc1.collideWith(cc2, intersection);
                     cc2.collideWith(cc1, Vector2D.multiply(intersection, -1));
