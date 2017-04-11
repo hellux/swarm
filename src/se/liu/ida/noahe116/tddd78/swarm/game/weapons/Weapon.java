@@ -1,11 +1,9 @@
-package se.liu.ida.noahe116.tddd78.swarm.game.components;
+package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 
-public class WeaponComponent extends Component {
+public abstract class Weapon {
     private int ammunition = 0;
 
-    public void fire() {
-
-    }
+    public abstract void fire();
 
     public void addAmmunition(int ammo) {
         this.ammunition += ammo;

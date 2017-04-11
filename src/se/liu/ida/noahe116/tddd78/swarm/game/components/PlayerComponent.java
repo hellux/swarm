@@ -1,5 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
+import java.util.List;
+
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 
@@ -9,7 +11,6 @@ public class PlayerComponent extends LiveComponent {
 
     private double thrustPower;
     private boolean thrust;
-    private WeaponComponent equippedWeapon;
 
     public PlayerComponent(Entity entity) {
         entity.get(PositionComponent.class).setDrag(DRAG);
@@ -44,7 +45,4 @@ public class PlayerComponent extends LiveComponent {
         this.entity.get(PositionComponent.class).setRotation(rotation);
     }
 
-    public WeaponComponent getEquippedWeapon() {
-        return this.equippedWeapon;
-    }
 }
