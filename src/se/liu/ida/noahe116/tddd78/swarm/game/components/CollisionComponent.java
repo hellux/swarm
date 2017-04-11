@@ -6,7 +6,7 @@ public class CollisionComponent extends Component {
     private static double KNOCKBACK_MULTIPLIER = 0.5;
 
     public final double radius;
-    private int damage = 30;
+    private int damage = 5;
     private boolean knockback = false;
 
     public CollisionComponent(double r) {
@@ -24,7 +24,7 @@ public class CollisionComponent extends Component {
     /**
      * Check if component collides with other collision component.
      * @param cc other collision component
-     * @return vector I of collision intersection pointing away from this
+     * @return vector I of collision intersection pointing towards this
      *
      * Diagram:
      *
@@ -34,11 +34,11 @@ public class CollisionComponent extends Component {
      *   ,                     ,
      *  ,     this.center()     ,
      *  ,           o           ,
-     *  ,            , - ~ - ,  ,
+     *  ,            ⵤ - ~ - ,  ,
      *   ,       , '  \        ; ,
      *    ,    ,       \ I    ,    ,
      *      , ,         \  , '      ,
-     *       ,' - , _ ,  v           ,
+     *       ,' - , _ ,  ,           ,
      *       ,           o           ,
      *       ,      cc.center()      ,
      *        ,                     ,
@@ -47,7 +47,7 @@ public class CollisionComponent extends Component {
      *             ' - , _ ,  '
      *
      *
-     * D = (cc.center() - this.center())
+     * D = (this.center() - cc.center())
      *
      *     ^       _
      * I = D * abs(D-this.radius-cc.radius)
