@@ -22,9 +22,10 @@ public class CollisionComponent extends Component {
     }
 
     /**
-     * Check if component collides with other collision component.
+     * Return a vector representing the intersection with another col-comp.
      * @param cc other collision component
-     * @return vector I of collision intersection pointing towards this
+     * @return vector I of collision intersection pointing towards this,
+     *         if no collision; return null.
      *
      * Diagram:
      *
@@ -52,7 +53,7 @@ public class CollisionComponent extends Component {
      *     ^       _
      * I = D * abs(D-this.radius-cc.radius)
      **/
-    public Vector2D collidesWith(CollisionComponent cc) {
+    public Vector2D intersection(CollisionComponent cc) {
         if (Vector2D.distanceSq(this.center(), cc.center()) <
             Math.pow(this.radius+cc.radius, 2)) {
             Vector2D difference = Vector2D.subtract(this.center(), cc.center());
