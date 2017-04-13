@@ -48,6 +48,7 @@ public final class GamePanel extends JPanel {
     private final Game game;
     private final Scene scene;
     private final Thread thread;
+    private final PlayerComponent playerComponent;
 
     private Vector2D center;
     private int cursorAreaRadius;
@@ -60,8 +61,11 @@ public final class GamePanel extends JPanel {
     public GamePanel() {
         this.setBackground(Color.BLACK);
         this.game = new Game();
+        this.playerComponent = this.game.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(game);
+        
         this.setKeyBinds();
+        this.setMouseBinds();
         this.createComponentListener();
 
         try {
@@ -87,13 +91,14 @@ public final class GamePanel extends JPanel {
     }
     
     private void handleMouse() {
+        /*
+         * mousePos is relative to component
+         **/
         Point2D mousePos = this.getMousePosition();
         if (mousePos != null) {
             Vector2D mouseVector = Vector2D.subtract(new Vector2D(mousePos), this.center);
-            this.game.getPlayer().get(PlayerComponent.class).
-                setThrustPower(mouseVector.magnitude()/cursorAreaRadius);
-            this.game.getPlayer().get(PlayerComponent.class).
-                setRotation(mouseVector.rotation());
+            this.playerComponent.setThrustPower(mouseVector.magnitude()/cursorAreaRadius);
+            this.playerComponent.setRotation(mouseVector.rotation());
             this.limitMouse(mouseVector);
         }
     }
@@ -180,12 +185,27 @@ public final class GamePanel extends JPanel {
     }
 
     private void setKeyBinds() {
-        this.bindKeyToggle(KeyEvent.VK_SPACE,
-            this.game.getPlayer().get(PlayerComponent.class)::setThrust);
-        this.bindKey(KeyStroke.getKeyStroke("F3"),
-            () -> this.showFPS = !this.showFPS);
+        this.bindKeyToggle(KeyEvent.VK_SPACE, this.playerComponent::setThrust);
+        this.bindKey(KeyStroke.getKeyStroke("F3"), () -> this.showFPS = !this.showFPS);
     }
-    
+
+    private void setMouseBinds() {
+        this.bindMouseToggle(MouseEvent.BUTTON1, this.playerComponent::firePrimary);
+        this.bindMouseToggle(MouseEvent.BUTTON2, this.playerComponent::fireSecondary);
+    }
+
+    private void bindMouseToggle(int button, Consumer<Boolean> bind) {
+        final MouseAdapter adapter = new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == button) bind.accept(true);
+            }
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == button) bind.accept(false);
+            }
+        };
+        this.addMouseListener(adapter);
+    }
+
     private void bindKeyToggle(int keyCode, Consumer<Boolean> bind) {
         this.bindKey(KeyStroke.getKeyStroke(keyCode, 0, false), () -> bind.accept(true));
         this.bindKey(KeyStroke.getKeyStroke(keyCode, 0, true), () -> bind.accept(false));

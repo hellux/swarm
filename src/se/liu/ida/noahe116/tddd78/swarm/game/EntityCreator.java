@@ -1,12 +1,12 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
-
 import java.util.function.Consumer;
 import java.util.AbstractMap;
 import java.util.EnumMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 public final class EntityCreator {
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
@@ -39,10 +39,16 @@ public final class EntityCreator {
     private static void createPlayer(Entity e) {
         e.add(new PositionComponent(301, 0));
         e.add(new HealthComponent(1, 100));
-        e.add(new PlayerComponent(e));
+        
+
+        WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
+        wh.add(new DefaultWeapon());
+        e.add(wh);
 
         CollisionComponent cc = new CollisionComponent(100);
         cc.setKnockback(true);
         e.add(cc);
+
+        e.add(new PlayerComponent(e));
     }
 }

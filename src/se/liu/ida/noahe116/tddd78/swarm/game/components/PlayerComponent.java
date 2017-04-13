@@ -6,8 +6,8 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 
 public class PlayerComponent extends LiveComponent {
-    private static final double DRAG = 0.03;
-    private static final double MAX_THRUST = 10;
+    private static final double DRAG = 0.05;
+    private static final double MAX_THRUST = 12;
 
     private double thrustPower;
     private boolean thrust;
@@ -29,8 +29,8 @@ public class PlayerComponent extends LiveComponent {
         }
     }
 
-    public void setThrust(boolean t) {
-        this.thrust = t;
+    public void setThrust(boolean state) {
+        this.thrust = state;
     }
 
     public boolean isThrust() {
@@ -45,4 +45,11 @@ public class PlayerComponent extends LiveComponent {
         this.entity.get(PositionComponent.class).setRotation(rotation);
     }
 
+    public void firePrimary(boolean state) {
+        this.entity.get(WeaponHandlerComponent.class).fire(0);
+    }
+
+    public void fireSecondary(boolean state) {
+        this.entity.get(WeaponHandlerComponent.class).fire(1);
+    }
 }

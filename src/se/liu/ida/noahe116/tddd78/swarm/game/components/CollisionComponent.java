@@ -3,7 +3,7 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class CollisionComponent extends Component {
-    private static double KNOCKBACK_MULTIPLIER = 0.5;
+    private static double KNOCKBACK_MULTIPLIER = 3;
 
     public final double radius;
     private int damage = 5;
@@ -69,8 +69,10 @@ public class CollisionComponent extends Component {
         if (cc.hasKnockback()) {
             PositionComponent pc = this.entity.get(PositionComponent.class);
             if (pc != null) {
-                //pc.move(intersection);
-                pc.accelerate(Vector2D.multiply(intersection, KNOCKBACK_MULTIPLIER));
+                pc.accelerate(Vector2D.multiply(
+                    Vector2D.multiply(intersection, 1.0/Math.sqrt(this.radius)),
+                    KNOCKBACK_MULTIPLIER
+                ));
             }
         }
     }

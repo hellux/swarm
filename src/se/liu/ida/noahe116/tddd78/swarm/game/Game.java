@@ -13,7 +13,6 @@ public class Game {
     public Game() {
         this.player = EntityCreator.create(EntityType.PLAYER);
         this.entities.add(this.player);
-        this.entities.add(EntityCreator.create(EntityType.PLAYER));
         this.entities.add(EntityCreator.create(EntityType.ASTEROID));
     }
 
