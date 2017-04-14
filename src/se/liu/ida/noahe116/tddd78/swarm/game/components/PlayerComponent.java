@@ -6,8 +6,8 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 
 public class PlayerComponent extends LiveComponent {
-    private static final double DRAG = 0.05;
-    private static final double MAX_THRUST = 12;
+    private static final double DRAG = 0.06;
+    private static final double MAX_THRUST = 8;
 
     private double thrustPower;
     private boolean thrust;
