@@ -4,8 +4,6 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 
 public class Camera {
-    private static final double DEFAULT_SCALE = 0.5;
-
     /**
      * Center of camera's view.
      **/
@@ -20,7 +18,7 @@ public class Camera {
      * Scale of game coordinates relative to game coordinates.
      * scale * size = component size
      **/
-    private double scale = DEFAULT_SCALE;
+    private double scale;
     private Vector2D interpolatedPos;
 
     public Camera(PositionComponent posComp) {

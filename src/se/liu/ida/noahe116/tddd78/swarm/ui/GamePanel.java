@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.event.*;
 import java.util.logging.*;
 import java.util.function.Consumer;
+import java.awt.image.BufferedImage;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
@@ -67,6 +68,7 @@ public final class GamePanel extends JPanel {
         this.setKeyBinds();
         this.setMouseBinds();
         this.createComponentListener();
+        this.hideCursor();
 
         try {
             this.robot = new Robot();
@@ -84,9 +86,11 @@ public final class GamePanel extends JPanel {
     private void updateDimensions() {
         int width = this.getWidth();
         int height = this.getHeight();
+        int min = Math.min(width, height);
         this.center = new Vector2D(width/2, height/2);
         this.cursorAreaRadius =
-            (int) (CURSOR_RADIUS_RATIO*Math.min(width, height));
+            (int) (CURSOR_RADIUS_RATIO*min);
+        this.scene.getCamera().changeScale(min/1920.0);
         this.scene.getCamera().updateSize(width, height);
     }
     
@@ -162,8 +166,8 @@ public final class GamePanel extends JPanel {
             
             this.interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick)
                                         / TICK_PERIOD;
-            this.repaint();
             this.handleMouse();
+            this.repaint();
         }
     }
 
@@ -171,6 +175,7 @@ public final class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.scene.render((Graphics2D) g, this.interpolation);
+        this.drawCursor(g);
         if (this.showFPS) {
             this.displayFPS(g);
         }
@@ -182,6 +187,15 @@ public final class GamePanel extends JPanel {
             (int) (NANOSECONDS_PER_SECOND/this.delay)),
             0, g.getFont().getSize()
         );
+    }
+
+    private void drawCursor(Graphics g) {
+        Point mousePos = this.getMousePosition();
+        if (mousePos != null) {
+            g.setColor(Color.RED);
+            int diameter = this.cursorAreaRadius/15;
+            g.drawOval(mousePos.x-diameter/2, mousePos.y-diameter/2, diameter, diameter); 
+            }
     }
 
     private void setKeyBinds() {
@@ -196,9 +210,11 @@ public final class GamePanel extends JPanel {
 
     private void bindMouseToggle(int button, Consumer<Boolean> bind) {
         final MouseAdapter adapter = new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == button) bind.accept(true);
             }
+            @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == button) bind.accept(false);
             }
@@ -234,6 +250,18 @@ public final class GamePanel extends JPanel {
         };
 
         this.addComponentListener(dimensionUpdater);
+    }
+    
+    /**
+     * Hide window manager's cursor.
+     * The cursor is hidden and redrawn in the game loop to make sure 
+     * the game's cursor can be in sync with the game loop.
+     **/
+    private void hideCursor() {
+        BufferedImage cursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(
+            cursorImage, new Point(0, 0), "blank");
+        this.setCursor(cursor);
     }
 }
 
