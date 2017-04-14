@@ -58,7 +58,7 @@ public class WeaponHandlerComponent extends LiveComponent {
                 this.cooldown[s] -= 1;
             } else if (this.fire[s]) {
                 this.getEquipped(s).fire();
-                this.cooldown[s] = getEquipped(s).getCooldown();
+                this.cooldown = getEquipped(s).getCooldown();
             }
         }
     }

@@ -37,12 +37,12 @@ public final class EntityCreator {
     }
 
     private static void createPlayer(Entity e) {
-        e.add(new PositionComponent(301, 0));
+        e.add(new PositionComponent(new Vector2D(301, 0)));
         e.add(new HealthComponent(1, 100));
         
 
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
-        wh.add(new DefaultWeapon());
+        wh.add(ProjectileWeaponCreator.get(WeaponType.DEFAULT));
         e.add(wh);
 
         CollisionComponent cc = new CollisionComponent(100);

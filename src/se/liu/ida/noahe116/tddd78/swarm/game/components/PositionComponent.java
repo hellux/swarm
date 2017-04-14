@@ -11,13 +11,13 @@ public class PositionComponent extends LiveComponent {
 
     private double drag;
 
-    public PositionComponent(double x, double y) {
-        this.position.x = x;
-        this.position.y = y;
+    public PositionComponent(Vector2D pos) {
+        this.position.x = pos.x;
+        this.position.y = pos.y;
     }
 
     public PositionComponent() {
-        this(0, 0);
+        this(new Vector2D());
     }
 
     public void update() {
@@ -47,13 +47,9 @@ public class PositionComponent extends LiveComponent {
         this.velocity.add(acc);
     }
 
-    public void setAcceleration(double x, double y) {
-        this.acceleration.x = x;
-        this.acceleration.y = y;
-    }
-
     public void setAcceleration(Vector2D acc) {
-        this.setAcceleration(acc.x, acc.y);
+        this.acceleration.x = acc.x;
+        this.acceleration.y = acc.y;
     }
 
     public void setRotation(double rotation) {

@@ -2,8 +2,15 @@ package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 
 public abstract class Weapon {
     private int ammunition = 0;
+    private final int cooldown;
+        
+    protected Weapon(int cooldown) {
+        this.cooldown = cooldown;
+    }
 
-    public abstract void fire();
+    protected Weapon() {
+        this(0);
+    }
 
     public void addAmmunition(int ammo) {
         this.ammunition += ammo;
@@ -12,4 +19,10 @@ public abstract class Weapon {
     public int getAmmunition() {
         return this.ammunition;
     }
+
+    public int getCooldown() {
+        return this.cooldown;
+    }
+
+    public abstract void fire();
 }

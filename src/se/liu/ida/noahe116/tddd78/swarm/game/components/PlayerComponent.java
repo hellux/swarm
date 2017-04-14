@@ -25,7 +25,7 @@ public class PlayerComponent extends LiveComponent {
                 )
             );
         } else {
-            this.entity.get(PositionComponent.class).setAcceleration(0, 0);
+            this.entity.get(PositionComponent.class).setAcceleration(new Vector2D());
         }
     }
 
@@ -46,10 +46,10 @@ public class PlayerComponent extends LiveComponent {
     }
 
     public void firePrimary(boolean state) {
-        this.entity.get(WeaponHandlerComponent.class).fire(0);
+        this.entity.get(WeaponHandlerComponent.class).fire(state, 0);
     }
 
     public void fireSecondary(boolean state) {
-        this.entity.get(WeaponHandlerComponent.class).fire(1);
+        this.entity.get(WeaponHandlerComponent.class).fire(state, 1);
     }
 }
