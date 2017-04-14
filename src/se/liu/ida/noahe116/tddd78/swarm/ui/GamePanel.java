@@ -87,10 +87,12 @@ public final class GamePanel extends JPanel {
         int width = this.getWidth();
         int height = this.getHeight();
         int min = Math.min(width, height);
+        final double SCALE_FACTOR = 1920;
+
         this.center = new Vector2D(width/2, height/2);
         this.cursorAreaRadius =
             (int) (CURSOR_RADIUS_RATIO*min);
-        this.scene.getCamera().changeScale(min/1920.0);
+        this.scene.getCamera().changeScale(min/SCALE_FACTOR);
         this.scene.getCamera().updateSize(width, height);
     }
     
