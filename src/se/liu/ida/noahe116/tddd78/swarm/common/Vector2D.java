@@ -91,7 +91,7 @@ public class Vector2D {
     }
 
     public static Vector2D rotate(Vector2D v, double rotation) {
-        return Vector2D.transform(v, Vector2D.rotationMatrix(r));
+        return Vector2D.transform(v, Vector2D.rotationMatrix(rotation));
     }
     
     /**
@@ -102,12 +102,12 @@ public class Vector2D {
      **/
     public static double[][] rotationMatrix(double rotation) {
         return new double[][] {
-            {Math.cos(r), -Math.sin(r)},
-            {Math.sin(r), Math.cos(r)}
-        }
+            {Math.cos(rotation), -Math.sin(rotation)},
+            {Math.sin(rotation), Math.cos(rotation)}
+        };
     }
 
-    public static transform(Vector2D v, double[][] m) {
+    public static Vector2D transform(Vector2D v, double[][] m) {
         return new Vector2D(m[0][0]*v.x + m[0][1]*v.y,
                             m[1][0]*v.x + m[1][1]*v.y);
     }
