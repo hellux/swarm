@@ -96,6 +96,10 @@ public class Entity {
         return this.killed;
     }
 
+    public String toString() {
+        return "ent_" + this.type + "_" + this.hashCode();
+    }
+
     /**
      * Replace a component of the same class.
      * FIXME: Will not compile because 'inference variable T1 has
