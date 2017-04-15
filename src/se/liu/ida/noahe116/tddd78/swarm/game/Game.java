@@ -12,8 +12,8 @@ public class Game {
 
     public Game() {
         this.player = EntityCreator.create(EntityType.PLAYER);
-        this.entities.add(this.player);
-        this.entities.add(EntityCreator.create(EntityType.ASTEROID));
+        this.add(this.player);
+        this.add(EntityCreator.create(EntityType.ASTEROID));
     }
 
     public Entity getPlayer() {
@@ -25,9 +25,10 @@ public class Game {
     }
 
     private void updateEntities() {
-        for (Entity entity : this.entities) {
+        for (int i = entities.size()-1; i >= 0; i--) {
+            Entity entity = this.entities.get(i);
             if (entity.isKilled()) {
-                this.entities.remove(entities);
+                this.entities.remove(entity);
             }
             entity.update();
         }
@@ -53,13 +54,14 @@ public class Game {
             }
         }
     }
+
+    public void add(Entity e) {
+        e.setGame(this);
+        this.entities.add(e);
+    }
     
     public void update() {
         this.checkCollisions();
         this.updateEntities();
-    }
-
-    public void addEntity(Entity e) {
-        this.entities.add(e);
     }
 }

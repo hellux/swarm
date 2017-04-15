@@ -1,6 +1,10 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class CollisionComponent extends Component {
     private static double KNOCKBACK_MULTIPLIER = 3;
@@ -8,6 +12,7 @@ public class CollisionComponent extends Component {
     public final double radius;
     private int damage = 5;
     private boolean knockback = false;
+    List<Entity> ignore = new ArrayList<>();
 
     public CollisionComponent(double r) {
         this.radius = r;
@@ -52,6 +57,9 @@ public class CollisionComponent extends Component {
      * } </pre>
      **/
     public Vector2D intersection(CollisionComponent cc) {
+        if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity) ) {
+            return null;
+        }
         if (Vector2D.distanceSq(this.center(), cc.center()) <
             Math.pow(this.radius+cc.radius, 2)) {
             Vector2D difference = Vector2D.subtract(this.center(), cc.center());
@@ -87,5 +95,13 @@ public class CollisionComponent extends Component {
 
     public boolean hasKnockback() {
         return this.knockback;
+    }
+
+    public void ignore(Entity e) {
+        this.ignore.add(e);
+    }
+
+    public boolean ignores(Entity e) {
+        return this.ignore.contains(e);
     }
 }

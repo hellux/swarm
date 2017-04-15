@@ -15,11 +15,11 @@ public final class ProjectileWeaponCreator {
     private static final AbstractMap<WeaponType, ProjectileWeapon> WEAPONS =
         new EnumMap(WeaponType.class) {{
             put(WeaponType.DEFAULT, new ProjectileWeapon(
-                5, 
+                3, 
                 10,
                 1,
-                new Vector2D[]{new Vector2D(30, 20), new Vector2D(30, -20)},
-                new Vector2D[]{new Vector2D(10, 0), new Vector2D(10, 0)}
+                new Vector2D[]{new Vector2D(52, 78), new Vector2D(52, -78)},
+                new Vector2D[]{new Vector2D(25, 0), new Vector2D(25, 0)}
             ));
         }};
 

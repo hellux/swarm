@@ -38,17 +38,22 @@ public class Scene {
         this.drawRenderComponents(g2d, interpolation);
     }
 
+
     private void addRenderComponents() {
+        this.renderComponents.clear();
+
         for (Entity e : this.game.getEntities()) {
-            if (true) { //TODO determine if entity needs to be drawn
-                if (!renderComponents.containsKey(e)) {
+            if (this.shouldDraw(e)) { 
+                if (!this.renderComponents.containsKey(e)) {
                     RenderComponent rc = RcCreator.createRenderComponent(e);
-                    renderComponents.put(e, rc); 
+                    if (rc != null) this.renderComponents.put(e, rc); 
                 }
-            } else {
-                renderComponents.remove(e);
             }
         }
+    }
+
+    private boolean shouldDraw(Entity e) {
+        return !e.isKilled();
     }
 
     private void drawRenderComponents(Graphics2D g2d, double interpolation) {

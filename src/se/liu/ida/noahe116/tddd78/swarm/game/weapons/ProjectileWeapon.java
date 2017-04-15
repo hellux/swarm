@@ -31,7 +31,6 @@ public class ProjectileWeapon extends Weapon {
     }
 
     public void fire(Entity e) {
-        //TODO add projectile to level
         PositionComponent entityPosComp = e.get(PositionComponent.class);
 
         if (entityPosComp == null) {
@@ -40,6 +39,7 @@ public class ProjectileWeapon extends Weapon {
         }
 
         Vector2D pos = entityPosComp.getPosition();
+        Vector2D vel = entityPosComp.getVelocity();
         double rotation = entityPosComp.getRotation();
 
         for (int p = 0; p < this.launchPoints.length; p++) {
@@ -47,14 +47,22 @@ public class ProjectileWeapon extends Weapon {
                 Vector2D.add(pos,
                              Vector2D.rotate(this.launchPoints[p], rotation))
             );
-            pc.accelerate(this.velocities[p]);
+            pc.accelerate(Vector2D.add(
+                vel,
+                Vector2D.rotate(this.velocities[p], rotation))
+            );
 
             CollisionComponent cc = new CollisionComponent(this.radius);
             cc.setDamage(this.damage);
+            cc.ignore(e);
 
             Entity proj = new Entity(EntityType.PROJECTILE);
+            proj.add(new TimerComponent(100));
+            proj.add(new HealthComponent(1));
             proj.add(pc);
             proj.add(cc);
+
+            e.getGame().add(proj);
         }
     }
 }

@@ -21,6 +21,7 @@ public final class RcCreator {
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
             put(EntityType.ASTEROID, new Sprite("asteroid_.png"));
+            put(EntityType.PROJECTILE, new Sprite("projectile_default.png"));
     }};
 
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
@@ -28,6 +29,7 @@ public final class RcCreator {
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, RenderPriority.PLAYER);
             put(EntityType.ASTEROID, RenderPriority.STATIC);
+            put(EntityType.PROJECTILE, RenderPriority.DYNAMIC);
     }};
 
     private RcCreator() {}
@@ -40,6 +42,7 @@ public final class RcCreator {
         if (!SPRITES.containsKey(type) || !RENDER_PRIORITIES.containsKey(type)){
             LOGGER.log(Level.WARNING, "RenderComponent for entity of type "
                                     + type + " could not be created");
+            return null;
         }
         return new RenderComponent(SPRITES.get(type),
                                    e,

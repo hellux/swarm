@@ -13,6 +13,7 @@ public class Entity {
      **/
     private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
     private final EntityType type;
+    private Game game = null;
     private boolean killed;
     
     public Entity(EntityType type) {
@@ -94,6 +95,14 @@ public class Entity {
 
     public boolean isKilled() {
         return this.killed;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return this.game;
     }
 
     @Override

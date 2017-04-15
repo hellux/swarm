@@ -32,4 +32,8 @@ public class RenderComponent implements Comparable<RenderComponent> {
     public int compareTo(RenderComponent rc) {
         return this.priority.compareTo(rc.getPriority());
     }
+
+    public String toString() {
+        return "rc"; 
+    }
 }
