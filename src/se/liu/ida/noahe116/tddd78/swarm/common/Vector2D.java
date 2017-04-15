@@ -89,4 +89,26 @@ public class Vector2D {
     public static double distanceSq(Vector2D v1, Vector2D v2) {
         return Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2);
     }
+
+    public static Vector2D rotate(Vector2D v, double rotation) {
+        return Vector2D.transform(v, Vector2D.rotationMatrix(r));
+    }
+    
+    /**
+     * Create a rotation matrix for rotation r.
+     *
+     * x' = xcosr - ysinr ~ [x'] = [cosr -sinr][x]
+     * y' = xsinr + ycosr   [y']   [sinr cosr ][y]
+     **/
+    public static double[][] rotationMatrix(double rotation) {
+        return new double[][] {
+            {Math.cos(r), -Math.sin(r)},
+            {Math.sin(r), Math.cos(r)}
+        }
+    }
+
+    public static transform(Vector2D v, double[][] m) {
+        return new Vector2D(m[0][0]*v.x + m[0][1]*v.y,
+                            m[1][0]*v.x + m[1][1]*v.y);
+    }
 }
