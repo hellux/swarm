@@ -96,6 +96,7 @@ public class Entity {
         return this.killed;
     }
 
+    @Override
     public String toString() {
         return "ent_" + this.type + "_" + this.hashCode();
     }

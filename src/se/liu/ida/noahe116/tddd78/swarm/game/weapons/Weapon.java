@@ -1,5 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.*;
+
 public abstract class Weapon {
     private int ammunition = 0;
     private final int cooldown;
@@ -24,5 +26,5 @@ public abstract class Weapon {
         return this.cooldown;
     }
 
-    public abstract void fire();
+    public abstract void fire(Entity e);
 }

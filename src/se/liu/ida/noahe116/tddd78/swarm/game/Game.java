@@ -24,11 +24,6 @@ public class Game {
         return this.entities;
     }
 
-    public void update() {
-        this.checkCollisions();
-        this.updateEntities();
-    }
-
     private void updateEntities() {
         for (Entity entity : this.entities) {
             if (entity.isKilled()) {
@@ -57,5 +52,14 @@ public class Game {
                 }
             }
         }
+    }
+    
+    public void update() {
+        this.checkCollisions();
+        this.updateEntities();
+    }
+
+    public void addEntity(Entity e) {
+        this.entities.add(e);
     }
 }

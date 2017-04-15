@@ -30,11 +30,23 @@ public class ProjectileWeapon extends Weapon {
         }
     }
 
-    public void fire() {
-        //TODO add projectile to level, make it come from entity (now origin)
-        System.out.println("Pew Pew");
+    public void fire(Entity e) {
+        //TODO add projectile to level
+        PositionComponent entityPosComp = e.get(PositionComponent.class);
+
+        if (entityPosComp == null) {
+            LOGGER.log(Level.WARNING, e + " has no PosComp to fire from");
+            return;
+        }
+
+        Vector2D pos = entityPosComp.getPosition();
+        double rotation = entityPosComp.getRotation();
+
         for (int p = 0; p < this.launchPoints.length; p++) {
-            PositionComponent pc = new PositionComponent(this.launchPoints[p]);
+            PositionComponent pc = new PositionComponent(
+                Vector2D.add(pos,
+                             Vector2D.rotate(this.launchPoints[p], rotation))
+            );
             pc.accelerate(this.velocities[p]);
 
             CollisionComponent cc = new CollisionComponent(this.radius);
