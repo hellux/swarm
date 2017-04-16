@@ -20,8 +20,11 @@ public final class RcCreator {
     private static final AbstractMap<EntityType, Sprite> SPRITES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
-            put(EntityType.ASTEROID, new Sprite("asteroid_.png"));
-            put(EntityType.PROJECTILE, new Sprite("projectile_default.png"));
+            put(EntityType.ASTEROID, new Sprite("asteroid_1.png"));
+            put(EntityType.PROJECTILE_DEFAULT, new Sprite("projectile_default.png"));
+            put(EntityType.PROJECTILE_SPREAD, new Sprite("projectile_spread.png"));
+            put(EntityType.PROJECTILE_RED_LASER, new Sprite("projectile_red_laser.png"));
+            put(EntityType.PROJECTILE_QUAD, new Sprite("projectile_quad.png"));
     }};
 
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
@@ -29,7 +32,10 @@ public final class RcCreator {
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, RenderPriority.PLAYER);
             put(EntityType.ASTEROID, RenderPriority.STATIC);
-            put(EntityType.PROJECTILE, RenderPriority.DYNAMIC);
+            put(EntityType.PROJECTILE_DEFAULT, RenderPriority.DYNAMIC);
+            put(EntityType.PROJECTILE_SPREAD, RenderPriority.DYNAMIC);
+            put(EntityType.PROJECTILE_RED_LASER, RenderPriority.DYNAMIC);
+            put(EntityType.PROJECTILE_QUAD, RenderPriority.DYNAMIC);
     }};
 
     private RcCreator() {}

@@ -42,7 +42,7 @@ public final class EntityCreator {
         
 
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
-        wh.add(ProjectileWeaponCreator.get(WeaponType.DEFAULT));
+        wh.add(ProjectileWeaponCreator.get(WeaponType.QUAD));
         e.add(wh);
 
         CollisionComponent cc = new CollisionComponent(100);

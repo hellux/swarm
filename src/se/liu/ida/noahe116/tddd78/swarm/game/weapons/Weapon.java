@@ -3,27 +3,24 @@ package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public abstract class Weapon {
-    private int ammunition = 0;
     private final int cooldown;
+    private final WeaponType type;
         
-    protected Weapon(int cooldown) {
+    protected Weapon(int cooldown, WeaponType type) {
         this.cooldown = cooldown;
+        this.type = type;
     }
 
-    protected Weapon() {
-        this(0);
-    }
-
-    public void addAmmunition(int ammo) {
-        this.ammunition += ammo;
-    }
-
-    public int getAmmunition() {
-        return this.ammunition;
+    protected Weapon(WeaponType type) {
+        this(0, type);
     }
 
     public int getCooldown() {
         return this.cooldown;
+    }
+
+    public WeaponType getType() {
+        return this.type;
     }
 
     public abstract void fire(Entity e);

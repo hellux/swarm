@@ -11,15 +11,19 @@ public class ProjectileWeapon extends Weapon {
 
     private final int damage;
     private final int radius;
+    private final EntityType entityType;
     private final Vector2D[] launchPoints;
     private final Vector2D[] velocities;
 
-    public ProjectileWeapon(int cooldown,
+    public ProjectileWeapon(WeaponType type,
+                            EntityType entityType,
+                            int cooldown,
                             int damage,
                             int radius,
                             Vector2D[] launchPoints,
                             Vector2D[] velocities) {
-        super(cooldown);
+        super(cooldown, type);
+        this.entityType = entityType;
         this.damage = damage;
         this.radius = radius;
         this.launchPoints = launchPoints;
@@ -51,12 +55,13 @@ public class ProjectileWeapon extends Weapon {
                 vel,
                 Vector2D.rotate(this.velocities[p], rotation))
             );
+            pc.setRotation(rotation);
 
             CollisionComponent cc = new CollisionComponent(this.radius);
             cc.setDamage(this.damage);
             cc.ignore(e);
 
-            Entity proj = new Entity(EntityType.PROJECTILE);
+            Entity proj = new Entity(this.entityType);
             proj.add(new TimerComponent(100));
             proj.add(new HealthComponent(1));
             proj.add(pc);
