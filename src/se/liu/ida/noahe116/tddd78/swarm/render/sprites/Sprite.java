@@ -15,27 +15,46 @@ public class Sprite {
     
     private static final String imageDir = "resources/img/";
 
+    static {
+        
+    }
+
     protected final AbstractMap<String, BufferedImage> images = new HashMap<>();
     
     public Sprite(String...fileNames) {
         for (String fileName : fileNames) {
-            String imagePath = imageDir + fileName;
+            BufferedImage image = this.readImage(fileName);
+            this.images.put(fileName, image); 
+        }
+    }
+
+    private BufferedImage readImage(String fileName) {
+            InputStream is = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(fileName);
+            if (is == null) {
+                try {
+                    is = new FileInputStream(imageDir + fileName);
+                    LOGGER.log(Level.INFO, fileName + " found in resource folder."); 
+                } catch (FileNotFoundException e) {
+                    LOGGER.log(Level.WARNING, "failed to read file: " + fileName, e);
+                }
+            } else {
+                LOGGER.log(Level.INFO, fileName + " found in JAR file.");
+            }
+            
             BufferedImage image = null;
-            File imageFile = new File(imagePath);
 
             try {
-                ImageInputStream iis = ImageIO.createImageInputStream(imageFile);
+                ImageInputStream iis = ImageIO.createImageInputStream(is);
                 if (iis != null) {
                     image = ImageIO.read(iis);
                 } else {
-                    LOGGER.log(Level.WARNING, "failed to create IIS for: " + imagePath); 
+                    LOGGER.log(Level.WARNING, "failed to create IIS for: " + fileName); 
                 }
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "failed to read image: " + imagePath, e);
+                LOGGER.log(Level.WARNING, "failed to read image: " + fileName, e);
             }
-
-            this.images.put(fileName, image); 
-        }
+            return image;
     }
 
     protected BufferedImage[] getImageArray(String...imageNames) {

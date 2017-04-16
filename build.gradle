@@ -1,9 +1,18 @@
 apply plugin: "java"
 
 sourceSets {
-    main.java.srcDir "src"
+    main {
+        java {
+            srcDirs = [ "src" ]
+        }
+        resources {
+            srcDirs = [ "resources/img" ]
+        }
+    }
 }
 
 jar {
+    baseName "swarm"
     manifest.attributes "Main-Class": "se.liu.ida.noahe116.tddd78.swarm.ui.Swarm"
 }
+
