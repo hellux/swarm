@@ -24,8 +24,6 @@ function export_image {
     svg_name=$(basename $1 .svg)
     filename=${svg_name}_${layer_name}.png
     
-    echo "$layer_name"
-    echo $filename
     inkscape $svg \
         --without-gui \
         --export-id-only \
