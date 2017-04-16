@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.render.sprites;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.stream.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.util.logging.*;
@@ -20,11 +21,19 @@ public class Sprite {
         for (String fileName : fileNames) {
             String imagePath = imageDir + fileName;
             BufferedImage image = null;
+            File imageFile = new File(imagePath);
+
             try {
-                image = ImageIO.read(new File(imagePath));
+                ImageInputStream iis = ImageIO.createImageInputStream(imageFile);
+                if (iis != null) {
+                    image = ImageIO.read(iis);
+                } else {
+                    LOGGER.log(Level.WARNING, "failed to create IIS for: " + imagePath); 
+                }
             } catch (IOException e) {
                 LOGGER.log(Level.WARNING, "failed to read image: " + imagePath, e);
             }
+
             this.images.put(fileName, image); 
         }
     }
