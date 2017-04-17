@@ -13,11 +13,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 public class Sprite {
     private static final Logger LOGGER = Logger.getLogger(Sprite.class.getName());
     
-    private static final String imageDir = "resources/img/";
-
-    static {
-        
-    }
+    private static final String IMAGE_DIR = "resources/img/";
 
     protected final AbstractMap<String, BufferedImage> images = new HashMap<>();
     
@@ -29,32 +25,37 @@ public class Sprite {
     }
 
     private BufferedImage readImage(String fileName) {
-            InputStream is = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(fileName);
-            if (is == null) {
-                try {
-                    is = new FileInputStream(imageDir + fileName);
-                    LOGGER.log(Level.INFO, fileName + " found in resource folder."); 
-                } catch (FileNotFoundException e) {
-                    LOGGER.log(Level.WARNING, "failed to read file: " + fileName, e);
-                }
-            } else {
-                LOGGER.log(Level.INFO, fileName + " found in JAR file.");
-            }
-            
-            BufferedImage image = null;
-
-            try {
-                ImageInputStream iis = ImageIO.createImageInputStream(is);
-                if (iis != null) {
-                    image = ImageIO.read(iis);
-                } else {
-                    LOGGER.log(Level.WARNING, "failed to create IIS for: " + fileName); 
-                }
-            } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "failed to read image: " + fileName, e);
-            }
+            BufferedImage image = this.readImageFromResource(fileName);
+            if (image == null) image = this.readImageFromFile(fileName);
+            if (image == null) LOGGER.log(Level.WARNING, "failed to read image " + fileName);
             return image;
+    }
+
+    private BufferedImage readImageFromResource(String fileName) {
+        BufferedImage image = null;
+        InputStream is = Thread.currentThread().getContextClassLoader()
+            .getResourceAsStream(fileName);
+
+	if (is != null) try (ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+	    image = ImageIO.read(iis);
+        }
+	catch (IOException e) {
+	    LOGGER.log(Level.FINE, "failed to read " + fileName + " from resource", e);
+        }
+
+        return image;
+    }
+
+    private BufferedImage readImageFromFile(String fileName) {
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(new File(IMAGE_DIR + fileName));
+        } catch (IOException e){
+            LOGGER.log(Level.FINE, "failed to read file " + fileName, e);
+        }
+
+        return image;
     }
 
     protected BufferedImage[] getImageArray(String...imageNames) {

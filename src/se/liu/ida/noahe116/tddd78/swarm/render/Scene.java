@@ -1,34 +1,34 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import java.awt.Graphics2D;
+import java.util.Map.Entry;
 import java.util.logging.*;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
-import java.util.Map;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 
 /**
- * Handles visualization of the game.
+ * Handles visualization of the gameLevel.
  **/
 public class Scene {
     private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
 
-    private final Game game;
+    private final GameLevel gameLevel;
     private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private final Camera camera;
 
-    public Scene(Game game) {
-        this.game = game;
-        this.camera = new Camera(game.getPlayer().get(PositionComponent.class));
+    public Scene(GameLevel gameLevel) {
+        this.gameLevel = gameLevel;
+        this.camera = new Camera(gameLevel.getPlayer().get(PositionComponent.class));
     }
 
     /**
-     * Render an interpolated frame of the game's current state.
+     * Render an interpolated frame of the gameLevel's current state.
      * @param interpolation ratio of time that has passed since the last tick to the
      *                      period between ticks.
      **/
@@ -42,7 +42,7 @@ public class Scene {
     private void addRenderComponents() {
         this.renderComponents.clear();
 
-        for (Entity e : this.game.getEntities()) {
+        for (Entity e : this.gameLevel.getEntities()) {
             if (this.shouldDraw(e)) { 
                 if (!this.renderComponents.containsKey(e)) {
                     RenderComponent rc = RcCreator.createRenderComponent(e);
@@ -59,7 +59,7 @@ public class Scene {
     private void drawRenderComponents(Graphics2D g2d, double interpolation) {
         this.renderComponents.entrySet()
                              .stream()
-                             .sorted(Map.Entry.comparingByValue())
+                             .sorted(Entry.comparingByValue())
                              .forEach(entry -> {
             RenderComponent rc = entry.getValue();
             BufferedImage[] images = rc.getImages();

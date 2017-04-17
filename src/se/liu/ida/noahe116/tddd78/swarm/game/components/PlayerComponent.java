@@ -1,7 +1,5 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
-import java.util.List;
-
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
 

@@ -7,12 +7,12 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class CollisionComponent extends Component {
-    private static double KNOCKBACK_MULTIPLIER = 3;
+    private static final double KNOCKBACK_MULTIPLIER = 3;
 
     public final double radius;
     private int damage = 5;
     private boolean knockback = false;
-    List<Entity> ignore = new ArrayList<>();
+    private List<Entity> ignore = new ArrayList<>();
 
     public CollisionComponent(double r) {
         this.radius = r;
@@ -73,7 +73,9 @@ public class CollisionComponent extends Component {
 
     public void collideWith(CollisionComponent cc, Vector2D intersection) {
         HealthComponent hc = this.entity.get(HealthComponent.class);
-        if (hc != null) hc.hurt(cc.getDamage());
+        if (hc != null) {
+            hc.hurt(cc.damage);
+        }
         if (cc.hasKnockback()) {
             PositionComponent pc = this.entity.get(PositionComponent.class);
             if (pc != null) {

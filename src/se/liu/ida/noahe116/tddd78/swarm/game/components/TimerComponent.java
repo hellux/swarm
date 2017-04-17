@@ -1,7 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 public class TimerComponent extends LiveComponent {
-    int time;
+    private int time;
 
     public TimerComponent(int time) {
         this.time = time;

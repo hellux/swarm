@@ -16,7 +16,7 @@ import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 public final class RcCreator {
     private static final Logger LOGGER = Logger.getLogger(RcCreator.class.getName());
 
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({ "unchecked", "serial"})
     private static final AbstractMap<EntityType, Sprite> SPRITES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
@@ -27,7 +27,7 @@ public final class RcCreator {
             put(EntityType.PROJECTILE_QUAD, new Sprite("projectile_quad.png"));
     }};
 
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({ "unchecked", "serial"})
     private static final AbstractMap<EntityType, RenderPriority> RENDER_PRIORITIES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, RenderPriority.PLAYER);

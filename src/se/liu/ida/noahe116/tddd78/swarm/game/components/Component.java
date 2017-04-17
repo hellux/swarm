@@ -6,7 +6,7 @@ public abstract class Component {
     /**
      * The entity that the component is added to.
      **/
-    protected Entity entity;
+    protected Entity entity = null;
     
     public void setEntity(Entity entity) {
         this.entity = entity;

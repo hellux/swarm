@@ -19,7 +19,7 @@ public class Camera {
      * scale * size = component size
      **/
     private double scale;
-    private Vector2D interpolatedPos;
+    private Vector2D interpolatedPos = null;
 
     public Camera(PositionComponent posComp) {
         this.positionComponent = posComp;

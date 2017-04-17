@@ -17,7 +17,8 @@ public class PlayerSprite extends Sprite {
     private static final String SPREAD = "ship_spread.png";
     private static final String THRUST = "ship_thrust.png";
     
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({ "unchecked", "serial"})
+    // anonymous class is static and will only be initialized once (at startup)
     private static final AbstractMap<WeaponType, String> WEAPONS = new EnumMap(WeaponType.class) {{
         put(WeaponType.DEFAULT, DEFAULT);
         put(WeaponType.RED_LASER, RED_LASER);
