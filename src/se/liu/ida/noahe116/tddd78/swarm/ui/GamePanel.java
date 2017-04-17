@@ -21,7 +21,7 @@ public final class GamePanel extends JPanel {
     private static final long MILLISECONDS_PER_SECOND = 1000;
 
     /**
-     * Amount of times the game will be updated (tick) per second.
+     * Amount of times the gameLevel will be updated (tick) per second.
      **/
     private static final int TICKRATE = 25;
     
@@ -45,13 +45,13 @@ public final class GamePanel extends JPanel {
      **/
     private static final double CURSOR_RADIUS_RATIO = 0.2;
 
-    private Robot robot;
-    private final Game game;
+    private Robot robot = null;
+    private final GameLevel gameLevel;
     private final Scene scene;
     private final Thread thread;
     private final PlayerComponent playerComponent;
 
-    private Vector2D center;
+    private Vector2D center = null;
     private int cursorAreaRadius;
 
     private double interpolation;
@@ -61,9 +61,9 @@ public final class GamePanel extends JPanel {
     
     public GamePanel() {
         this.setBackground(Color.BLACK);
-        this.game = new Game();
-        this.playerComponent = this.game.getPlayer().get(PlayerComponent.class);
-        this.scene = new Scene(game);
+        this.gameLevel = new GameLevel();
+        this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
+        this.scene = new Scene(gameLevel);
         
         this.setKeyBinds();
         this.setMouseBinds();
@@ -141,11 +141,11 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Run the main loop that updates and draws the game.
-     * <p> The game is updated depending on the TICKRATE constant. The drawing
-     * of the game, however, is done as fast as possible (given it doesn't exceed
-     * the max frame rate). Drawing the game state between updates of the game is
-     * done by interpolation. The max framerate must be higher than max the game's tickrate.
+     * Run the main loop that updates and draws the gameLevel.
+     * <p> The gameLevel is updated depending on the TICKRATE constant. The drawing
+     * of the gameLevel, however, is done as fast as possible (given it doesn't exceed
+     * the max frame rate). Drawing the gameLevel state between updates of the gameLevel is
+     * done by interpolation. The max framerate must be higher than max the gameLevel's tickrate.
      **/
     private void gameLoop() {
         long nextTick = System.nanoTime();
@@ -162,7 +162,7 @@ public final class GamePanel extends JPanel {
             nextFrame = currentFrame + MIN_FRAME_PERIOD;
 
             if (currentFrame > nextTick) {
-                this.game.update();
+                this.gameLevel.update();
                 nextTick += TICK_PERIOD;
             } 
             
@@ -256,8 +256,8 @@ public final class GamePanel extends JPanel {
     
     /**
      * Hide window manager's cursor.
-     * The cursor is hidden and redrawn in the game loop to make sure 
-     * the game's cursor can be in sync with the game loop.
+     * The cursor is hidden and redrawn in the gameLevel loop to make sure
+     * the gameLevel's cursor can be in sync with the gameLevel loop.
      **/
     private void hideCursor() {
         BufferedImage cursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

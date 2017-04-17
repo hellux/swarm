@@ -18,7 +18,7 @@ public final class ProjectileWeaponCreator {
     private static final int RED_SPD = 50;
     private static final int QAD_SPD = 80;
 
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({ "unchecked", "serial"})
     private static final AbstractMap<WeaponType, ProjectileWeapon> WEAPONS =
         new EnumMap(WeaponType.class) {{
             put(WeaponType.DEFAULT, new ProjectileWeapon(
@@ -57,10 +57,12 @@ public final class ProjectileWeaponCreator {
             ));
         }};
 
+    private ProjectileWeaponCreator() {}
+
     /**
      * Return a ProjectileWeapon of a specific type.
      **/
-    public static final ProjectileWeapon get(WeaponType type) {
+    public static ProjectileWeapon get(WeaponType type) {
         if (!WEAPONS.containsKey(type)) {
             return WEAPONS.get(WeaponType.DEFAULT);
         }

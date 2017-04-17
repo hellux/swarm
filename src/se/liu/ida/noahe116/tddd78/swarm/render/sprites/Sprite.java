@@ -15,10 +15,6 @@ public class Sprite {
     
     private static final String IMAGE_DIR = "resources/img/";
 
-    static {
-        
-    }
-
     protected final AbstractMap<String, BufferedImage> images = new HashMap<>();
     
     public Sprite(String...fileNames) {

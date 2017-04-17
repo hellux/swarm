@@ -67,7 +67,7 @@ public class ProjectileWeapon extends Weapon {
             proj.add(pc);
             proj.add(cc);
 
-            e.getGame().add(proj);
+            e.getGameLevel().add(proj);
         }
     }
 }

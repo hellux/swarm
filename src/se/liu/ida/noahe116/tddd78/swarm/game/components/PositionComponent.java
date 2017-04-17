@@ -39,10 +39,6 @@ public class PositionComponent extends LiveComponent {
         }
     }
 
-    public void move(Vector2D movement) {
-        this.position.add(movement);
-    }
-
     public void accelerate(Vector2D acc) {
         this.velocity.add(acc);
     }

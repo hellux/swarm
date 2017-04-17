@@ -20,9 +20,9 @@ public class WeaponHandlerComponent extends LiveComponent {
         this.cooldown = new int[slotCount];
         this.fire = new boolean[slotCount];
 
-        this.weapons = new ArrayList<List<Weapon>>(slotCount);
+        this.weapons = new ArrayList<>(slotCount);
         while (slotCount-- > 0) {
-            this.weapons.add(new ArrayList<Weapon>());
+            this.weapons.add(new ArrayList<>());
         }
     }
 
