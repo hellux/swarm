@@ -24,20 +24,12 @@ public final class GamePanel extends JPanel {
      * Amount of times the game will be updated (tick) per second.
      **/
     private static final int TICKRATE = 25;
-    
-    /**
-     * Time between ticks in milliseconds.
-     **/
     private static final long TICK_PERIOD = NANOSECONDS_PER_SECOND/ TICKRATE;
 
     /**
      * Maximum frames per second that will be rendered.
      **/
     private static final int MAX_FPS = 120;
-
-    /**
-     * Minimum time between frames in milliseconds.
-     **/
     private static final long MIN_FRAME_PERIOD = NANOSECONDS_PER_SECOND / MAX_FPS;
 
     /**
