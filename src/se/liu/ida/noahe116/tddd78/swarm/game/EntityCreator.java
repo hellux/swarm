@@ -45,9 +45,12 @@ public final class EntityCreator {
     }
 
     private static void createPlayer(Entity e) {
-        e.add(new PositionComponent(new Vector2D(301, 0)));
         e.add(new HealthComponent(1, 100));
-        
+        e.add(new ThrustComponent());
+
+        PositionComponent pc = new PositionComponent(new Vector2D(300, 0));
+        pc.setDrag(true);
+        e.add(pc);
 
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
         wh.add(ProjectileWeaponCreator.get(WeaponType.QUAD));
@@ -57,6 +60,6 @@ public final class EntityCreator {
         cc.setKnockback(true);
         e.add(cc);
 
-        e.add(new PlayerComponent(e));
+        e.add(new PlayerComponent());
     }
 }

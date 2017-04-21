@@ -32,7 +32,7 @@ public class PlayerSprite extends Sprite {
     
     @Override
     public BufferedImage[] getImages(Entity entity) {
-        String thrust = entity.get(PlayerComponent.class).isThrust() ? THRUST : null;
+        String thrust = entity.get(PlayerComponent.class).hasThrust() ? THRUST : null;
         String weapon = WEAPONS.get(entity.get(WeaponHandlerComponent.class)
             .getEquipped(0).getType());
         return this.getImageArray(thrust, BASE, weapon);

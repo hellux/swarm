@@ -3,13 +3,14 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
 public class PositionComponent extends LiveComponent {
+    private static final double DRAG = 0.94;
+
     private final Vector2D position = new Vector2D();
     private final Vector2D velocity = new Vector2D();
     private final Vector2D acceleration = new Vector2D();
 
     private double rotation = 0;
-
-    private double drag;
+    private double drag = 1;
 
     public PositionComponent(Vector2D pos) {
         this.position.x = pos.x;
@@ -24,15 +25,16 @@ public class PositionComponent extends LiveComponent {
         this.position.add(this.velocity);
         this.position.x = Math2.floorMod(this.position.x, this.entity.getGameLevel().getSize());
         this.position.y = Math2.floorMod(this.position.y, this.entity.getGameLevel().getSize());
+
         this.velocity.add(this.acceleration);
-        this.velocity.multiply(1-this.drag);
+        this.velocity.multiply(this.drag);
     }
 
     public Vector2D futurePos(double interpolation) {
         if (this.active) {
             Vector2D futureVel = Vector2D.multiply(
                 Vector2D.add(this.velocity, this.acceleration),
-                (1-this.drag)*interpolation
+                this.drag*interpolation
             );
             return Vector2D.add(this.position,
                                 Vector2D.multiply(futureVel, interpolation));
@@ -54,8 +56,8 @@ public class PositionComponent extends LiveComponent {
         this.rotation = rotation; 
     }
 
-    public void setDrag(double drag) {
-        this.drag = drag;
+    public void setDrag(boolean b) {
+        this.drag = b ? DRAG : 1;
     }
 
     public double getRotation() {
