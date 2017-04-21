@@ -60,9 +60,10 @@ public class CollisionComponent extends Component {
         if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity) ) {
             return null;
         }
-        if (Vector2D.distanceSq(this.center(), cc.center()) <
+        Vector2D wrappedCenter = this.entity.get(PositionComponent.class).wrapAround(cc.center());
+        if (Vector2D.distanceSq(this.center(), wrappedCenter) <
             Math.pow(this.radius+cc.radius, 2)) {
-            Vector2D difference = Vector2D.subtract(this.center(), cc.center());
+            Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);
             return Vector2D.multiply(
                 difference.normal(),
                 Math.abs(difference.magnitude() - this.radius - cc.radius)

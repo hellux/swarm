@@ -99,7 +99,7 @@ public class PositionComponent extends LiveComponent {
      * @return same position but eventually wrapped around.
      **/
     private double wrapAround(double p1, double p2) {
-        double levelSize = this.getEntity().getGameLevel().getSize(); 
+        double levelSize = this.entity.getGameLevel().getSize(); 
         double pivot = Math2.floorMod(p1 + levelSize/2, levelSize);
 
         if (p1 < pivot && pivot < p2) {
