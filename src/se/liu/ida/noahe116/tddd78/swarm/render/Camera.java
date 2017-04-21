@@ -55,74 +55,6 @@ public class Camera {
     public double getScale() {
         return this.scale;
     }
-    
-    /**
-     + Wrap a coordinate around the game level if it's on the other side.
-     * <pre> {@code
-     *
-     * Legend:
-     *  ~: camera view
-     *  -: outside camera view
-     *  |: world border
-     *  ): camera max
-     *  (: camera min
-     *
-     * Cases for points (P):
-     *
-     *  trivial (no wrap needed):
-     *
-     *      |---(~~~~~~C~~~~~~)--------|
-     *      0                          S
-     *
-     *      C_min < P < C_max   =>   P = P
-     *  
-     *  non-trivial:
-     *      |~~~C~~~~~~)-----------(~~~|
-     *      0                          S
-     *  
-     *      C, P < C_max < C_min   =>   P = P
-     *      C < C_max < C_min < P   =>   P -= S (*)
-     *
-     *      |~~~)-----------(~~~~~~C~~~|
-     *      0                          S
-     *
-     *      C_max < C_min < P, C   =>   P = P
-     *      P < C_max < C_min < C   =>   P += S (*)
-     *
-     *  other cases:
-     *      unimportant as they are outside of camera's view
-     *
-     * } </pre>
-     * @param gameCoordinate a position in the game's coordinate system. 
-     * @return same position but eventually wrapped around.
-     **/
-    private double wrapAround(double gameCoordinate, boolean axis) {
-        double levelSize = this.posComp.getEntity().getGameLevel().getSize(); 
-        double cameraPos = axis ? this.posComp.getPosition().x
-                                : this.posComp.getPosition().y;
-        double length = (axis ? this.size.x : this.size.y) / 2;
-
-        double cameraMin = Math2.floorMod(cameraPos - length - 200, levelSize);
-        double cameraMax = Math2.floorMod(cameraPos + length + 200, levelSize);
-
-        if (cameraMax < cameraMin) {
-            if (cameraPos < cameraMax && cameraMax < gameCoordinate) {
-                return gameCoordinate - levelSize;
-            }
-            if (gameCoordinate < cameraMax && cameraMax < cameraPos) {
-                return gameCoordinate + levelSize;
-            }
-        }
-
-        return gameCoordinate;
-    }
-
-    public Vector2D wrapAround(Vector2D gameCoordinate) {
-        return new Vector2D(
-            this.wrapAround(gameCoordinate.x, true),
-            this.wrapAround(gameCoordinate.y, false)
-        );
-    }
 
     /**
      * Translate game coordinates to component coordinates.
@@ -162,10 +94,11 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
+        Vector2D wrappedPos = this.posComp.wrapAround(gameCoordinate);
         Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
                                                      Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
-            Vector2D.subtract(gameCoordinate, componentOrigin),
+            Vector2D.subtract(wrappedPos, componentOrigin),
             this.scale);
         return translatedCoordinate;
     }

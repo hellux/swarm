@@ -69,4 +69,52 @@ public class PositionComponent extends LiveComponent {
     public Vector2D getVelocity() {
         return this.velocity;
     }
+
+    /**
+     * Wrap a coordinate around the game level if it's on the other side relative to p2.
+     * <pre> {@code
+     *
+     * P   :  position of this component 
+     * P'  :  position of point to eventually be wrapped around
+     * )(  :  pivot = (C+S/2) % S
+     *
+     * Cases:
+     *
+     *      |---P--------)(-----------|
+     *      0                         S
+     *
+     *       P , P' < pivot   =>   P' =  P'
+     *       P < pivot < P'   =>   P' -= S  (*)
+     *
+     *
+     *      |--------)(-----------P---|
+     *      0                         S
+     *
+     *       pivot < P , P'   =>   P' =  P'
+     *       P' < pivot < P   =>   P' += S  (*)
+     *
+     * } </pre>
+     * @param p1 position 
+     * @param p2 position to eventually wrap around
+     * @return same position but eventually wrapped around.
+     **/
+    private double wrapAround(double p1, double p2) {
+        double levelSize = this.getEntity().getGameLevel().getSize(); 
+        double pivot = Math2.floorMod(p1 + levelSize/2, levelSize);
+
+        if (p1 < pivot && pivot < p2) {
+            return p2 - levelSize;
+        } else if (p2 < pivot && pivot < p1) {
+            return p2 + levelSize;
+        } else {
+            return p2;
+        }
+    }
+    
+    public Vector2D wrapAround(Vector2D pos) {
+        return new Vector2D(
+            this.wrapAround(this.position.x, pos.x),
+            this.wrapAround(this.position.y, pos.y)
+        );
+    }
 }

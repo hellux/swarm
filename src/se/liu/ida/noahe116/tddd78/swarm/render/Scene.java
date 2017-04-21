@@ -79,8 +79,7 @@ public class Scene {
                           BufferedImage img,
                           PositionComponent pc,
                           double interpolation) {
-        Vector2D translatedPos = this.camera.translate(
-            this.camera.wrapAround(pc.futurePos(interpolation)));
+        Vector2D translatedPos = this.camera.translate(pc.futurePos(interpolation));
         this.drawImage(g2d, img,
                        (int) Math.round(translatedPos.x),
                        (int) Math.round(translatedPos.y), 

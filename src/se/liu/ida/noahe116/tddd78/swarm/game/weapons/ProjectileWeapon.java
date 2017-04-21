@@ -30,7 +30,7 @@ public class ProjectileWeapon extends Weapon {
         this.velocities = velocities;
 
         if (this.launchPoints.length != this.velocities.length) {
-            LOGGER.log(Level.SEVERE, "arrays differ in size");
+            LOGGER.log(Level.WARNING, "arrays differ in size");
         }
     }
 
@@ -42,7 +42,7 @@ public class ProjectileWeapon extends Weapon {
             return;
         }
 
-        Vector2D pos = entityPosComp.getPosition();
+        Vector2D pos = entityPosComp.futurePos(1);
         Vector2D vel = entityPosComp.getVelocity();
         double rotation = entityPosComp.getRotation();
 

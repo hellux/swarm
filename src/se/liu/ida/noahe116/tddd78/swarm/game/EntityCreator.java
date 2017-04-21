@@ -3,12 +3,15 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 import java.util.function.Consumer;
 import java.util.AbstractMap;
 import java.util.EnumMap;
+import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 public final class EntityCreator {
+    private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
+
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
 
@@ -21,8 +24,13 @@ public final class EntityCreator {
 
     public static Entity create(EntityType type) {
         Entity e = new Entity(type);
-        CREATORS.get(type).accept(e);
-        return e;
+        if (CREATORS.containsKey(type)) {
+            CREATORS.get(type).accept(e);
+            return e;
+        } else {
+            LOGGER.log(Level.WARNING, "no creator for " + type);
+            return null;
+        }
     }
 
     private static void createAsteroid(Entity e) {
