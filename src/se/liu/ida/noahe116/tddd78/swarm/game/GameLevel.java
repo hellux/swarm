@@ -6,12 +6,13 @@ import java.util.LinkedList;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
-public class GameLevel
-{
+public class GameLevel {
     private Entity player;
     private final List<Entity> entities = new LinkedList<>();
+    private final double size;
 
-    public GameLevel() {
+    public GameLevel(double size) {
+        this.size = size;
         this.player = EntityCreator.create(EntityType.PLAYER);
         this.add(this.player);
         this.add(EntityCreator.create(EntityType.ASTEROID));
@@ -54,6 +55,10 @@ public class GameLevel
                 }
             }
         }
+    }
+
+    public double getSize() {
+        return this.size;
     }
 
     public void add(Entity e) {

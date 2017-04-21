@@ -30,13 +30,6 @@ public class RenderComponent implements Comparable<RenderComponent> {
         return this.priority.compareTo(rc.priority);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o.getClass() != this.getClass()) return false;
-        RenderComponent rc = (RenderComponent) o;
-        return this.priority == rc.priority;
-    }
-
     public String toString() {
         return "rc"; 
     }

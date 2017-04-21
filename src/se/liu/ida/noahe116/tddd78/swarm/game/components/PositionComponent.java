@@ -1,6 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
 public class PositionComponent extends LiveComponent {
     private final Vector2D position = new Vector2D();
@@ -22,6 +22,8 @@ public class PositionComponent extends LiveComponent {
 
     public void update() {
         this.position.add(this.velocity);
+        this.position.x = Math2.floorMod(this.position.x, this.entity.getGameLevel().getSize());
+        this.position.y = Math2.floorMod(this.position.y, this.entity.getGameLevel().getSize());
         this.velocity.add(this.acceleration);
         this.velocity.multiply(1-this.drag);
     }

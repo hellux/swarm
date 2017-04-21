@@ -18,7 +18,7 @@ public final class ProjectileWeaponCreator {
     private static final int RED_SPD = 50;
     private static final int QAD_SPD = 80;
 
-    @SuppressWarnings({ "unchecked", "serial"})
+    @SuppressWarnings({ "unchecked", "serial", "rawtypes"})
     private static final AbstractMap<WeaponType, ProjectileWeapon> WEAPONS =
         new EnumMap(WeaponType.class) {{
             put(WeaponType.DEFAULT, new ProjectileWeapon(
