@@ -1,5 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.ui;
 
+import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -35,7 +36,7 @@ public final class GamePanel extends JPanel {
     /**
      * Ratio of radius of the cursor's area to the min of the component's width and height.
      **/
-    private static final double CURSOR_RADIUS_RATIO = 0.2;
+    private static final double CURSOR_RADIUS_RATIO = 0.3;
 
     private Robot robot = null;
     private final GameLevel gameLevel;
@@ -89,9 +90,7 @@ public final class GamePanel extends JPanel {
     }
     
     private void handleMouse() {
-        /*
-         * mousePos is relative to component
-         **/
+        // FIXME thrust is based on mousepos before limiting (allowing more than max acc)
         Point2D mousePos = this.getMousePosition();
         if (mousePos != null) {
             Vector2D mouseVector = Vector2D.subtract(new Vector2D(mousePos), this.center);
@@ -187,7 +186,7 @@ public final class GamePanel extends JPanel {
         Point mousePos = this.getMousePosition();
         if (mousePos != null) {
             g.setColor(Color.RED);
-            int diameter = this.cursorAreaRadius/15;
+            int diameter = this.cursorAreaRadius/20;
             g.drawOval(mousePos.x-diameter/2, mousePos.y-diameter/2, diameter, diameter); 
             }
     }

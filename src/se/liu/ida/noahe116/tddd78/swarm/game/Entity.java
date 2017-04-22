@@ -1,10 +1,11 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
-import se.liu.ida.noahe116.tddd78.swarm.game.components.LiveComponent;
-
 import java.util.HashMap;
 import java.util.AbstractMap;
+
+import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.LiveComponent;
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class Entity {
     /**
@@ -87,6 +88,12 @@ public class Entity {
      **/
     public void kill() {
         this.killed = true;
+    }
+
+    public void collideWith(Entity e, Vector2D intersection) {
+        for (Component c : this.components.values()) {
+            c.collideWith(e, intersection);
+        }
     }
 
     public EntityType getType() {

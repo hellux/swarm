@@ -34,6 +34,7 @@ public class ProjectileWeapon extends Weapon {
         }
     }
 
+    @Override
     public void fire(Entity e) {
         PositionComponent entityPosComp = e.get(PositionComponent.class);
 

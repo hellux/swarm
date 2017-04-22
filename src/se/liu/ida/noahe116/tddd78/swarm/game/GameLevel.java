@@ -10,20 +10,19 @@ public class GameLevel {
     private Entity player;
     private final List<Entity> entities = new LinkedList<>();
     private final double size;
+    private final GameLevelSpec spec;
 
-    public GameLevel(double size) {
+    public GameLevel(int size) {
         this.size = size;
         this.player = EntityCreator.create(EntityType.PLAYER);
         this.add(this.player);
         this.add(EntityCreator.create(EntityType.ASTEROID));
+        this.spec = null;
     }
 
-    public Entity getPlayer() {
-        return this.player;
-    }
-
-    public List<Entity> getEntities() {
-        return this.entities;
+    public GameLevel(GameLevelSpec spec) {
+        this.size = spec.getSize();
+        this.spec = spec;
     }
 
     private void updateEntities() {
@@ -50,11 +49,16 @@ public class GameLevel {
 
                 Vector2D intersection = cc1.intersection(cc2);
                 if (intersection != null) {
-                    cc1.collideWith(cc2, intersection);
-                    cc2.collideWith(cc1, Vector2D.multiply(intersection, -1));
+                    ent1.collideWith(ent2, intersection);
+                    ent2.collideWith(ent1, intersection.flipped());
                 }
             }
         }
+    }
+
+    public void update() {
+        this.checkCollisions();
+        this.updateEntities();
     }
 
     public double getSize() {
@@ -66,8 +70,11 @@ public class GameLevel {
         this.entities.add(e);
     }
     
-    public void update() {
-        this.checkCollisions();
-        this.updateEntities();
+    public Entity getPlayer() {
+        return this.player;
+    }
+
+    public List<Entity> getEntities() {
+        return this.entities;
     }
 }

@@ -72,11 +72,12 @@ public class CollisionComponent extends Component {
         return null;
     }
 
-    public void collideWith(CollisionComponent cc, Vector2D intersection) {
-        HealthComponent hc = this.entity.get(HealthComponent.class);
-        if (hc != null) {
-            hc.hurt(cc.damage);
+    public void collideWith(Entity e, Vector2D intersection) {
+        CollisionComponent cc = e.get(CollisionComponent.class);
+        if (cc == null) {
+            return;
         }
+
         if (cc.hasKnockback()) {
             PositionComponent pc = this.entity.get(PositionComponent.class);
             if (pc != null) {

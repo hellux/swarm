@@ -45,6 +45,10 @@ public class Vector2D {
         return Math.atan2(this.y, this.x);
     }
 
+    public Vector2D flipped() {
+        return Vector2D.multiply(this, -1);
+    }
+
     public Vector2D normal() {
         return Vector2D.fromLengthRotation(1, this.rotation());
     }

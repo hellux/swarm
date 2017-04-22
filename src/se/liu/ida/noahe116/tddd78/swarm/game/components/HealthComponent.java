@@ -1,5 +1,8 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
+import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
+
 public class HealthComponent extends Component {
     private int healthPoints;
     private int shieldStrength;
@@ -16,7 +19,7 @@ public class HealthComponent extends Component {
         this(hp, 0);
     }
 
-    public void hurt(int damage) {
+    private void hurt(int damage) {
         if (this.shieldStrength > 0) {
             this.shieldStrength = Math.max(this.shieldStrength - damage, 0);
         } else {
@@ -24,6 +27,13 @@ public class HealthComponent extends Component {
             if (this.healthPoints == 0) {
                 this.entity.kill();
             }
+        }
+    }
+
+    public void collideWith(Entity e, Vector2D intersection) {
+        CollisionComponent cc = e.get(CollisionComponent.class);
+        if (cc != null) {
+            this.hurt(cc.getDamage());
         }
     }
 }

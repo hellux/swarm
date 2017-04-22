@@ -16,18 +16,21 @@ import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 public final class RcCreator {
     private static final Logger LOGGER = Logger.getLogger(RcCreator.class.getName());
 
-    @SuppressWarnings({ "unchecked", "serial", "rawtypes"})
+    @SuppressWarnings({"unchecked", "serial", "rawtypes"})
     private static final AbstractMap<EntityType, Sprite> SPRITES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, new PlayerSprite());
             put(EntityType.ASTEROID, new Sprite("asteroid_1.png"));
             put(EntityType.PROJECTILE_DEFAULT, new Sprite("projectile_default.png"));
-            put(EntityType.PROJECTILE_SPREAD, new Sprite("projectile_spread.png"));
             put(EntityType.PROJECTILE_RED_LASER, new Sprite("projectile_red_laser.png"));
+            put(EntityType.PROJECTILE_SPREAD, new Sprite("projectile_spread.png"));
             put(EntityType.PROJECTILE_QUAD, new Sprite("projectile_quad.png"));
+            put(EntityType.COLLECTIBLE_RED_LASER, new Sprite("ship_red_laser.png"));
+            put(EntityType.COLLECTIBLE_SPREAD, new Sprite("ship_spread.png"));
+            put(EntityType.COLLECTIBLE_QUAD, new Sprite("ship_quad.png"));
     }};
 
-    @SuppressWarnings({ "unchecked", "serial", "rawtypes"})
+    @SuppressWarnings({"unchecked", "serial", "rawtypes"})
     private static final AbstractMap<EntityType, RenderPriority> RENDER_PRIORITIES =
         new EnumMap(EntityType.class) {{
             put(EntityType.PLAYER, RenderPriority.PLAYER);

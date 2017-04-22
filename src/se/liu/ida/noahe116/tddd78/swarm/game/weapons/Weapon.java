@@ -18,7 +18,7 @@ public abstract class Weapon {
     public int getCooldown() {
         return this.cooldown;
     }
-
+    
     public WeaponType getType() {
         return this.type;
     }
