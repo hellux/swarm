@@ -18,7 +18,7 @@ public class GameLevelSpec {
 
     private int minCollectibles = 0;
     private int maxCollectibles = 0;
-    private ProbabilityMap<EnemyType> collectibles = new ProbabilityMap<>();
+    private ProbabilityMap<CollectibleType> collectibles = new ProbabilityMap<>();
 
     private int minAsteroids = 0;
     private int maxAsteroids = 0;
@@ -84,7 +84,7 @@ public class GameLevelSpec {
         }
 
         for (int i = 0; i < collectibles; i++) {
-            //
+            entities.add(EntityCreator.create(this.collectibles.get()));
         } 
 
         if (this.levelType == LevelType.HARVEST) {

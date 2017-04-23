@@ -8,20 +8,25 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class GameLevel {
     private Entity player;
-    private final List<Entity> entities = new LinkedList<>();
+    private final List<Entity> entities;
     private final double size;
     private final GameLevelSpec spec;
 
     public GameLevel(int size) {
         this.size = size;
         this.player = EntityCreator.create(EntityType.PLAYER);
+        this.entities = new LinkedList<>();
         this.add(this.player);
         this.add(EntityCreator.create(EntityType.ASTEROID));
+        //this.add(EntityCreator.create(CollectibleType.SPREAD));
+        this.add(EntityCreator.create(CollectibleType.QUAD));
         this.spec = null;
     }
 
     public GameLevel(GameLevelSpec spec) {
         this.size = spec.getSize();
+        this.entities = spec.getStartEntities();
+
         this.spec = spec;
     }
 

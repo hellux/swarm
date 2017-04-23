@@ -10,6 +10,7 @@ public class PositionComponent extends LiveComponent {
     private final Vector2D acceleration = new Vector2D();
 
     private double rotation = 0;
+    private double rotationalSpeed = 0;
     private double drag = 1;
 
     public PositionComponent(Vector2D pos) {
@@ -25,6 +26,8 @@ public class PositionComponent extends LiveComponent {
         this.position.add(this.velocity);
         this.position.x = Math2.floorMod(this.position.x, this.entity.getGameLevel().getSize());
         this.position.y = Math2.floorMod(this.position.y, this.entity.getGameLevel().getSize());
+
+        this.rotation = (this.rotation + this.rotationalSpeed) % (2*Math.PI);
 
         this.velocity.add(this.acceleration);
         this.velocity.multiply(this.drag);
@@ -43,6 +46,14 @@ public class PositionComponent extends LiveComponent {
         }
     }
 
+    public double futureRot(double interpolation) {
+        if (this.active) {
+            return this.rotation + this.rotationalSpeed * interpolation;
+        } else {
+            return this.rotation;
+        }
+    }
+
     public void accelerate(Vector2D acc) {
         this.velocity.add(acc);
     }
@@ -54,6 +65,10 @@ public class PositionComponent extends LiveComponent {
 
     public void setRotation(double rotation) {
         this.rotation = rotation; 
+    }
+
+    public void setRotationalSpeed(double speed) {
+        this.rotationalSpeed = speed;
     }
 
     public void setDrag(boolean b) {

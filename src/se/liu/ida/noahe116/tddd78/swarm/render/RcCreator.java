@@ -25,9 +25,9 @@ public final class RcCreator {
             put(EntityType.PROJECTILE_RED_LASER, new Sprite("projectile_red_laser.png"));
             put(EntityType.PROJECTILE_SPREAD, new Sprite("projectile_spread.png"));
             put(EntityType.PROJECTILE_QUAD, new Sprite("projectile_quad.png"));
-            put(EntityType.COLLECTIBLE_RED_LASER, new Sprite("ship_red_laser.png"));
-            put(EntityType.COLLECTIBLE_SPREAD, new Sprite("ship_spread.png"));
-            put(EntityType.COLLECTIBLE_QUAD, new Sprite("ship_quad.png"));
+            put(EntityType.COLLECTIBLE_RED_LASER, new Sprite("collectible_red_laser.png"));
+            put(EntityType.COLLECTIBLE_SPREAD, new Sprite("collectible_spread.png"));
+            put(EntityType.COLLECTIBLE_QUAD, new Sprite("collectible_quad.png"));
     }};
 
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})
@@ -39,6 +39,9 @@ public final class RcCreator {
             put(EntityType.PROJECTILE_SPREAD, RenderPriority.DYNAMIC);
             put(EntityType.PROJECTILE_RED_LASER, RenderPriority.DYNAMIC);
             put(EntityType.PROJECTILE_QUAD, RenderPriority.DYNAMIC);
+            put(EntityType.COLLECTIBLE_RED_LASER, RenderPriority.STATIC);
+            put(EntityType.COLLECTIBLE_SPREAD, RenderPriority.STATIC);
+            put(EntityType.COLLECTIBLE_QUAD, RenderPriority.STATIC);
     }};
 
     private RcCreator() {}

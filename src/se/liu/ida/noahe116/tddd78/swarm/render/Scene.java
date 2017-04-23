@@ -83,7 +83,7 @@ public class Scene {
         this.drawImage(g2d, img,
                        (int) Math.round(translatedPos.x),
                        (int) Math.round(translatedPos.y), 
-                       pc.getRotation());   
+                       pc.futureRot(interpolation));   
     }
 
     private void drawImage(Graphics2D g2d, BufferedImage img,

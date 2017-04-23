@@ -28,6 +28,10 @@ public class WeaponHandlerComponent extends LiveComponent {
             return this.weapons.containsKey(type);
         }
 
+        public boolean hasAmmo(WeaponType type) {
+            return this.weapons.get(type).hasAmmo();
+        }
+
         public void add(WeaponType type) {
             EquippedWeapon ew = new EquippedWeapon(type);
             this.weapons.put(type, ew); 
@@ -44,6 +48,10 @@ public class WeaponHandlerComponent extends LiveComponent {
             this.weapons.get(type).addAmmo(ammo);
         }
 
+        public void setUnlimitedAmmo(WeaponType type, boolean state) {
+            this.weapons.get(type).setUnlimitedAmmo(state);
+        }
+        
         public void setFire(boolean state) {
             this.fire = state;
         }
@@ -66,25 +74,36 @@ public class WeaponHandlerComponent extends LiveComponent {
      **/
     public class EquippedWeapon {
         public final WeaponType type;
-        private int ammo = -1;
+        private int ammo = 0;
         private Weapon weapon;
+        private boolean unlimitedAmmo = false;
 
         public EquippedWeapon(WeaponType type) {
             this.type = type;
             this.weapon = WeaponCreator.get(type);
+        }
+
+        public void setUnlimitedAmmo(boolean state) {
+            this.unlimitedAmmo = state;
         }
         
         public void addAmmo(int ammo) {
             this.ammo += ammo;
         }
 
+        public boolean hasAmmo() {
+            return this.unlimitedAmmo || this.ammo > 0;
+        }
+
+
         public int fire(Entity e) {
-            if (ammo > 0) {
+            if (this.unlimitedAmmo) {
+                this.weapon.fire(e);
+            } else if (this.ammo > 0) {
+                this.weapon.fire(e);
                 this.ammo -= 1;
             }
-            if (ammo != 0) {
-                this.weapon.fire(e);
-            }
+
             return this.weapon.getCooldown();
         }
     }
@@ -130,16 +149,27 @@ public class WeaponHandlerComponent extends LiveComponent {
         WeaponSlot slot = slotWithWeapon(type);
         if (slot == null) {
             LOGGER.log(Level.WARNING, "entity has no weapon of type: " + type);
-        } else {
+        } else if (slot.hasAmmo(type)) {
             slot.equip(type);
         }
     }
 
-    public void add(WeaponType type, int slot) {
+    public boolean add(WeaponType type, int slot) {
         if (this.slotWithWeapon(type) == null) {
             this.getSlot(slot).add(type);
+            return true;
         } else {
             LOGGER.log(Level.WARNING, "weapon is already equipped: " + type);
+            return false;
+        }
+    }
+
+    public boolean addUnlimited(WeaponType type, int slot) {
+        if (this.add(type, slot)) {
+            this.slotWithWeapon(type).setUnlimitedAmmo(type, true);
+            return true;
+        } else {
+            return false;
         }
     }
 
