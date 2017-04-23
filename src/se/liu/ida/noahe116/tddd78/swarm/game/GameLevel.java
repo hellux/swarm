@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
 public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
@@ -98,5 +98,58 @@ public class GameLevel {
 
     public List<Entity> getEntities() {
         return this.entities;
+    }
+
+    /**
+     * Wrap a coordinate around the game level if it's on the other side relative to p2.
+     * <pre> {@code
+     *
+     * P   :  position of this component 
+     * P'  :  position of point to eventually be wrapped around
+     * )(  :  pivot = (C+S/2) % S
+     *
+     * Cases:
+     *
+     *      |---P--------)(-----------|
+     *      0                         S
+     *
+     *       P , P' < pivot   =>   P' =  P'
+     *       P < pivot < P'   =>   P' -= S  (*)
+     *
+     *
+     *      |--------)(-----------P---|
+     *      0                         S
+     *
+     *       pivot < P , P'   =>   P' =  P'
+     *       P' < pivot < P   =>   P' += S  (*)
+     *
+     * } </pre>
+     * @param p1 position 
+     * @param p2 position to eventually wrap around
+     * @return same position but eventually wrapped around.
+     **/
+    private double wrapAround(double p1, double p2) {
+        double pivot = Math2.floorMod(p1 + this.size/2, this.size);
+
+        if (p1 < pivot && pivot < p2) {
+            return p2 - this.size;
+        } else if (p2 < pivot && pivot < p1) {
+            return p2 + this.size;
+        } else {
+            return p2;
+        }
+    }
+    
+    /**
+     * Eventually wrap around a position if it's on the other side of the level
+     * @param pos1 a position
+     * @param pos2 position to eventually wrap around
+     * @return pos2 eventually wrapped around
+     **/
+    public Vector2D wrapAround(Vector2D pos1, Vector2D pos2) {
+        return new Vector2D(
+            this.wrapAround(pos1.x, pos2.x),
+            this.wrapAround(pos1.y, pos2.y)
+        );
     }
 }

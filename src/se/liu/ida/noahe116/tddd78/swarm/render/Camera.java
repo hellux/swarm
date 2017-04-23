@@ -94,7 +94,8 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate) {
-        Vector2D wrappedPos = this.posComp.wrapAround(gameCoordinate);
+        Vector2D wrappedPos = this.posComp.getEntity().getGameLevel()
+            .wrapAround(this.posComp.getPosition(), gameCoordinate);
         Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
                                                      Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
