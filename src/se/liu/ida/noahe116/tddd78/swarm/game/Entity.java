@@ -91,6 +91,7 @@ public class Entity {
     }
 
     public void collideWith(Entity e, Vector2D intersection) {
+        //TODO create interface for components with collideWith()
         for (Component c : this.components.values()) {
             c.collideWith(e, intersection);
         }

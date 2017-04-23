@@ -9,7 +9,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 public class PlayerSprite extends Sprite {
-    private static final String BASE = "ship_base.png";
+    private static final String BASE = "enemy_clag_bot.png";
     private static final String DEFAULT = "ship_default.png";
     private static final String RED_LASER = "ship_red_laser.png";
     private static final String MISSILE = "ship_missile.png";

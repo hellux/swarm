@@ -43,7 +43,7 @@ public class ProjectileWeapon extends Weapon {
             return;
         }
 
-        Vector2D pos = entityPosComp.futurePos(1);
+        Vector2D pos = entityPosComp.getPosition();
         Vector2D vel = entityPosComp.getVelocity();
         double rotation = entityPosComp.getRotation();
 

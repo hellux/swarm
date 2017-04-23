@@ -53,9 +53,13 @@ public final class GamePanel extends JPanel {
     private boolean showFPS = true;
     
     public GamePanel() {
-        this.setBackground(Color.BLACK);
+        //TODO fix backgroud color based on leveltype
+        //this.setBackground(new Color(0, 0, 30)); //harvest
+        //this.setBackground(new Color(30, 0, 30)); //salvage
+        this.setBackground(new Color(30, 0, 0)); //elimination
         GameLevelCreator creator = new GameLevelCreator("hej");
         this.gameLevel = creator.getLevel(1);
+
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
         

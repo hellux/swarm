@@ -11,7 +11,7 @@ public class ProbabilityMap<T> {
     private List<Integer> probabilities = new ArrayList<>();
     private int totalSum = 0;
 
-    public ProbabilityMap put(T item, int probability) {
+    public ProbabilityMap<T> put(T item, int probability) {
         int index = this.items.indexOf(item);
 
         if (index == -1) {
@@ -26,7 +26,7 @@ public class ProbabilityMap<T> {
         return this;
     }
 
-    public ProbabilityMap put(ProbabilityMap<T> map) {
+    public ProbabilityMap<T> put(ProbabilityMap<T> map) {
         for (int i = 0; i < map.items.size(); i++) {
             this.put(map.items.get(i), 
                      map.probabilities.get(i));

@@ -16,12 +16,12 @@ public final class WeaponCreator {
     private static final Logger LOGGER = Logger.getLogger(WeaponCreator.class.getName());
 
     private static final int DEF_SPD = 30;
-    private static final int DEF_DMG = 10;
+    private static final int DEF_DMG = 5;
     private static final int SPR_SPD = 80;
     private static final int SPR_DMG = 10;
     private static final int SPR_SPR = 25;
     private static final int RED_SPD = 50;
-    private static final int RED_DMG = 50;
+    private static final int RED_DMG = 10;
     private static final int QAD_SPD = 80;
     private static final int QAD_DMG = 40;
 

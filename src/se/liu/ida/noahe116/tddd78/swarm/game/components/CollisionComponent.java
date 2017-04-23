@@ -57,6 +57,7 @@ public class CollisionComponent extends Component {
      * } </pre>
      **/
     public Vector2D intersection(CollisionComponent cc) {
+        //TODO check future postitons and interpolate the collision point
         if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity) ) {
             return null;
         }

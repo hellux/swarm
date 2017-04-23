@@ -14,7 +14,7 @@ public class GameLevelSpec {
 
     public static final Random RAND = new Random();
 
-    private int size = 10000;
+    private int size = 30000;
 
     private LevelType levelType;
     private int crystalCount = 0;

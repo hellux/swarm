@@ -65,6 +65,7 @@ public final class EntityCreator {
     private static void createCollectible(Entity e, Collectible coll) {
         PositionComponent pc = new PositionComponent();
         pc.setRotationalSpeed(0.1);
+        pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
 
         CollisionComponent cc = new CollisionComponent(40);
@@ -94,6 +95,7 @@ public final class EntityCreator {
         pc.setDrag(true);
         e.add(pc);
 
+        //TODO add weapons on pickup instead
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
         wh.addUnlimited(WeaponType.DEFAULT, 0);
         wh.add(WeaponType.RED_LASER, 0);

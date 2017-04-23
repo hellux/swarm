@@ -17,19 +17,7 @@ public class GameLevel {
     private final double size;
     private final GameLevelSpec spec;
 
-    public GameLevel(int size) {
-        //TODO remove -- temporary until specs are implemented
-        this.size = size;
-        this.player = EntityCreator.create(EntityType.PLAYER);
-        this.add(this.player);
-        this.add(EntityCreator.create(EntityType.ASTEROID));
-        //this.add(EntityCreator.create(CollectibleType.SPREAD));
-        this.add(EntityCreator.create(CollectibleType.QUAD));
-        this.spec = null;
-    }
-
     public GameLevel(GameLevelSpec spec) {
-        //TODO implement specs completely
         this.size = spec.getSize();
         this.player = EntityCreator.create(EntityType.PLAYER);
         this.add(this.player);
@@ -40,6 +28,7 @@ public class GameLevel {
 
     /**
      * Place an entity randomly on the map.
+     * TODO avoid collisions
      **/
     private void spawn(Entity e) {
         PositionComponent pc = e.get(PositionComponent.class);

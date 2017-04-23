@@ -53,8 +53,8 @@ public final class GameLevelCreator {
             .withWave(new Wave())
             .asteroidCountBetween(10, 20)
             .collectibleCountBetween(20, 30)
-            .withCollectibles(new ProbabilityMap<>()
-                .put(CollectibleType.RED_LASER, 10)
+            .withCollectibles(new ProbabilityMap<CollectibleType>()
+                .put(CollectibleType.RED_LASER, 1)
                 .put(CollectibleType.SPREAD, 1)
                 .put(CollectibleType.QUAD, 1)
             );

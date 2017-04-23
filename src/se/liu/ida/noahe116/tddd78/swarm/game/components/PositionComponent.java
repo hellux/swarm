@@ -133,6 +133,7 @@ public class PositionComponent extends LiveComponent {
         }
     }
     
+    //TODO wrap around two vectors instead
     public Vector2D wrapAround(Vector2D pos) {
         return new Vector2D(
             this.wrapAround(this.position.x, pos.x),
