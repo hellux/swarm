@@ -69,6 +69,7 @@ public final class EntityCreator {
 
         CollisionComponent cc = new CollisionComponent(40);
         cc.setKnockback(false);
+        cc.setDamage(0);
         e.add(cc);
 
         e.add(new CollectibleComponent(coll));

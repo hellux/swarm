@@ -27,7 +27,7 @@ public class PositionComponent extends LiveComponent {
         this.position.x = Math2.floorMod(this.position.x, this.entity.getGameLevel().getSize());
         this.position.y = Math2.floorMod(this.position.y, this.entity.getGameLevel().getSize());
 
-        this.rotation = (this.rotation + this.rotationalSpeed) % (2*Math.PI);
+        this.rotation = Math2.floorMod(this.rotation + this.rotationalSpeed, 2*Math.PI);
 
         this.velocity.add(this.acceleration);
         this.velocity.multiply(this.drag);
@@ -77,6 +77,11 @@ public class PositionComponent extends LiveComponent {
 
     public double getRotation() {
         return this.rotation;
+    }
+
+    public void setPosition(Vector2D pos) {
+        this.position.x = pos.x;
+        this.position.y = pos.y;
     }
 
     public Vector2D getPosition() {

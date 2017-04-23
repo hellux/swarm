@@ -54,7 +54,8 @@ public final class GamePanel extends JPanel {
     
     public GamePanel() {
         this.setBackground(Color.BLACK);
-        this.gameLevel = new GameLevel(5000);
+        GameLevelCreator creator = new GameLevelCreator("hej");
+        this.gameLevel = creator.getLevel(1);
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
         

@@ -4,17 +4,20 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 public class GameLevelSpec {
-    public Random RAND = new Random();
+    private static final Logger LOGGER = Logger.getLogger(GameLevelSpec.class.getName());
+
+    public static final Random RAND = new Random();
 
     private int size = 10000;
 
-    private LevelType levelType = null; 
-    private int crystalCount = -1;
+    private LevelType levelType;
+    private int crystalCount = 0;
 
     private int minCollectibles = 0;
     private int maxCollectibles = 0;
@@ -25,28 +28,48 @@ public class GameLevelSpec {
 
     private List<Wave> waves = new ArrayList<>();
 
-    public class Wave {
-        public final long startTick;
+    public GameLevelSpec(LevelType levelType) {
+        this.levelType = levelType;
+    }
 
-        public int maxEnemies = -1;
-        public long enemySpawnDelay = -1;
-        public ProbabilityMap<EnemyType> enemies = null;
+    public GameLevelSpec ofSize(int size) {
+        this.size = size;
+        return this;
+    }
 
-        public Wave(int startTick) {
-            this.startTick = startTick;
+    public GameLevelSpec withCollectibles(ProbabilityMap<CollectibleType> collectibles) {
+        this.collectibles = collectibles;
+        return this;
+    }
+
+    public GameLevelSpec collectibleCountBetween(int min, int max) {
+        this.minCollectibles = min;
+        this.maxCollectibles = max;
+        return this;
+    }
+
+    public GameLevelSpec asteroidCountBetween(int min, int max) {
+        this.minAsteroids = min;
+        this.maxAsteroids = max;
+        return this;
+    }
+
+    public GameLevelSpec withWave(Wave wave) {
+        if (this.waves.size() == 0) {
+            if (wave.startTick != 0) {
+                LOGGER.log(Level.WARNING,
+                           "first wave must start at 0 ticks not " + wave.startTick);
+                return null;
+            }
+        }
+        else if (this.waves.get(this.waves.size()-1).startTick >= wave.startTick) {
+            LOGGER.log(Level.WARNING, "wave must have start time later than previous wave");
+            return null;
         }
 
-        public void withSpawnRate(long ticks) {
-            this.enemySpawnDelay = ticks;
-        }
+        this.waves.add(wave);
 
-        public void withEnemies(ProbabilityMap<EnemyType> enemies) {
-            this.enemies = enemies;
-        }
-
-        public void maxEnemyCount(int max) {
-            this.maxEnemies = max;
-        }
+        return this;
     }
 
     private Wave getWave(int wave) {
@@ -57,21 +80,7 @@ public class GameLevelSpec {
         }
     }
 
-    public void ofSize(int size) {
-        this.size = size;
-    }
-
-    public void collectibleCountBetween(int min, int max) {
-        this.minCollectibles = min;
-        this.maxCollectibles = max;
-    }
-
-    public void asteroidCountBetween(int min, int max) {
-        this.minAsteroids = min;
-        this.maxAsteroids = max;
-    }
-
-    public List<Entity> getStartEntities() {
+    public List<Entity> createStartEntities() {
         List<Entity> entities = new LinkedList<>();
 
         int asteroids = this.minAsteroids +
@@ -89,13 +98,19 @@ public class GameLevelSpec {
 
         if (this.levelType == LevelType.HARVEST) {
             for (int i = 0; i < crystalCount; i++) {
-                //
+                entities.add(EntityCreator.create(CollectibleType.CRYSTAL));
             }
         }
 
         return entities;
     }
 
+    /**
+     * Return a map of probabilites of different enemyTypes at a
+     * certain wave.
+     * @param wave number of wave with probabilities
+     * @return probability map
+     **/
     public ProbabilityMap<EnemyType> getEnemyProbabilites(int wave) {
         ProbabilityMap<EnemyType> enemies = new ProbabilityMap<>();
         for (int i = 1; i <= wave; i++) {

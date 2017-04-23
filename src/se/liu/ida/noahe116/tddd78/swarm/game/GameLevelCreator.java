@@ -22,7 +22,7 @@ public final class GameLevelCreator {
     {
         GENERATORS.put(this::generateHarvestSpec, 20);
         GENERATORS.put(this::generateEliminateSpec, 1);
-        GENERATORS.put(this::generateLootSpec, 2);
+        GENERATORS.put(this::generateLootSpec, 2000);
     }
     
     public GameLevelCreator(long seed) {
@@ -49,7 +49,15 @@ public final class GameLevelCreator {
     }
 
     private GameLevelSpec generateLootSpec(int level) {
-        return null;
+        return new GameLevelSpec(LevelType.LOOT)
+            .withWave(new Wave())
+            .asteroidCountBetween(10, 20)
+            .collectibleCountBetween(20, 30)
+            .withCollectibles(new ProbabilityMap<>()
+                .put(CollectibleType.RED_LASER, 10)
+                .put(CollectibleType.SPREAD, 1)
+                .put(CollectibleType.QUAD, 1)
+            );
     }
 
     /**
@@ -61,6 +69,8 @@ public final class GameLevelCreator {
      * @return generated level
      **/
     public GameLevel getLevel(int level) {
+        // Makes sure RNG sequence is equal for equal seeds
+        // Specs are always generated from level 1 in order
         if (this.specs.size() < level) {
             this.generateSpecs(level);
         }

@@ -1,21 +1,26 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
+import java.util.Random;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public class GameLevel {
+    private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
+    private static final Random RAND = new Random();
+
     private Entity player;
-    private final List<Entity> entities;
+    private final List<Entity> entities = new LinkedList<>();
     private final double size;
     private final GameLevelSpec spec;
 
     public GameLevel(int size) {
+        //TODO remove -- temporary until specs are implemented
         this.size = size;
         this.player = EntityCreator.create(EntityType.PLAYER);
-        this.entities = new LinkedList<>();
         this.add(this.player);
         this.add(EntityCreator.create(EntityType.ASTEROID));
         //this.add(EntityCreator.create(CollectibleType.SPREAD));
@@ -24,10 +29,33 @@ public class GameLevel {
     }
 
     public GameLevel(GameLevelSpec spec) {
+        //TODO implement specs completely
         this.size = spec.getSize();
-        this.entities = spec.getStartEntities();
+        this.player = EntityCreator.create(EntityType.PLAYER);
+        this.add(this.player);
+        this.spawn(spec.createStartEntities());
 
         this.spec = spec;
+    }
+
+    /**
+     * Place an entity randomly on the map.
+     **/
+    private void spawn(Entity e) {
+        PositionComponent pc = e.get(PositionComponent.class);
+        if (pc == null) {
+            LOGGER.log(Level.WARNING, "can't spawn entity, no poscomp: " + e);
+        } else {
+            pc.setPosition(new Vector2D(RAND.nextInt((int)this.size),
+                                        RAND.nextInt((int)this.size)));
+            this.add(e);
+        }
+    }
+
+    private void spawn(List<Entity> entities) {
+        for (Entity e : entities) {
+            this.spawn(e);
+        }
     }
 
     private void updateEntities() {
