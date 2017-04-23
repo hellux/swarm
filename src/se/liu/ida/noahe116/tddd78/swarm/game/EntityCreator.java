@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.AbstractMap;
 import java.util.EnumMap;
 import java.util.logging.*;
@@ -9,6 +10,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
+//TODO make less messy, maybe builder method that handles component initialization
 public final class EntityCreator {
     private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
 
@@ -22,11 +24,15 @@ public final class EntityCreator {
 
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
-
+    
+    private static final AbstractMap<EnemyType, Supplier<Entity>> ENEMY_CREATORS =
+        new EnumMap<>(EnemyType.class);
 
     static {
         CREATORS.put(EntityType.PLAYER, EntityCreator::createPlayer);
         CREATORS.put(EntityType.ASTEROID, EntityCreator::createAsteroid);
+
+        ENEMY_CREATORS.put(EnemyType.CLAG_BOT, EntityCreator::createClagBot);
     }
 
     private EntityCreator() {}
@@ -60,6 +66,15 @@ public final class EntityCreator {
             LOGGER.log(Level.WARNING, "no entity type for collectible " + type);
         }
         return null;
+    }
+
+    public static Entity create(EnemyType type) {
+        if (ENEMY_CREATORS.containsKey(type)) {
+            return ENEMY_CREATORS.get(type).get();
+        } else {
+            LOGGER.log(Level.WARNING, "no creator for " + type);
+            return null;
+        }
     }
 
     private static void createCollectible(Entity e, Collectible coll) {
@@ -108,5 +123,21 @@ public final class EntityCreator {
         e.add(cc);
 
         e.add(new PlayerComponent());
+    }
+
+    private static Entity createClagBot() {
+        Entity e = new Entity(EntityType.ENEMY_CLAG_BOT);
+        
+        e.add(new HealthComponent(20));
+        e.add(new PositionComponent());
+        e.add(new ClagBotComponent());
+
+        e.add(new CollisionComponent(206));
+
+        ThrustComponent tc = new ThrustComponent();
+        tc.setThrustPower(0.05);
+        e.add(tc);
+
+        return e;
     }
 }

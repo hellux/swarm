@@ -84,6 +84,11 @@ public class PositionComponent extends LiveComponent {
         this.position.y = pos.y;
     }
 
+    public void setVelocity(Vector2D vel) {
+        this.velocity.x = vel.x;
+        this.velocity.y = vel.y;
+    }
+
     public Vector2D getPosition() {
         return this.position;
     }

@@ -28,6 +28,7 @@ public final class RcCreator {
             put(EntityType.COLLECTIBLE_RED_LASER, new Sprite("collectible_red_laser.png"));
             put(EntityType.COLLECTIBLE_SPREAD, new Sprite("collectible_spread.png"));
             put(EntityType.COLLECTIBLE_QUAD, new Sprite("collectible_quad.png"));
+            put(EntityType.ENEMY_CLAG_BOT, new Sprite("enemy_clag_bot.png"));
     }};
 
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})
@@ -42,6 +43,7 @@ public final class RcCreator {
             put(EntityType.COLLECTIBLE_RED_LASER, RenderPriority.STATIC);
             put(EntityType.COLLECTIBLE_SPREAD, RenderPriority.STATIC);
             put(EntityType.COLLECTIBLE_QUAD, RenderPriority.STATIC);
+            put(EntityType.ENEMY_CLAG_BOT, RenderPriority.DYNAMIC);
     }};
 
     private RcCreator() {}

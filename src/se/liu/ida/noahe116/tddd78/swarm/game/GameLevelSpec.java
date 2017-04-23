@@ -14,7 +14,7 @@ public class GameLevelSpec {
 
     public static final Random RAND = new Random();
 
-    private int size = 30000;
+    private int size = 15000;
 
     private LevelType levelType;
     private int crystalCount = 0;
@@ -119,12 +119,16 @@ public class GameLevelSpec {
         return enemies;
     }
 
+    public int getWaveCount() {
+        return this.waves.size();
+    }
+
     public long getEnemySpawnDelay(int wave) {
         return this.getWave(wave).enemySpawnDelay;
     }
 
-    public long getStartTick(int wave) {
-        return this.getWave(wave).startTick;
+    public long getNextWaveTick(int wave) {
+        return this.getWave(wave+1).startTick;
     }
 
     public int getMaxEnemies(int wave) {

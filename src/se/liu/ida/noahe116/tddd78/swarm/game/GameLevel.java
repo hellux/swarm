@@ -17,6 +17,12 @@ public class GameLevel {
     private final double size;
     private final GameLevelSpec spec;
 
+    private int enemySpawnCooldown = 0;
+    private int wave = 0;
+    private long tick = 0;
+    private int enemyCount = 0;
+    private ProbabilityMap<EnemyType> enemyProbabilites = null;
+
     public GameLevel(GameLevelSpec spec) {
         this.size = spec.getSize();
         this.player = EntityCreator.create(EntityType.PLAYER);
@@ -47,6 +53,25 @@ public class GameLevel {
         }
     }
 
+    private void updateWave() {
+        if (this.wave < this.spec.getWaveCount()) {
+            if (this.spec.getNextWaveTick(this.wave) <= this.tick) {
+                this.wave++;
+                this.enemyProbabilites = this.spec.getEnemyProbabilites(this.wave);
+            }
+        }
+
+        if (this.enemySpawnCooldown > 0) {
+            this.enemySpawnCooldown--;
+        }
+        else if (this.enemyCount < this.spec.getMaxEnemies(this.wave)) {
+            this.spawn(EntityCreator.create(this.enemyProbabilites.get()));
+            this.enemyCount++;
+        }
+
+        this.tick++;
+    }
+
     private void updateEntities() {
         for (int i = entities.size()-1; i >= 0; i--) {
             Entity entity = this.entities.get(i);
@@ -57,6 +82,7 @@ public class GameLevel {
         }
     }
 
+    //TODO improve and move to own class
     private void checkCollisions() {
         for (int e1 = 0; e1 < this.entities.size(); e1++) {
             Entity ent1 = this.entities.get(e1);
@@ -79,6 +105,7 @@ public class GameLevel {
     }
 
     public void update() {
+        this.updateWave();
         this.checkCollisions();
         this.updateEntities();
     }

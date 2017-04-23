@@ -15,5 +15,6 @@ public abstract class LiveComponent extends Component {
         this.active = active;
     }
 
+    //TODO maybe include GameLevel, getting it through through entity is bad
     public abstract void update();
 }

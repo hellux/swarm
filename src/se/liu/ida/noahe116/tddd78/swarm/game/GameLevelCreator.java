@@ -50,14 +50,17 @@ public final class GameLevelCreator {
 
     private GameLevelSpec generateLootSpec(int level) {
         return new GameLevelSpec(LevelType.LOOT)
-            .withWave(new Wave())
+            .withWave(new Wave()
+                .maxEnemyCount(20)
+                .withEnemies(new ProbabilityMap<EnemyType>()
+                    .put(EnemyType.CLAG_BOT, 1))
+                .withSpawnDelay(10))
             .asteroidCountBetween(10, 20)
             .collectibleCountBetween(20, 30)
             .withCollectibles(new ProbabilityMap<CollectibleType>()
                 .put(CollectibleType.RED_LASER, 1)
                 .put(CollectibleType.SPREAD, 1)
-                .put(CollectibleType.QUAD, 1)
-            );
+                .put(CollectibleType.QUAD, 1));
     }
 
     /**
