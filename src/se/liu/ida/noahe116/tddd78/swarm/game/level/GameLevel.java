@@ -82,7 +82,7 @@ public class GameLevel {
             if (entity.isKilled()) {
                 this.entities.remove(entity);
             }
-            entity.update();
+            entity.update(this);
         }
     }
 
@@ -99,7 +99,7 @@ public class GameLevel {
                 CollisionComponent cc2 = ent2.get(CollisionComponent.class);
                 if (cc2 == null) continue;
 
-                Vector2D intersection = cc1.intersection(cc2);
+                Vector2D intersection = cc1.intersection(cc2, this);
                 if (intersection != null) {
                     ent1.collideWith(ent2, intersection);
                     ent2.collideWith(ent1, intersection.flipped());
@@ -119,7 +119,6 @@ public class GameLevel {
     }
 
     public void add(Entity e) {
-        e.setGameLevel(this);
         this.entities.add(e);
     }
     

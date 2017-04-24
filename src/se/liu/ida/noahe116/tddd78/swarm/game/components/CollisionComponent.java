@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class CollisionComponent extends Component {
     private static final double KNOCKBACK_MULTIPLIER = 3;
@@ -56,13 +57,12 @@ public class CollisionComponent extends Component {
      * I = D * abs(D-this.radius-cc.radius)
      * } </pre>
      **/
-    public Vector2D intersection(CollisionComponent cc) {
+    public Vector2D intersection(CollisionComponent cc, GameLevel level) {
         //TODO check future postitons and interpolate the collision point
         if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity) ) {
             return null;
         }
-        Vector2D wrappedCenter = this.entity.getGameLevel()
-            .wrapAround(this.center(), cc.center());
+        Vector2D wrappedCenter = level.wrapAround(this.center(), cc.center());
         if (Vector2D.distanceSq(this.center(), wrappedCenter) <
             Math.pow(this.radius+cc.radius, 2)) {
             Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);

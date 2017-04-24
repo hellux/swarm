@@ -6,9 +6,11 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class ProjectileWeapon extends Weapon {
     private static final Logger LOGGER = Logger.getLogger(ProjectileWeapon.class.getName());
+    private static final int LIFETIME = 100;
 
     private final int damage;
     private final int radius;
@@ -36,7 +38,7 @@ public class ProjectileWeapon extends Weapon {
     }
 
     @Override
-    public void fire(Entity e) {
+    public void fire(Entity e, GameLevel level) {
         PositionComponent entityPosComp = e.get(PositionComponent.class);
 
         if (entityPosComp == null) {
@@ -67,12 +69,12 @@ public class ProjectileWeapon extends Weapon {
             cc.ignore(e);
 
             Entity proj = new Entity(this.entityType);
-            proj.add(new TimerComponent(100));
+            proj.add(new TimerComponent(LIFETIME));
             proj.add(new HealthComponent(1));
             proj.add(pc);
             proj.add(cc);
 
-            e.getGameLevel().add(proj);
+            level.add(proj);
         }
     }
 }

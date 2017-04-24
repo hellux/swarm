@@ -1,5 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
+
 public abstract class LiveComponent extends Component {
     protected boolean active;
 
@@ -15,6 +17,5 @@ public abstract class LiveComponent extends Component {
         this.active = active;
     }
 
-    //TODO maybe include GameLevel, getting it through through entity is bad
-    public abstract void update();
+    public abstract void update(GameLevel level);
 }

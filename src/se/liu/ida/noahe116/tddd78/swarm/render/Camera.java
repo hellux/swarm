@@ -2,6 +2,7 @@ package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class Camera {
     /**
@@ -89,9 +90,8 @@ public class Camera {
      * @param gameCoordinate a position in the game's coordinate system. 
      * @return same position in the component's coordinate system.
      **/
-    public Vector2D translate(Vector2D gameCoordinate) {
-        Vector2D wrappedPos = this.posComp.getEntity().getGameLevel()
-            .wrapAround(this.posComp.getPosition(), gameCoordinate);
+    public Vector2D translate(Vector2D gameCoordinate, GameLevel level) {
+        Vector2D wrappedPos = level.wrapAround(this.posComp.getPosition(), gameCoordinate);
         Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
                                                      Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(

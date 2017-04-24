@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 /**
  * Handles thrust mechanics for entities.
@@ -11,7 +12,8 @@ public class ThrustComponent extends LiveComponent {
     private double thrustPower;
     private boolean thrust;
 
-    public void update() { 
+    @Override
+    public void update(GameLevel level) { 
         if (this.thrust) {
             this.entity.get(PositionComponent.class).setAcceleration(
                 Vector2D.fromLengthRotation(

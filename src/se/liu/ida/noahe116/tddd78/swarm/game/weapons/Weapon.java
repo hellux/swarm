@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public abstract class Weapon {
     private final int cooldown;
@@ -23,5 +24,5 @@ public abstract class Weapon {
         return this.type;
     }
 
-    public abstract void fire(Entity e);
+    public abstract void fire(Entity e, GameLevel level);
 }

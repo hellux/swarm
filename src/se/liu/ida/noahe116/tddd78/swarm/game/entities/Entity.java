@@ -15,7 +15,6 @@ public class Entity {
      **/
     private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
     private final EntityType type;
-    private GameLevel gameLevel = null;
     private boolean killed;
     
     public Entity(EntityType type) {
@@ -73,12 +72,12 @@ public class Entity {
     /**
      * Update all live components that are active.
      **/
-    public void update() {
+    public void update(GameLevel level) {
         for (Component component : this.components.values()) {
             if (component instanceof LiveComponent) {
                 LiveComponent liveComponent = (LiveComponent) component;
                 if (liveComponent.isActive()) {
-                    liveComponent.update();
+                    liveComponent.update(level);
                 }
             }
         }
@@ -104,14 +103,6 @@ public class Entity {
 
     public boolean isKilled() {
         return this.killed;
-    }
-
-    public void setGameLevel(GameLevel gameLevel) {
-        this.gameLevel = gameLevel;
-    }
-
-    public GameLevel getGameLevel() {
-        return this.gameLevel;
     }
 
     @Override

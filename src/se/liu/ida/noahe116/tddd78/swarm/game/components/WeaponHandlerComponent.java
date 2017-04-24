@@ -6,6 +6,7 @@ import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class WeaponHandlerComponent extends LiveComponent {
     private static final Logger LOGGER =
@@ -60,11 +61,11 @@ public class WeaponHandlerComponent extends LiveComponent {
             return this.equipped.type;
         }
 
-        public void update(Entity e) {
+        public void update(Entity e, GameLevel level) {
             if (this.cooldown > 0) {
                 this.cooldown -= 1;
             } else if (this.fire) {
-                this.cooldown = this.equipped.fire(e);
+                this.cooldown = this.equipped.fire(e, level);
             }
         }
     }
@@ -96,11 +97,11 @@ public class WeaponHandlerComponent extends LiveComponent {
         }
 
 
-        public int fire(Entity e) {
+        public int fire(Entity e, GameLevel level) {
             if (this.unlimitedAmmo) {
-                this.weapon.fire(e);
+                this.weapon.fire(e, level);
             } else if (this.ammo > 0) {
-                this.weapon.fire(e);
+                this.weapon.fire(e, level);
                 this.ammo -= 1;
             }
 
@@ -180,9 +181,10 @@ public class WeaponHandlerComponent extends LiveComponent {
         }
     }
 
-    public void update() {
+    @Override
+    public void update(GameLevel level) {
         for (WeaponSlot slot : this.slots) {
-            slot.update(this.entity);
+            slot.update(this.entity, level);
         }
     }
 }
