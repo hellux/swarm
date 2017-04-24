@@ -8,10 +8,8 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class CollisionComponent extends Component {
-    private static final double KNOCKBACK_MULTIPLIER = 3;
-
     public final double radius;
-    private int damage = 5;
+    private int damage = 0;
     private boolean knockback = false;
     private List<Entity> ignore = new ArrayList<>();
 
@@ -23,15 +21,13 @@ public class CollisionComponent extends Component {
         this.damage = damage;
     }
 
-    public void setKnockback(boolean b) {
-        this.knockback = b;
-    }
-
     /**
      * Return a vector representing the intersection with another col-comp.
      * @param cc other collision component
+     * @param level level where entities are
      * @return vector I of collision intersection pointing towards this,
-     *         if no collision; return null.
+     *         if no collision, a flipped vector between the edges will be
+     *         returned.
      * <p>Diagram</p>
      * <pre> {@code
      *          , - ~ - ,
@@ -58,36 +54,51 @@ public class CollisionComponent extends Component {
      * } </pre>
      **/
     public Vector2D intersection(CollisionComponent cc, GameLevel level) {
+        Vector2D wrappedCenter = level.wrapAround(this.center(), cc.center());
+        Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);
+        return Vector2D.multiply(
+            difference.normal(),
+            Math.abs(difference.magnitude() - this.radius - cc.radius)
+        );
+    }
+
+    /**
+     * Check if a collision occurs with another col-comp.
+     * <pre> {@code
+     *          , - ~ - ,
+     *      , '           ' ,
+     *    ,                   ,
+     *   ,                     ,
+     *  ,          C1           ,
+     *  , - - - - - o           ,
+     *  ,   r1       \ - ~ - ,  ,
+     *   ,       , '  \        ; ,
+     *    ,    ,       \ d    ,    ,
+     *      , ,        \   , '      ,
+     *       ,' - , _ , \,     r2    ,
+     *       ,           o - - - - - ,
+     *       ,           C2          ,
+     *        ,                     ,
+     *         ,                   ,
+     *           ,              , '
+     *             ' - , _ ,  '
+     *
+     *  d < r1+r2
+     *  d^2 < (r1+r2)^2
+     **/ 
+    public boolean collidesWith(CollisionComponent cc, GameLevel level) {
         //TODO check future postitons and interpolate the collision point
-        if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity) ) {
-            return null;
+        if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity)) {
+            return false;
         }
+        
         Vector2D wrappedCenter = level.wrapAround(this.center(), cc.center());
         if (Vector2D.distanceSq(this.center(), wrappedCenter) <
             Math.pow(this.radius+cc.radius, 2)) {
             Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);
-            return Vector2D.multiply(
-                difference.normal(),
-                Math.abs(difference.magnitude() - this.radius - cc.radius)
-            );
-        }
-        return null;
-    }
-
-    public void collideWith(Entity e, Vector2D intersection) {
-        CollisionComponent cc = e.get(CollisionComponent.class);
-        if (cc == null) {
-            return;
-        }
-
-        if (cc.hasKnockback()) {
-            PositionComponent pc = this.entity.get(PositionComponent.class);
-            if (pc != null) {
-                pc.accelerate(Vector2D.multiply(
-                    Vector2D.multiply(intersection, 1.0/Math.sqrt(this.radius)),
-                    KNOCKBACK_MULTIPLIER
-                ));
-            }
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -95,12 +106,12 @@ public class CollisionComponent extends Component {
         return this.entity.get(PositionComponent.class).getPosition();
     }
 
-    public int getDamage() {
-        return this.damage;
+    public double getRadius() {
+        return this.radius;
     }
 
-    public boolean hasKnockback() {
-        return this.knockback;
+    public int getDamage() {
+        return this.damage;
     }
 
     public void ignore(Entity e) {

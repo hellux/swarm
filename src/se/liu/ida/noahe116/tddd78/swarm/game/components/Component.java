@@ -1,7 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
 public abstract class Component {
     /**
@@ -15,9 +14,5 @@ public abstract class Component {
 
     public Entity getEntity() {
         return this.entity;
-    }
-
-    public void collideWith(Entity e, Vector2D intersection) {
-
     }
 }

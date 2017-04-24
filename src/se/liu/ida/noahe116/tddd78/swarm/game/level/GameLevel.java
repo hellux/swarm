@@ -99,10 +99,9 @@ public class GameLevel {
                 CollisionComponent cc2 = ent2.get(CollisionComponent.class);
                 if (cc2 == null) continue;
 
-                Vector2D intersection = cc1.intersection(cc2, this);
-                if (intersection != null) {
-                    ent1.collideWith(ent2, intersection);
-                    ent2.collideWith(ent1, intersection.flipped());
+                if (cc1.collidesWith(cc2, this)) {
+                    ent1.collideWith(ent2, this);
+                    ent2.collideWith(ent1, this);
                 }
             }
         }

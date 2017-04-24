@@ -5,7 +5,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
-public class ClagBotComponent extends LiveComponent {
+public class ClagBotComponent extends LiveComponent implements CollidingComponent {
     public static final int DETECT_DISTANCE = 2000;
 
     @Override
@@ -33,7 +33,7 @@ public class ClagBotComponent extends LiveComponent {
     }
 
     @Override
-    public void collideWith(Entity e, Vector2D intersection) {
+    public void collideWith(Entity e, GameLevel level) {
         if (e.getType() == EntityType.PLAYER) {
             this.entity.kill();
             //explode

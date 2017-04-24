@@ -14,6 +14,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 //TODO make less messy, maybe builder method that handles component initialization
+// values should be moved to xml files or similar
 public final class EntityCreator {
     private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
 
@@ -85,12 +86,8 @@ public final class EntityCreator {
         pc.setRotationalSpeed(0.1);
         pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
-
-        CollisionComponent cc = new CollisionComponent(40);
-        cc.setKnockback(false);
-        cc.setDamage(0);
-        e.add(cc);
-
+        
+        e.add(new CollisionComponent(40));
         e.add(new CollectibleComponent(coll));
     }
 
@@ -98,11 +95,13 @@ public final class EntityCreator {
         PositionComponent pc = new PositionComponent(new Vector2D(-500, 0));
         pc.setActive(false);
         e.add(pc);
-        e.add(new HealthComponent(100));
 
-        CollisionComponent cc = new CollisionComponent(200);
-        cc.setKnockback(true);
+        CollisionComponent cc = new CollisionComponent(175);
+        cc.setDamage(15);
         e.add(cc);
+
+        e.add(new HealthComponent(100));
+        e.add(new KnockbackComponent());
     }
 
     private static void createPlayer(Entity e) {
@@ -113,6 +112,10 @@ public final class EntityCreator {
         pc.setDrag(true);
         e.add(pc);
 
+        CollisionComponent cc = new CollisionComponent(102);
+        cc.setDamage(15);
+        e.add(cc);
+
         //TODO add weapons on pickup instead
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
         wh.addUnlimited(WeaponType.DEFAULT, 0);
@@ -120,10 +123,6 @@ public final class EntityCreator {
         wh.add(WeaponType.SPREAD, 0);
         wh.add(WeaponType.QUAD, 0);
         e.add(wh);
-
-        CollisionComponent cc = new CollisionComponent(100);
-        cc.setKnockback(true);
-        e.add(cc);
 
         e.add(new PlayerComponent());
     }

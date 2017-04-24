@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.AbstractMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
-import se.liu.ida.noahe116.tddd78.swarm.game.components.LiveComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
@@ -73,7 +73,16 @@ public class Entity {
      * Update all live components that are active.
      **/
     public void update(GameLevel level) {
+        if (this.has(PositionComponent.class)) {
+            PositionComponent pc = this.get(PositionComponent.class);
+            if (pc.isActive()) {
+                this.get(PositionComponent.class).update(level);
+            }
+        }
         for (Component component : this.components.values()) {
+            if (component instanceof PositionComponent) {
+                continue;
+            }
             if (component instanceof LiveComponent) {
                 LiveComponent liveComponent = (LiveComponent) component;
                 if (liveComponent.isActive()) {
@@ -90,10 +99,12 @@ public class Entity {
         this.killed = true;
     }
 
-    public void collideWith(Entity e, Vector2D intersection) {
-        //TODO create interface for components with collideWith()
+    public void collideWith(Entity e, GameLevel level) {
         for (Component c : this.components.values()) {
-            c.collideWith(e, intersection);
+            if (c instanceof CollidingComponent) {
+                CollidingComponent cc = (CollidingComponent) c;
+                cc.collideWith(e, level);
+            }
         }
     }
 

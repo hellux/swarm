@@ -2,8 +2,9 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
-public class HealthComponent extends Component {
+public class HealthComponent extends Component implements CollidingComponent {
     private int healthPoints;
     private int shieldStrength;
 
@@ -30,7 +31,8 @@ public class HealthComponent extends Component {
         }
     }
 
-    public void collideWith(Entity e, Vector2D intersection) {
+    @Override
+    public void collideWith(Entity e, GameLevel level) {
         CollisionComponent cc = e.get(CollisionComponent.class);
         if (cc != null) {
             this.hurt(cc.getDamage());
