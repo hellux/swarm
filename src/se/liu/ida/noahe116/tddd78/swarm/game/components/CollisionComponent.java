@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 
 public class CollisionComponent extends Component {
     private static final double KNOCKBACK_MULTIPLIER = 3;

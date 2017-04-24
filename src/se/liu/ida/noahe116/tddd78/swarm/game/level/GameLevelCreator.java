@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;  
+package se.liu.ida.noahe116.tddd78.swarm.game.level;
 
 import java.util.function.Function;
 import java.util.Random;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
+import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 
 /**
  * Creates levels with a specific seed.
@@ -38,6 +40,10 @@ public final class GameLevelCreator {
         for (int i = specs.size(); i < level; i++) {
             this.specs.add(this.GENERATORS.get().apply(level));
         }
+    }
+
+    private int nonUniformRandInt(int average, int standardDeviation) {
+        return average + (int) (standardDeviation*this.rand.nextGaussian());
     }
 
     private GameLevelSpec generateHarvestSpec(int level) {

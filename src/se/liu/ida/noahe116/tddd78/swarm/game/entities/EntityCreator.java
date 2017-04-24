@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -7,6 +7,9 @@ import java.util.EnumMap;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.Collectible;
+import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleCreator;
+import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 

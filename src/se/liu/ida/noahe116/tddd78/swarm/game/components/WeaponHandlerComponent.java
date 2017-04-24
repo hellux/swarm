@@ -4,7 +4,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.logging.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 
 public class WeaponHandlerComponent extends LiveComponent {
@@ -19,7 +19,7 @@ public class WeaponHandlerComponent extends LiveComponent {
      * List of EquippedWeapon at a entity's slot of weapons.
      **/
     public class WeaponSlot {
-        private EquippedWeapon equipped;
+        private EquippedWeapon equipped = null;
         private boolean fire;
         private int cooldown;
         private AbstractMap<WeaponType, EquippedWeapon> weapons = new HashMap<>();

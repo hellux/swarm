@@ -47,10 +47,6 @@ public class Camera {
     public PositionComponent getPositionComponent() {
         return this.posComp;
     }
-    
-    public Vector2D getSize() {
-        return this.size;
-    }
 
     public double getScale() {
         return this.scale;

@@ -2,8 +2,8 @@ package se.liu.ida.noahe116.tddd78.swarm.render;
 
 import java.awt.image.BufferedImage;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
 public class RenderComponent implements Comparable<RenderComponent> {

@@ -5,7 +5,7 @@ import java.util.AbstractMap;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 
 /**
  * Create weapon instances.
@@ -29,11 +29,11 @@ public final class WeaponCreator {
     private static final AbstractMap<WeaponType, Weapon> WEAPONS =
         new EnumMap(WeaponType.class) {{
             put(WeaponType.DEFAULT, new ProjectileWeapon(
-                WeaponType.DEFAULT,
-                EntityType.PROJECTILE_DEFAULT,
-                3, DEF_DMG, 1,
-                new Vector2D[]{new Vector2D(52, 78), new Vector2D(52, -78)},
-                new Vector2D[]{new Vector2D(DEF_SPD, 0), new Vector2D(DEF_SPD, 0)}
+                    WeaponType.DEFAULT,
+                    EntityType.PROJECTILE_DEFAULT,
+                    3, DEF_DMG, 1,
+                    new Vector2D[]{new Vector2D(52, 78), new Vector2D(52, -78)},
+                    new Vector2D[]{new Vector2D(DEF_SPD, 0), new Vector2D(DEF_SPD, 0)}
             ));
             put(WeaponType.SPREAD, new ProjectileWeapon(
                 WeaponType.SPREAD,

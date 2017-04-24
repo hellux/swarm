@@ -8,8 +8,9 @@ public class TimerComponent extends LiveComponent {
     }
 
     public void update() {
-        if (this.time-- == 0) {
+        if (this.time == 0) {
             this.entity.kill();
         }
+        this.time--;
     }
 }

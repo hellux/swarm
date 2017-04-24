@@ -1,8 +1,8 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.collectibles;
 
 import java.util.logging.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 

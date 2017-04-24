@@ -8,7 +8,7 @@ import java.util.logging.*;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 
 public class Sprite {
     private static final Logger LOGGER = Logger.getLogger(Sprite.class.getName());

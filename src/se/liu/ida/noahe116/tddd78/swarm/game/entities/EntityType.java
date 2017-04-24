@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
 public enum EntityType {
     PLAYER,

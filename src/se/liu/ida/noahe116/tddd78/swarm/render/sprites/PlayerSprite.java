@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.AbstractMap;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 

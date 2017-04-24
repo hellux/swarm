@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
 import java.util.HashMap;
 import java.util.AbstractMap;
@@ -6,6 +6,7 @@ import java.util.AbstractMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.LiveComponent;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 public class Entity {
     /**

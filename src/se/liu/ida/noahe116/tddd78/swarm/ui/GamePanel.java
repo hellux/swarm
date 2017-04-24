@@ -1,6 +1,5 @@
 package se.liu.ida.noahe116.tddd78.swarm.ui;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -9,8 +8,9 @@ import java.util.logging.*;
 import java.util.function.Consumer;
 import java.awt.image.BufferedImage;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevelCreator;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 

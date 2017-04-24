@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 /**
  * Handles visualization of the gameLevel.

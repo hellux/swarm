@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.level;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -7,7 +7,11 @@ import java.util.Random;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityCreator;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
+import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 
 public class GameLevelSpec {
     private static final Logger LOGGER = Logger.getLogger(GameLevelSpec.class.getName());
@@ -55,7 +59,7 @@ public class GameLevelSpec {
     }
 
     public GameLevelSpec withWave(Wave wave) {
-        if (this.waves.size() == 0) {
+        if (this.waves.isEmpty()) {
             if (wave.startTick != 0) {
                 LOGGER.log(Level.WARNING,
                            "first wave must start at 0 ticks not " + wave.startTick);

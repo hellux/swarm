@@ -1,10 +1,14 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.level;
 
 import java.util.Random;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.*;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityCreator;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 

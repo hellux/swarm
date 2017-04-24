@@ -1,4 +1,4 @@
-package se.liu.ida.noahe116.tddd78.swarm.game;
+package se.liu.ida.noahe116.tddd78.swarm.game.collectibles;
 
 import java.util.EnumMap;
 import java.util.AbstractMap;
@@ -10,7 +10,7 @@ public final class CollectibleCreator {
     private static final Logger LOGGER =
         Logger.getLogger(CollectibleCreator.class.getName());
 
-    @SuppressWarnings({"unchecked", "serial", "rawtypes"})
+    @SuppressWarnings({"unchecked", "serial", "rawtypes"}) // IDEA: rawtypes is not reduntant
     private static final AbstractMap<CollectibleType, Collectible> COLLECTIBLES =
         new EnumMap(CollectibleType.class) {{
             put(CollectibleType.RED_LASER, new WeaponCollectible(WeaponType.RED_LASER, 30));

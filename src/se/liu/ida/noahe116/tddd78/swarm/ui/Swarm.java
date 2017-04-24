@@ -19,6 +19,7 @@ public final class Swarm {
         frame.add(new GamePanel(), BorderLayout.CENTER);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setSize(new Dimension(1280, 720));
     }
 
 }        

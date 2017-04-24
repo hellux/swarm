@@ -2,9 +2,10 @@ package se.liu.ida.noahe116.tddd78.swarm.game.weapons;
 
 import java.util.logging.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 
 public class ProjectileWeapon extends Weapon {
     private static final Logger LOGGER = Logger.getLogger(ProjectileWeapon.class.getName());
@@ -43,6 +44,9 @@ public class ProjectileWeapon extends Weapon {
             return;
         }
 
+        // if player is updated before this, current position is
+        // correct, otherwise futurePos
+        // TODO make sure it's consistent somehow
         Vector2D pos = entityPosComp.getPosition();
         Vector2D vel = entityPosComp.getVelocity();
         double rotation = entityPosComp.getRotation();
