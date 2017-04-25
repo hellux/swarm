@@ -20,7 +20,7 @@ public class GameLevelSpec {
 
     private int size = 15000;
 
-    private LevelType levelType;
+    public final LevelType levelType;
     private int crystalCount = 0;
 
     private int minCollectibles = 0;

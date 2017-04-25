@@ -25,11 +25,7 @@ public class ClagBotComponent extends LiveComponent implements CollidingComponen
             this.entity.get(PositionComponent.class).setRotation(difference.rotation());
             this.entity.get(PositionComponent.class).setVelocity(
                 Vector2D.fromLengthRotation(10, difference.rotation()));
-            //this.entity.get(ThrustComponent.class).setThrust(true);
-        } else {
-            //this.entity.get(ThrustComponent.class).setThrust(false);
         }
-
     }
 
     @Override

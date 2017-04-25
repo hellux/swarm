@@ -1,6 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.render;
 
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.util.EnumMap;
 import java.util.Map.Entry;
 import java.util.logging.*;
 import java.util.AbstractMap;
@@ -11,13 +12,20 @@ import java.awt.geom.AffineTransform;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
-import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 /**
- * Handles visualization of the gameLevel.
+ * Handles visualization of the game.
  **/
 public class Scene {
     private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
+
+    @SuppressWarnings({"unchecked", "serial", "rawtypes"})
+    private static final AbstractMap<LevelType, Color> BG_COLORS = new EnumMap(LevelType.class) {{
+        put(LevelType.HARVEST, new Color(0, 0, 20));
+        put(LevelType.ELIMINATE, new Color(31, 0, 0));
+        put(LevelType.LOOT, new Color(16, 0, 31));
+    }};
 
     private final GameLevel gameLevel;
     private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
@@ -34,15 +42,22 @@ public class Scene {
      *                      period between ticks.
      **/
     public void render(Graphics2D g2d, double interpolation) {
+        this.drawBackground(g2d);
         this.camera.updateInterpolation(interpolation);
         this.addRenderComponents();
         this.drawRenderComponents(g2d, interpolation);
     }
 
+    private void drawBackground(Graphics2D g2d) {
+        Rectangle clip = g2d.getClipBounds();
+        g2d.setColor(BG_COLORS.get(this.gameLevel.getType()));
+        g2d.fillRect(0, 0, (int) clip.getWidth(), (int) clip.getHeight());
+    }
 
     private void addRenderComponents() {
         this.renderComponents.clear();
 
+        //FIXME sometimes causes concurrency exception at start
         for (Entity e : this.gameLevel.getEntities()) {
             if (this.shouldDraw(e)) { 
                 if (!this.renderComponents.containsKey(e)) {

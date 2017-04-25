@@ -25,10 +25,10 @@ public class Sprite {
     }
 
     private BufferedImage readImage(String fileName) {
-            BufferedImage image = this.readImageFromResource(fileName);
-            if (image == null) image = this.readImageFromFile(fileName);
-            if (image == null) LOGGER.log(Level.WARNING, "failed to read image " + fileName);
-            return image;
+        BufferedImage image = this.readImageFromResource(fileName);
+        if (image == null) image = this.readImageFromFile(fileName);
+        if (image == null) LOGGER.log(Level.WARNING, "failed to read image " + fileName);
+        return image;
     }
 
     private BufferedImage readImageFromResource(String fileName) {
@@ -36,11 +36,11 @@ public class Sprite {
         InputStream is = Thread.currentThread().getContextClassLoader()
             .getResourceAsStream(fileName);
 
-	if (is != null) try (ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-	    image = ImageIO.read(iis);
+        if (is != null) try (ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+            image = ImageIO.read(iis);
         }
-	catch (IOException e) {
-	    LOGGER.log(Level.FINE, "failed to read " + fileName + " from resource", e);
+        catch (IOException e) {
+            LOGGER.log(Level.FINE, "failed to read " + fileName + " from resource", e);
         }
 
         return image;

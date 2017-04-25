@@ -125,6 +125,10 @@ public class GameLevel {
         return this.player;
     }
 
+    public LevelType getType() {
+        return this.spec.levelType;
+    }
+
     public List<Entity> getEntities() {
         return this.entities;
     }
