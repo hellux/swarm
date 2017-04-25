@@ -70,7 +70,7 @@ public final class GamePanel extends JPanel {
             LOGGER.log(Level.SEVERE, "failed to create robot for mouse: " + e.getMessage(), e);
         }
 
-        this.thread = new Thread(this::gameLoop);
+        this.thread = new Thread(this::gameLoop, "MainLoop");
         this.thread.start();
     }
 
@@ -168,6 +168,7 @@ public final class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         this.scene.render((Graphics2D) g, this.interpolation);
         this.drawCursor(g);
         if (this.showFPS) {

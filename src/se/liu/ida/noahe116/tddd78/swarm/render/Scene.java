@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import java.util.logging.*;
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 
@@ -13,6 +15,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
+import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
 /**
  * Handles visualization of the game.
@@ -44,7 +47,7 @@ public class Scene {
     public void render(Graphics2D g2d, double interpolation) {
         this.drawBackground(g2d);
         this.camera.updateInterpolation(interpolation);
-        this.addRenderComponents();
+        this.updateRenderComponents();
         this.drawRenderComponents(g2d, interpolation);
     }
 
@@ -54,22 +57,25 @@ public class Scene {
         g2d.fillRect(0, 0, (int) clip.getWidth(), (int) clip.getHeight());
     }
 
-    private void addRenderComponents() {
-        this.renderComponents.clear();
+    private void updateRenderComponents() {
+        List<Entity> toRemove = new ArrayList<>();
 
-        //FIXME sometimes causes concurrency exception at start
-        for (Entity e : this.gameLevel.getEntities()) {
-            if (this.shouldDraw(e)) { 
-                if (!this.renderComponents.containsKey(e)) {
-                    RenderComponent rc = RcCreator.createRenderComponent(e);
-                    if (rc != null) this.renderComponents.put(e, rc); 
-                }
+        for (Entity e : this.renderComponents.keySet()) {
+            if (e.isKilled()) {
+                toRemove.add(e);
             }
         }
-    }
+        for (Entity e : toRemove) {
+            this.renderComponents.remove(e);
+        }
 
-    private boolean shouldDraw(Entity e) {
-        return !e.isKilled();
+        //FIXME often causes concurrency exception at start
+        for (Entity e : this.gameLevel.getEntities()) {
+            if (!this.renderComponents.containsKey(e)) {
+                RenderComponent rc = RcCreator.createRenderComponent(e);
+                if (rc != null) this.renderComponents.put(e, rc); 
+            }
+        }
     }
 
     private void drawRenderComponents(Graphics2D g2d, double interpolation) {

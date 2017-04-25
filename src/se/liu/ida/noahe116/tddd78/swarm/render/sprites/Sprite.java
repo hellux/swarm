@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.util.logging.*;
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 
@@ -73,6 +76,14 @@ public class Sprite {
     }
 
     public BufferedImage[] getImages(Entity entity) {
-        return this.images.values().toArray(new BufferedImage[0]);
+        // toArray() only returns Object array
+        List<String> fileNames = new ArrayList<>(this.images.keySet());
+        Collections.sort(fileNames);
+        BufferedImage[] images = new BufferedImage[this.images.size()];
+        for (int i = 0; i < this.images.size(); i++) {
+            images[i] = this.images.get(fileNames.get(i));
+        }
+        return images;
+        //return this.images.values().toArray(new BufferedImage[0]);
     }
 }

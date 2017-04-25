@@ -116,7 +116,6 @@ public final class EntityCreator {
         cc.setDamage(15);
         e.add(cc);
 
-        //TODO add weapons on pickup instead
         WeaponHandlerComponent wh = new WeaponHandlerComponent(2);
         wh.addUnlimited(WeaponType.DEFAULT, 0);
         wh.add(WeaponType.RED_LASER, 0);

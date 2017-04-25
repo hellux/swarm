@@ -36,7 +36,7 @@ public class PositionComponent extends LiveComponent {
     }
 
     public Vector2D futurePos(double interpolation) {
-        if (this.active) {
+        if (this.active && !this.entity.isKilled()) {
             Vector2D futureVel = Vector2D.multiply(
                 Vector2D.add(this.velocity, this.acceleration),
                 this.drag*interpolation
@@ -56,6 +56,12 @@ public class PositionComponent extends LiveComponent {
         }
     }
 
+    public void stop() {
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        this.acceleration.x = 0;
+        this.acceleration.y = 0;
+    }
     public void accelerate(Vector2D acc) {
         this.velocity.add(acc);
     }

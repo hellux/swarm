@@ -26,6 +26,7 @@ public class HealthComponent extends Component implements CollidingComponent {
         } else {
             this.healthPoints = Math.max(this.healthPoints - damage, 0);
             if (this.healthPoints == 0) {
+                this.entity.get(PositionComponent.class).stop();
                 this.entity.kill();
             }
         }
