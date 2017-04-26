@@ -36,6 +36,7 @@ public final class EntityCreator {
     static {
         CREATORS.put(EntityType.PLAYER, EntityCreator::createPlayer);
         CREATORS.put(EntityType.ASTEROID, EntityCreator::createAsteroid);
+        CREATORS.put(EntityType.TELEPORTER, EntityCreator::createTeleporter);
 
         ENEMY_CREATORS.put(EnemyType.CLAG_BOT, EntityCreator::createClagBot);
     }
@@ -105,6 +106,15 @@ public final class EntityCreator {
         e.add(new KnockbackComponent());
     }
 
+    private static void createTeleporter(Entity e) {
+        PositionComponent pc = new PositionComponent();
+        pc.setRotationalSpeed(0.04);
+        pc.setRotation(Math.random()*2*Math.PI);
+        e.add(pc);
+
+        e.add(new CollisionComponent(113));
+    }
+
     private static void createPlayer(Entity e) {
         e.add(new HealthComponent(1, 100));
         e.add(new ThrustComponent());
@@ -134,7 +144,7 @@ public final class EntityCreator {
         e.add(new PositionComponent());
         e.add(new ClagBotComponent());
 
-        e.add(new CollisionComponent(206));
+        e.add(new CollisionComponent(103));
 
         ThrustComponent tc = new ThrustComponent();
         tc.setThrustPower(0.05);

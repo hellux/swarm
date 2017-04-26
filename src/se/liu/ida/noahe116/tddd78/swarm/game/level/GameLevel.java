@@ -118,7 +118,11 @@ public class GameLevel {
     }
 
     public void add(Entity e) {
-        this.entities.add(e);
+        if (e.has(PositionComponent.class)) {
+            this.entities.add(e);
+        } else {
+            LOGGER.log(Level.WARNING, "can't add entity, no poscomp: " + e);
+        }
     }
     
     public Entity getPlayer() {

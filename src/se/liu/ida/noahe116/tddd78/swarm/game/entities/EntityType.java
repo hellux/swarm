@@ -14,4 +14,5 @@ public enum EntityType {
     COLLECTIBLE_QUAD,
     ENEMY_CLAG_BOT,
     ENEMY_CLAG_SCOUT,
+    TELEPORTER,
 }
