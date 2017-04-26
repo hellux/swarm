@@ -47,11 +47,15 @@ public final class GameLevelCreator {
     }
 
     private GameLevelSpec generateHarvestSpec(int level) {
-        return null;
+        GameLevelSpec spec = new GameLevelSpec(LevelType.HARVEST);
+
+        return spec;
     }
 
     private GameLevelSpec generateEliminateSpec(int level) {
-        return null;
+        GameLevelSpec spec = new GameLevelSpec(LevelType.ELIMINATE);
+
+        return spec;
     }
 
     private GameLevelSpec generateLootSpec(int level) {
@@ -64,6 +68,7 @@ public final class GameLevelCreator {
             .asteroidCountBetween(10, 20)
             .collectibleCountBetween(20, 30)
             .withCollectibles(new ProbabilityMap<CollectibleType>()
+                .put(CollectibleType.SHIELD, 2)
                 .put(CollectibleType.RED_LASER, 1)
                 .put(CollectibleType.SPREAD, 1)
                 .put(CollectibleType.QUAD, 1));

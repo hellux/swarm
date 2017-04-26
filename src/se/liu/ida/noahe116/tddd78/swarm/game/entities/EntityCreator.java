@@ -24,6 +24,7 @@ public final class EntityCreator {
             put(CollectibleType.RED_LASER, EntityType.COLLECTIBLE_RED_LASER);
             put(CollectibleType.SPREAD, EntityType.COLLECTIBLE_SPREAD);
             put(CollectibleType.QUAD, EntityType.COLLECTIBLE_QUAD);
+            put(CollectibleType.SHIELD, EntityType.COLLECTIBLE_SHIELD);
         }};
 
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =

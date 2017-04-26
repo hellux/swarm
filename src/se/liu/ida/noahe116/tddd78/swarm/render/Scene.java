@@ -70,6 +70,8 @@ public class Scene {
         }
 
         //FIXME often causes concurrency exception at start
+        //seems to be caused by awt calling paintcomponent outside the 
+        //main loop in a separate thread. How to prevent awt from doing this?
         for (Entity e : this.gameLevel.getEntities()) {
             if (!this.renderComponents.containsKey(e)) {
                 RenderComponent rc = RcCreator.createRenderComponent(e);

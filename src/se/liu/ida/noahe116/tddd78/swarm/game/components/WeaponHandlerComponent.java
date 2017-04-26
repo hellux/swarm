@@ -176,7 +176,7 @@ public class WeaponHandlerComponent extends LiveComponent {
 
     public void addAmmo(WeaponType type, int ammo) {
         WeaponSlot slot = this.slotWithWeapon(type);
-        if (slot == null) {
+        if (slot != null) {
             slot.addAmmo(type, ammo);
         }
     }

@@ -5,15 +5,19 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class HealthComponent extends Component implements CollidingComponent {
+    public static final double START_SHIELD_RATIO = 0.3;
+
     private int healthPoints;
     private int shieldStrength;
+    private final int maxShieldStrength;
 
     public HealthComponent(int hp, int shield) {
         if (hp < 1) throw new IllegalArgumentException("hp < 1: " + hp);
         if (shield < 0) throw new IllegalArgumentException("shield < 0: " + shield);
 
         this.healthPoints = hp;
-        this.shieldStrength = shield;
+        this.maxShieldStrength = shield;
+        this.shieldStrength = (int) (shield*START_SHIELD_RATIO);
     }
 
     public HealthComponent(int hp) {
@@ -30,6 +34,11 @@ public class HealthComponent extends Component implements CollidingComponent {
                 this.entity.kill();
             }
         }
+    }
+
+    public void addShield(int shield) {
+        this.shieldStrength = Math.min(this.shieldStrength + shield,
+                                       this.maxShieldStrength);
     }
 
     @Override
