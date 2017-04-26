@@ -17,6 +17,7 @@ public final class CollectibleCreator {
             put(CollectibleType.SPREAD, new WeaponCollectible(WeaponType.SPREAD, 50));
             put(CollectibleType.QUAD, new WeaponCollectible(WeaponType.QUAD, 25));
             put(CollectibleType.SHIELD, new ShieldCollectible());
+            put(CollectibleType.CRYSTAL, new CrystalCollectible());
         }};
 
     public static Collectible get(CollectibleType type) {

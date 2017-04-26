@@ -27,6 +27,9 @@ public class GameLevel {
     private int enemyCount = 0;
     private ProbabilityMap<EnemyType> enemyProbabilites = null;
 
+    private int crystalCount = 0;
+    private boolean objectiveComplete = false;
+
     public GameLevel(GameLevelSpec spec) {
         this.size = spec.getSize();
         this.player = EntityCreator.create(EntityType.PLAYER);
@@ -125,6 +128,13 @@ public class GameLevel {
         }
     }
     
+    public void addCrystal() {
+        this.crystalCount++;
+        if (this.crystalCount == this.spec.getCrystalCount()) {
+            this.objectiveComplete = true;
+        }
+    }
+
     public Entity getPlayer() {
         return this.player;
     }

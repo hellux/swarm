@@ -3,7 +3,6 @@ package se.liu.ida.noahe116.tddd78.swarm.game.level;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
@@ -16,19 +15,15 @@ import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 public class GameLevelSpec {
     private static final Logger LOGGER = Logger.getLogger(GameLevelSpec.class.getName());
 
-    public static final Random RAND = new Random();
-
     private int size = 15000;
 
     public final LevelType levelType;
     private int crystalCount = 0;
 
-    private int minCollectibles = 0;
-    private int maxCollectibles = 0;
+    private int collectibleCount= 0;
     private ProbabilityMap<CollectibleType> collectibles = new ProbabilityMap<>();
 
-    private int minAsteroids = 0;
-    private int maxAsteroids = 0;
+    private int asteroidCount = 0;
 
     private List<Wave> waves = new ArrayList<>();
 
@@ -46,15 +41,18 @@ public class GameLevelSpec {
         return this;
     }
 
-    public GameLevelSpec collectibleCountBetween(int min, int max) {
-        this.minCollectibles = min;
-        this.maxCollectibles = max;
+    public GameLevelSpec collectibleCount(int count) {
+        this.collectibleCount = count;
         return this;
     }
 
-    public GameLevelSpec asteroidCountBetween(int min, int max) {
-        this.minAsteroids = min;
-        this.maxAsteroids = max;
+    public GameLevelSpec asteroidCount(int count) {
+        this.asteroidCount = count;
+        return this;
+    }
+
+    public GameLevelSpec crystalCount(int count) {
+        this.crystalCount = count;
         return this;
     }
 
@@ -87,16 +85,10 @@ public class GameLevelSpec {
     public List<Entity> createStartEntities() {
         List<Entity> entities = new LinkedList<>();
 
-        int asteroids = this.minAsteroids +
-            RAND.nextInt(this.maxAsteroids-this.minAsteroids + 1);
-        int collectibles = this.minCollectibles +
-            RAND.nextInt(this.maxCollectibles-this.minCollectibles + 1);
-
-        for (int i = 0; i < asteroids; i++) {
+        for (int i = 0; i < asteroidCount; i++) {
             entities.add(EntityCreator.create(EntityType.ASTEROID));
         }
-
-        for (int i = 0; i < collectibles; i++) {
+        for (int i = 0; i < collectibleCount; i++) {
             entities.add(EntityCreator.create(this.collectibles.get()));
         } 
 
@@ -121,6 +113,10 @@ public class GameLevelSpec {
             enemies.put(this.getWave(wave).enemies);
         }
         return enemies;
+    }
+
+    public int getCrystalCount() {
+        return this.crystalCount;
     }
 
     public int getWaveCount() {

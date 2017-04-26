@@ -16,7 +16,7 @@ public class CollectibleComponent extends Component implements CollidingComponen
     @Override
     public void collideWith(Entity e, GameLevel level) {
         if (e.getType() == EntityType.PLAYER) {
-            this.collectible.pickedUp(e);
+            this.collectible.pickedUp(e, level);
             this.entity.kill();
         }
     }

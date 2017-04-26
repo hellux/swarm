@@ -5,6 +5,7 @@ import java.util.logging.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 public class WeaponCollectible implements Collectible {
     private static final Logger LOGGER =
@@ -18,7 +19,7 @@ public class WeaponCollectible implements Collectible {
         this.ammo = ammo;
     }
 
-    public void pickedUp(Entity e) {
+    public void pickedUp(Entity e, GameLevel level) {
         WeaponHandlerComponent wh = e.get(WeaponHandlerComponent.class);
         if (wh == null) {
             LOGGER.log(Level.WARNING, "entity has no WHC: " + e);

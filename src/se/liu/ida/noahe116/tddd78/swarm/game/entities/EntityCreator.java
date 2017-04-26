@@ -25,6 +25,7 @@ public final class EntityCreator {
             put(CollectibleType.SPREAD, EntityType.COLLECTIBLE_SPREAD);
             put(CollectibleType.QUAD, EntityType.COLLECTIBLE_QUAD);
             put(CollectibleType.SHIELD, EntityType.COLLECTIBLE_SHIELD);
+            put(CollectibleType.CRYSTAL, EntityType.COLLECTIBLE_CRYSTAL);
         }};
 
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
@@ -143,8 +144,11 @@ public final class EntityCreator {
         e.add(new HealthComponent(20));
         e.add(new PositionComponent());
         e.add(new ClagBotComponent());
+        e.add(new KnockbackComponent());
 
-        e.add(new CollisionComponent(103));
+        CollisionComponent cc = new CollisionComponent(103);
+        cc.setDamage(40);
+        e.add(cc);
 
         ThrustComponent tc = new ThrustComponent();
         tc.setThrustPower(0.05);
