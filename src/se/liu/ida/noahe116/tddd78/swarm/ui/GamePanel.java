@@ -195,7 +195,9 @@ public final class GamePanel extends JPanel {
 
     private void setKeyBinds() {
         this.bindKeyToggle(KeyEvent.VK_SPACE, this.playerComponent::setThrust);
+
         this.bindKey(KeyStroke.getKeyStroke("F3"), () -> this.showFPS = !this.showFPS);
+        this.bindKey(KeyStroke.getKeyStroke("F5"), this.scene::toggleShowHitBoxes);
         
         this.bindKey(KeyStroke.getKeyStroke("A"), () -> this.playerComponent.equipPrimary(1));
         this.bindKey(KeyStroke.getKeyStroke("O"), () -> this.playerComponent.equipPrimary(2));
