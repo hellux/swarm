@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
@@ -34,6 +34,8 @@ public class Scene {
     private final AbstractMap<Entity, RenderComponent> renderComponents = new HashMap<>();
     private final Camera camera;
 
+    private boolean showHitBoxes;
+
     public Scene(GameLevel gameLevel) {
         this.gameLevel = gameLevel;
         this.camera = new Camera(gameLevel.getPlayer().get(PositionComponent.class));
@@ -49,6 +51,7 @@ public class Scene {
         this.camera.updateInterpolation(interpolation);
         this.updateRenderComponents();
         this.drawRenderComponents(g2d, interpolation);
+        if (this.showHitBoxes) this.drawHitBoxes(g2d, interpolation);
     }
 
     private void drawBackground(Graphics2D g2d) {
@@ -99,6 +102,24 @@ public class Scene {
         });
     }
 
+    private void drawHitBoxes(Graphics2D g2d, double interpolation) {
+        g2d.setColor(Color.RED);
+        for (Entity e : this.renderComponents.keySet()) {
+            if (e.has(CollisionComponent.class)) {
+                PositionComponent pc = e.get(PositionComponent.class);
+                CollisionComponent cc = e.get(CollisionComponent.class);
+                int radius = (int) Math.round(cc.getRadius()*this.camera.getScale());
+                Vector2D translatedPos =
+                    this.camera.translate(pc.futurePos(interpolation), this.gameLevel);
+                g2d.drawOval((int) Math.round(translatedPos.x)-radius,
+                             (int) Math.round(translatedPos.y)-radius,
+                             2*radius, 2*radius);
+            } else {
+                continue;
+            }
+        }
+    }
+
     private void drawImage(Graphics2D g2d,
                           BufferedImage img,
                           PositionComponent pc,
@@ -126,6 +147,10 @@ public class Scene {
         g2d.drawImage(img, leftX, topY, null);
 
         g2d.setTransform(oldTransform);
+    }
+
+    public void toggleShowHitBoxes() {
+        this.showHitBoxes = !this.showHitBoxes;
     }
 
     public Camera getCamera() {

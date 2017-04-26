@@ -31,6 +31,7 @@ public final class RcCreator {
             put(EntityType.COLLECTIBLE_QUAD, new Sprite("collectible_quad.png"));
             put(EntityType.COLLECTIBLE_SHIELD, new Sprite("collectible_shield.png"));
             put(EntityType.ENEMY_CLAG_BOT, new Sprite("enemy_clag_bot.png"));
+            put(EntityType.TELEPORTER, new Sprite("teleporter_1.png"));
     }};
 
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})
@@ -47,6 +48,7 @@ public final class RcCreator {
             put(EntityType.COLLECTIBLE_QUAD, RenderPriority.STATIC);
             put(EntityType.COLLECTIBLE_SHIELD, RenderPriority.STATIC);
             put(EntityType.ENEMY_CLAG_BOT, RenderPriority.DYNAMIC);
+            put(EntityType.TELEPORTER, RenderPriority.STATIC);
     }};
 
     private RcCreator() {}
