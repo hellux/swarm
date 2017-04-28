@@ -90,7 +90,10 @@ public final class EntityCreator {
         pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
         
-        e.add(new CollisionComponent(40));
+        CollisionComponent cc = new CollisionComponent(40);
+        cc.whitelist(EntityType.PLAYER);
+        e.add(cc);
+        
         e.add(new CollectibleComponent(coll));
     }
 
@@ -113,14 +116,14 @@ public final class EntityCreator {
         pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
 
-        e.add(new CollisionComponent(113));
+        e.add(new CollisionComponent(1));
     }
 
     private static void createPlayer(Entity e) {
         e.add(new HealthComponent(1, 100));
         e.add(new ThrustComponent());
 
-        PositionComponent pc = new PositionComponent(new Vector2D(300, 0));
+        PositionComponent pc = new PositionComponent();
         pc.setDrag(true);
         e.add(pc);
 
@@ -142,12 +145,12 @@ public final class EntityCreator {
         Entity e = new Entity(EntityType.ENEMY_CLAG_BOT);
         
         e.add(new HealthComponent(20));
-        e.add(new PositionComponent());
         e.add(new ClagBotComponent());
         e.add(new KnockbackComponent());
 
         CollisionComponent cc = new CollisionComponent(103);
         cc.setDamage(40);
+        cc.whitelist(EntityType.PLAYER);
         e.add(cc);
 
         ThrustComponent tc = new ThrustComponent();

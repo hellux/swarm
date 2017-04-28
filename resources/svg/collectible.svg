@@ -252,13 +252,13 @@
      fit-margin-left="30"
      fit-margin-right="30"
      fit-margin-bottom="30"
-     inkscape:zoom="0.37597656"
-     inkscape:cx="-656.88851"
-     inkscape:cy="74.618749"
+     inkscape:zoom="3.0078125"
+     inkscape:cx="3.4260438"
+     inkscape:cy="42.285224"
      inkscape:window-x="20"
      inkscape:window-y="50"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="g2672"
      inkscape:guide-bbox="true"
      inkscape:measure-start="0,0"
      inkscape:measure-end="0,0"
@@ -2643,9 +2643,10 @@
          cy="191.64645"
          cx="64"
          id="path2272"
-         style="opacity:1;fill:none;fill-opacity:1;stroke:#006fb3;stroke-width:11.33858299;stroke-opacity:1;filter:url(#filter2452)" />
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#006fb3;stroke-width:11.33858299;stroke-opacity:1;filter:url(#filter2452)"
+         transform="matrix(1.0747184,0,0,1.0747184,-4.7819752,-14.319509)" />
       <g
-         transform="translate(-0.972272,5e-6)"
+         transform="matrix(1.0747184,0,0,1.0747184,-5.8268938,-14.319504)"
          id="g2663">
         <path
            style="fill:url(#linearGradient2648);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.5783px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

@@ -8,9 +8,9 @@ import java.util.logging.*;
 import java.util.function.Consumer;
 import java.awt.image.BufferedImage;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.components.PlayerComponent;
-import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
-import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevelCreator;
+import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
@@ -170,9 +170,16 @@ public final class GamePanel extends JPanel {
         super.paintComponent(g);
 
         this.scene.render((Graphics2D) g, this.interpolation);
+        this.drawHud(g);
+    }
+
+    private void drawHud(Graphics g) {
         this.drawCursor(g);
         if (this.showFPS) {
             this.displayFPS(g);
+        }
+        if (this.gameLevel.isObjectiveComplete()) {
+            this.drawIndicator(g);
         }
     }
 
@@ -182,6 +189,26 @@ public final class GamePanel extends JPanel {
             (int) (NANOSECONDS_PER_SECOND/this.delay)),
             0, g.getFont().getSize()
         );
+    }
+
+    private void drawIndicator(Graphics g) {
+        Entity player = gameLevel.getPlayer();
+        Entity teleporter = gameLevel.getTeleporter();
+
+        if (teleporter != null) {
+            Vector2D difference = Vector2D.subtract(
+                teleporter.get(PositionComponent.class).getPosition(),
+                player.get(PositionComponent.class).getPosition()
+            );
+            Vector2D pos = Vector2D.add(
+                this.center,
+                Vector2D.fromLengthRotation(this.cursorAreaRadius, difference.rotation())
+            );
+            int diameter = this.cursorAreaRadius/20;
+            g.setColor(Color.BLUE);
+            g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2,
+                       diameter, diameter);
+        }
     }
 
     private void drawCursor(Graphics g) {

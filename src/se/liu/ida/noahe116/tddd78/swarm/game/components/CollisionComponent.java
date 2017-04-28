@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 public class CollisionComponent extends Component {
     public final double radius;
     private int damage = 0;
     private boolean knockback = false;
-    private List<Entity> ignore = new ArrayList<>();
+
+    private boolean blacklist = true;
+    private List<EntityType> typeBlacklist = new ArrayList<>();
+    private List<EntityType> typeWhitelist = new ArrayList<>();
 
     public CollisionComponent(double r) {
         this.radius = r;
@@ -88,7 +91,7 @@ public class CollisionComponent extends Component {
      **/ 
     public boolean collidesWith(CollisionComponent cc, GameLevel level) {
         //TODO check future postitons and interpolate the collision point
-        if (this.ignore.contains(cc.getEntity()) || cc.ignores(this.entity)) {
+        if (this.ignores(cc.entity) || cc.ignores(this.entity)) {
             return false;
         }
         
@@ -114,11 +117,26 @@ public class CollisionComponent extends Component {
         return this.damage;
     }
 
-    public void ignore(Entity e) {
-        this.ignore.add(e);
+    public void blacklist(EntityType...entityTypes) {
+        this.blacklist = true;
+        for (EntityType e : entityTypes) {
+            this.typeBlacklist.add(e);
+        }
     }
 
+    public void whitelist(EntityType...entityTypes) {
+        this.blacklist = false;
+        for (EntityType e : entityTypes) {
+                this.typeWhitelist.add(e);
+            }
+        }
+
     public boolean ignores(Entity e) {
-        return this.ignore.contains(e);
+        EntityType type = e.getType();
+        if (this.blacklist) {
+            return this.typeBlacklist.contains(type);
+        } else {
+            return !this.typeWhitelist.contains(type);
+        }
     }
 }

@@ -14,9 +14,10 @@ import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
 public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
-    private static final Random RAND = new Random();
 
     private Entity player;
+    private Entity teleporter = null;
+
     private final List<Entity> entities = new LinkedList<>();
     private final double size;
     private final GameLevelSpec spec;
@@ -29,29 +30,33 @@ public class GameLevel {
 
     private int crystalCount = 0;
     private boolean objectiveComplete = false;
+    private boolean levelComplete = false;
 
     public GameLevel(GameLevelSpec spec) {
         this.size = spec.getSize();
-        this.player = EntityCreator.create(EntityType.PLAYER);
-        this.add(this.player);
         this.spawn(spec.createStartEntities());
+        this.spawnPlayer();
 
         this.spec = spec;
     }
 
     /**
      * Place an entity randomly on the map.
+     * A PositionComponent will be added if the entity doesn't have one.
      * TODO avoid collisions
      **/
     private void spawn(Entity e) {
-        PositionComponent pc = e.get(PositionComponent.class);
-        if (pc == null) {
-            LOGGER.log(Level.WARNING, "can't spawn entity, no poscomp: " + e);
+        PositionComponent pc;
+
+        if (e.has(PositionComponent.class)) {
+            pc = e.get(PositionComponent.class);
         } else {
-            pc.setPosition(new Vector2D(RAND.nextInt((int)this.size),
-                                        RAND.nextInt((int)this.size)));
-            this.add(e);
+            pc = new PositionComponent();
+            e.add(pc);
         }
+
+        pc.setPosition(new Vector2D(Math.random()*this.size, Math.random()*this.size));
+        this.add(e);
     }
 
     private void spawn(List<Entity> entities) {
@@ -59,6 +64,25 @@ public class GameLevel {
             this.spawn(e);
         }
     }
+
+    private void spawnPlayer() {
+        this.teleporter = EntityCreator.create(EntityType.TELEPORTER);
+        this.teleporter.add(new TimerComponent(500));
+        this.player = EntityCreator.create(EntityType.PLAYER);
+
+        this.spawn(this.teleporter);
+        this.player.get(PositionComponent.class).setPosition(
+            this.teleporter.get(PositionComponent.class).getPosition()
+        );
+        this.add(this.player);
+    }
+
+    private void spawnEndTeleporter() {
+        Entity teleporter = EntityCreator.create(EntityType.TELEPORTER);
+        teleporter.add(new EndTeleporterComponent());
+        this.spawn(teleporter);
+    }
+
 
     private void updateWave() {
         if (this.wave < this.spec.getWaveCount()) {
@@ -110,14 +134,24 @@ public class GameLevel {
         }
     }
 
-    public void update() {
+    public boolean update() {
+        if (this.objectiveComplete) this.spawnEndTeleporter();
         this.updateWave();
         this.checkCollisions();
         this.updateEntities();
+        return this.levelComplete;
     }
 
     public double getSize() {
         return this.size;
+    }
+
+    public void endLevel() {
+        this.levelComplete = true;
+    }
+
+    public boolean isObjectiveComplete() {
+        return this.objectiveComplete;
     }
 
     public void add(Entity e) {
@@ -137,6 +171,10 @@ public class GameLevel {
 
     public Entity getPlayer() {
         return this.player;
+    }
+
+    public Entity getTeleporter() {
+        return this.teleporter;
     }
 
     public LevelType getType() {

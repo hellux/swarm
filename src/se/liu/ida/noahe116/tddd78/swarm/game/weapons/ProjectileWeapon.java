@@ -66,7 +66,7 @@ public class ProjectileWeapon extends Weapon {
 
             CollisionComponent cc = new CollisionComponent(this.radius);
             cc.setDamage(this.damage);
-            cc.ignore(e);
+            cc.blacklist(e.getType());
 
             Entity proj = new Entity(this.entityType);
             proj.add(new TimerComponent(LIFETIME));
