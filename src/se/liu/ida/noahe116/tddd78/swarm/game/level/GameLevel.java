@@ -63,7 +63,7 @@ public class GameLevel {
 
     private void spawnPlayer() {
         Entity teleporter = EntityCreator.create(EntityType.TELEPORTER);
-        teleporter.add(new TimerComponent(500));
+        teleporter.add(new TimerComponent(200));
         this.player = EntityCreator.create(EntityType.PLAYER);
 
         this.spawn(teleporter);

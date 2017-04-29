@@ -83,7 +83,7 @@ public final class GameLevelCreator {
      * @param level number of level
      * @return generated level
      **/
-    public GameLevel getLevel(int level) {
+    public GameLevel createLevel(int level) {
         // Makes sure RNG sequence is equal for equal seeds
         // Specs are always generated from level 1 in order
         if (this.specs.size() < level) {

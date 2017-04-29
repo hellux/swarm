@@ -16,7 +16,7 @@ public final class Swarm {
         JFrame frame = new JFrame(WINDOW_TITLE);
         
         frame.setLayout(new BorderLayout());
-        frame.add(new GamePanel(), BorderLayout.CENTER);
+        frame.add(new MainPanel(), BorderLayout.CENTER);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setSize(new Dimension(1280, 720));

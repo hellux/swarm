@@ -39,10 +39,10 @@ public final class GamePanel extends JPanel {
     private static final double CURSOR_RADIUS_RATIO = 0.3;
 
     private Robot robot = null;
-    private final GameLevel gameLevel;
-    private final Scene scene;
-    private final Thread thread;
-    private final PlayerComponent playerComponent;
+    private GameLevel gameLevel = null;
+    private Scene scene = null;
+    private Thread thread = null;
+    private PlayerComponent playerComponent = null;
 
     private Vector2D center = null;
     private int cursorAreaRadius;
@@ -50,17 +50,10 @@ public final class GamePanel extends JPanel {
     private double interpolation;
     private long delay;
 
+    private boolean gameActive = false;
     private boolean showFPS = true;
-    
-    public GamePanel() {
-        GameLevelCreator creator = new GameLevelCreator("hej");
-        this.gameLevel = creator.getLevel(1);
 
-        this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
-        this.scene = new Scene(gameLevel);
-        
-        this.setKeyBinds();
-        this.setMouseBinds();
+    public GamePanel() {
         this.createComponentListener();
         this.hideCursor();
 
@@ -69,9 +62,20 @@ public final class GamePanel extends JPanel {
         } catch (AWTException e) {
             LOGGER.log(Level.SEVERE, "failed to create robot for mouse: " + e.getMessage(), e);
         }
+    }
+
+    public void startGame(GameLevel gameLevel) {
+        this.gameLevel = gameLevel;
+        this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
+        this.scene = new Scene(gameLevel);
+        
+        this.setKeyBinds();
+        this.setMouseBinds();
 
         this.thread = new Thread(this::gameLoop, "MainLoop");
         this.thread.start();
+
+        this.gameActive = true;
     }
 
     /**
@@ -145,7 +149,9 @@ public final class GamePanel extends JPanel {
         long currentFrame = nextTick;
         long nextFrame = nextTick;
 
-        while (true) {
+        boolean levelEnded = false;
+
+        while (!levelEnded) {
             sleepUntil(nextFrame);
 
             currentFrame = System.nanoTime();
@@ -154,7 +160,7 @@ public final class GamePanel extends JPanel {
             nextFrame = currentFrame + MIN_FRAME_PERIOD;
 
             if (currentFrame > nextTick) {
-                this.gameLevel.update();
+                levelEnded = this.gameLevel.update();
                 nextTick += TICK_PERIOD;
             } 
             
@@ -163,14 +169,18 @@ public final class GamePanel extends JPanel {
             this.handleMouse();
             this.repaint();
         }
+        
+        this.gameActive = false;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        this.scene.render((Graphics2D) g, this.interpolation);
-        this.drawHud(g);
+        if (this.gameActive) {
+            this.scene.render((Graphics2D) g, this.interpolation);
+            this.drawHud(g);
+        }
     }
 
     private void drawHud(Graphics g) {
@@ -266,7 +276,9 @@ public final class GamePanel extends JPanel {
         final ComponentListener dimensionUpdater = new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                GamePanel.this.updateDimensions();
+                if(GamePanel.this.gameActive) {
+                    GamePanel.this.updateDimensions();
+                }
             }
         };
 
