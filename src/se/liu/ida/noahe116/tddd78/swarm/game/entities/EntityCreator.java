@@ -116,7 +116,11 @@ public final class EntityCreator {
         pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
 
-        e.add(new CollisionComponent(1));
+        CollisionComponent cc = new CollisionComponent(1);
+        cc.whitelist(EntityType.PLAYER);
+        e.add(cc);
+
+        e.add(new TeleporterComponent());
     }
 
     private static void createPlayer(Entity e) {
@@ -150,7 +154,6 @@ public final class EntityCreator {
 
         CollisionComponent cc = new CollisionComponent(103);
         cc.setDamage(40);
-        cc.whitelist(EntityType.PLAYER);
         e.add(cc);
 
         ThrustComponent tc = new ThrustComponent();

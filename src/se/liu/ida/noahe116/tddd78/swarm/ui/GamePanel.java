@@ -175,12 +175,8 @@ public final class GamePanel extends JPanel {
 
     private void drawHud(Graphics g) {
         this.drawCursor(g);
-        if (this.showFPS) {
-            this.displayFPS(g);
-        }
-        if (this.gameLevel.isObjectiveComplete()) {
-            this.drawIndicator(g);
-        }
+        this.drawObjective(g);
+        if (this.showFPS) this.displayFPS(g);
     }
 
     private void displayFPS(Graphics g) {
@@ -191,33 +187,28 @@ public final class GamePanel extends JPanel {
         );
     }
 
-    private void drawIndicator(Graphics g) {
-        Entity player = gameLevel.getPlayer();
-        Entity teleporter = gameLevel.getTeleporter();
+    private void drawCircle(Graphics g, Vector2D pos, Color color) {
+        g.setColor(color);
+        int diameter = this.cursorAreaRadius/30;
+        g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2, diameter, diameter); 
+    }
 
-        if (teleporter != null) {
-            Vector2D difference = Vector2D.subtract(
-                teleporter.get(PositionComponent.class).getPosition(),
-                player.get(PositionComponent.class).getPosition()
-            );
+    private void drawObjective(Graphics g) {
+        Vector2D dir = this.gameLevel.getObjectiveDirection(this.interpolation);
+        if (dir != null) {
             Vector2D pos = Vector2D.add(
                 this.center,
-                Vector2D.fromLengthRotation(this.cursorAreaRadius, difference.rotation())
+                Vector2D.fromLengthRotation(this.cursorAreaRadius/3, dir.rotation()) 
             );
-            int diameter = this.cursorAreaRadius/20;
-            g.setColor(Color.BLUE);
-            g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2,
-                       diameter, diameter);
+            this.drawCircle(g, pos, Color.WHITE);
         }
     }
 
     private void drawCursor(Graphics g) {
         Point mousePos = this.getMousePosition();
         if (mousePos != null) {
-            g.setColor(Color.RED);
-            int diameter = this.cursorAreaRadius/20;
-            g.drawOval(mousePos.x-diameter/2, mousePos.y-diameter/2, diameter, diameter); 
-            }
+            this.drawCircle(g, new Vector2D(mousePos), Color.RED);
+        }
     }
 
     private void setKeyBinds() {

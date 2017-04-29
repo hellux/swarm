@@ -66,7 +66,7 @@ public final class GameLevelCreator {
                     .put(EnemyType.CLAG_BOT, 1))
                 .withSpawnDelay(10))
             .asteroidCount(15)
-            .crystalCount(10)
+            .crystalCount(1)
             .collectibleCount(25)
             .withCollectibles(new ProbabilityMap<CollectibleType>()
                 .put(CollectibleType.SHIELD, 2)

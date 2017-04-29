@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityCreator;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
@@ -16,7 +13,6 @@ public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
 
     private Entity player;
-    private Entity teleporter = null;
 
     private final List<Entity> entities = new LinkedList<>();
     private final double size;
@@ -66,21 +62,21 @@ public class GameLevel {
     }
 
     private void spawnPlayer() {
-        this.teleporter = EntityCreator.create(EntityType.TELEPORTER);
-        this.teleporter.add(new TimerComponent(500));
+        Entity teleporter = EntityCreator.create(EntityType.TELEPORTER);
+        teleporter.add(new TimerComponent(500));
         this.player = EntityCreator.create(EntityType.PLAYER);
 
-        this.spawn(this.teleporter);
+        this.spawn(teleporter);
         this.player.get(PositionComponent.class).setPosition(
-            this.teleporter.get(PositionComponent.class).getPosition()
+            teleporter.get(PositionComponent.class).getPosition()
         );
         this.add(this.player);
     }
 
     private void spawnEndTeleporter() {
         Entity teleporter = EntityCreator.create(EntityType.TELEPORTER);
-        teleporter.add(new EndTeleporterComponent());
         this.spawn(teleporter);
+        this.objectiveComplete = true;
     }
 
 
@@ -135,7 +131,6 @@ public class GameLevel {
     }
 
     public boolean update() {
-        if (this.objectiveComplete) this.spawnEndTeleporter();
         this.updateWave();
         this.checkCollisions();
         this.updateEntities();
@@ -147,11 +142,9 @@ public class GameLevel {
     }
 
     public void endLevel() {
-        this.levelComplete = true;
-    }
-
-    public boolean isObjectiveComplete() {
-        return this.objectiveComplete;
+        if (this.objectiveComplete) {
+            this.levelComplete = true;
+        }
     }
 
     public void add(Entity e) {
@@ -165,16 +158,12 @@ public class GameLevel {
     public void addCrystal() {
         this.crystalCount++;
         if (this.crystalCount == this.spec.getCrystalCount()) {
-            this.objectiveComplete = true;
+            this.spawnEndTeleporter();
         }
     }
 
     public Entity getPlayer() {
         return this.player;
-    }
-
-    public Entity getTeleporter() {
-        return this.teleporter;
     }
 
     public LevelType getType() {
@@ -183,6 +172,43 @@ public class GameLevel {
 
     public List<Entity> getEntities() {
         return this.entities;
+    }
+
+    public Vector2D getObjectiveDirection(double interpolation) {
+        Entity objective = null;
+
+        if (this.objectiveComplete) {
+            objective = this.closestOfType(EntityType.TELEPORTER, this.player);
+        } else if (this.spec.levelType == LevelType.HARVEST) {
+            objective = this.closestOfType(EntityType.COLLECTIBLE_CRYSTAL, this.player);
+        }
+
+        return objective == null ? 
+            null : 
+            Vector2D.subtract(
+                objective.get(PositionComponent.class).futurePos(interpolation),
+                this.player.get(PositionComponent.class).futurePos(interpolation)
+            ).normal();
+    }
+    
+    public Entity closestOfType(EntityType type, Entity entity) {
+        Vector2D entityPos = entity.get(PositionComponent.class).getPosition();
+        Entity closestEntity = null;
+        Vector2D closestPos = null;
+        double minDistance = 0;
+        for (Entity e : this.entities) {
+            if (e.getType() == type) {
+                Vector2D pos = e.get(PositionComponent.class).getPosition();
+                double distance = Vector2D.distanceSq(entityPos, pos);
+                if (closestPos == null || distance < minDistance) {
+                    closestEntity = e;
+                    closestPos = pos;
+                    minDistance = distance;
+                }
+            }
+        }
+
+        return closestEntity;
     }
 
     /**
