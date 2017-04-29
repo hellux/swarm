@@ -6,7 +6,11 @@ import java.awt.geom.Point2D;
 import java.awt.event.*;
 import java.util.logging.*;
 import java.util.function.Consumer;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
@@ -24,8 +28,9 @@ public final class GamePanel extends JPanel {
     /**
      * Amount of times the gameLevel will be updated (tick) per second.
      **/
-    private static final int TICKRATE = 25;
-    private static final long TICK_PERIOD = NANOSECONDS_PER_SECOND/ TICKRATE;
+    private static final int NORMAL_TICKRATE = 40;
+    private static final int SLOW_TICKRATE = 5;
+    private int tickrate = NORMAL_TICKRATE;
 
     /**
      * Maximum frames per second that will be rendered.
@@ -38,10 +43,11 @@ public final class GamePanel extends JPanel {
      **/
     private static final double CURSOR_RADIUS_RATIO = 0.3;
 
+    private final MainPanel mainPanel;
+
     private Robot robot = null;
     private GameLevel gameLevel = null;
     private Scene scene = null;
-    private Thread thread = null;
     private PlayerComponent playerComponent = null;
 
     private Vector2D center = null;
@@ -50,10 +56,15 @@ public final class GamePanel extends JPanel {
     private double interpolation;
     private long delay;
 
+    private boolean quit = false;
     private boolean gameActive = false;
     private boolean showFPS = true;
 
-    public GamePanel() {
+    private Map<Runnable, Long> taskQueue = new HashMap<>();
+
+    public GamePanel(MainPanel mainPanel) {
+        this.setBackground(Color.BLACK);
+        this.mainPanel = mainPanel;
         this.createComponentListener();
         this.hideCursor();
 
@@ -64,18 +75,24 @@ public final class GamePanel extends JPanel {
         }
     }
 
-    public void startGame(GameLevel gameLevel) {
+    public Thread startGame(GameLevel gameLevel) {
         this.gameLevel = gameLevel;
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
         
         this.setKeyBinds();
         this.setMouseBinds();
-
-        this.thread = new Thread(this::gameLoop, "MainLoop");
-        this.thread.start();
+        this.updateDimensions();
+        this.tickrate = NORMAL_TICKRATE;
+        this.taskQueue.clear();
 
         this.gameActive = true;
+        this.quit = false;
+
+        Thread thread = new Thread(this::gameLoop, "gameLoop");
+        thread.start();
+
+        return thread;
     }
 
     /**
@@ -136,6 +153,27 @@ public final class GamePanel extends JPanel {
         }
     }
 
+    private void queue(Runnable method, int seconds) {
+        this.taskQueue.put(method, System.nanoTime() + NANOSECONDS_PER_SECOND*seconds);
+    }
+
+    private void executeQueue() {
+        List<Runnable> remove = new ArrayList<>();
+        Long currentTime = System.nanoTime();
+
+        for (Map.Entry<Runnable, Long> item : this.taskQueue.entrySet()) {
+            if (item.getValue() < currentTime) {
+                Runnable method = item.getKey();
+                method.run();
+                remove.add(method);
+            }
+        }
+
+        for (Runnable method : remove) {
+            this.taskQueue.remove(method);
+        }
+    }
+
     /**
      * Run the main loop that updates and draws the gameLevel.
      * <p> The gameLevel is updated depending on the TICKRATE constant. The drawing
@@ -151,36 +189,48 @@ public final class GamePanel extends JPanel {
 
         boolean levelEnded = false;
 
-        while (!levelEnded) {
+        while (!this.quit) {
             sleepUntil(nextFrame);
 
+            this.executeQueue();
             currentFrame = System.nanoTime();
             this.delay = currentFrame - lastFrame;
             lastFrame = currentFrame;
             nextFrame = currentFrame + MIN_FRAME_PERIOD;
 
             if (currentFrame > nextTick) {
-                levelEnded = this.gameLevel.update();
-                nextTick += TICK_PERIOD;
+                if (this.gameLevel.update()) {
+                    levelEnded = true;
+                    this.tickrate = SLOW_TICKRATE;
+                    this.queue(this::quit, 1);
+                }
+                nextTick += this.tickPeriod();
             } 
             
-            this.interpolation = (double) (System.nanoTime() + TICK_PERIOD - nextTick)
-                                        / TICK_PERIOD;
+            this.interpolation = (double) (System.nanoTime() + this.tickPeriod() - nextTick)
+                                        / this.tickPeriod();
             this.handleMouse();
             this.repaint();
         }
-        
+       
         this.gameActive = false;
+    }
+
+    private void quit() {
+        this.quit = true;
+    }
+
+    private void activateSlowMotion() {
+        this.tickrate = SLOW_TICKRATE;
+        this.queue(() -> this.tickrate = NORMAL_TICKRATE, 3);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (this.gameActive) {
-            this.scene.render((Graphics2D) g, this.interpolation);
-            this.drawHud(g);
-        }
+        this.scene.render((Graphics2D) g, this.interpolation);
+        this.drawHud(g);
     }
 
     private void drawHud(Graphics g) {
@@ -231,10 +281,14 @@ public final class GamePanel extends JPanel {
         this.bindKey(KeyStroke.getKeyStroke("O"), () -> this.playerComponent.equipPrimary(2));
         this.bindKey(KeyStroke.getKeyStroke("E"), () -> this.playerComponent.equipPrimary(3));
         this.bindKey(KeyStroke.getKeyStroke("U"), () -> this.playerComponent.equipPrimary(4));
+        this.bindKey(KeyStroke.getKeyStroke("I"), () -> this.activateSlowMotion());
 
     }
 
     private void setMouseBinds() {
+        for (MouseListener ml : this.getMouseListeners()) {
+            this.removeMouseListener(ml);
+        }
         this.bindMouseToggle(MouseEvent.BUTTON1, this.playerComponent::firePrimary);
         this.bindMouseToggle(MouseEvent.BUTTON2, this.playerComponent::fireSecondary);
     }
@@ -295,6 +349,10 @@ public final class GamePanel extends JPanel {
         Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(
             cursorImage, new Point(0, 0), "blank");
         this.setCursor(cursor);
+    }
+
+    private long tickPeriod() {
+        return NANOSECONDS_PER_SECOND / this.tickrate;
     }
 }
 

@@ -38,11 +38,17 @@ public class PositionComponent extends LiveComponent {
     public Vector2D futurePos(double interpolation) {
         if (this.active && !this.entity.isKilled()) {
             Vector2D futureVel = Vector2D.multiply(
-                Vector2D.add(this.velocity, this.acceleration),
-                this.drag*interpolation
+                Vector2D.add(
+                    this.velocity, 
+                    Vector2D.multiply(
+                        this.acceleration,
+                        interpolation
+                    )
+                ),
+                interpolation*(1-(1-drag)*interpolation)
             );
             return Vector2D.add(this.position,
-                                Vector2D.multiply(futureVel, interpolation));
+                                futureVel);
         } else {
             return this.position;
         }

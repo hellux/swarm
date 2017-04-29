@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
+import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 
 /**
  * Creates levels with a specific seed.
@@ -47,19 +48,19 @@ public final class GameLevelCreator {
     }
 
     private GameLevelSpec generateHarvestSpec(int level) {
-        GameLevelSpec spec = new GameLevelSpec(LevelType.HARVEST);
+        GameLevelSpec spec = new GameLevelSpec(LevelType.HARVEST, level);
 
         return spec;
     }
 
     private GameLevelSpec generateEliminateSpec(int level) {
-        GameLevelSpec spec = new GameLevelSpec(LevelType.ELIMINATE);
+        GameLevelSpec spec = new GameLevelSpec(LevelType.ELIMINATE, level);
 
         return spec;
     }
 
     private GameLevelSpec generateLootSpec(int level) {
-        return new GameLevelSpec(LevelType.HARVEST)
+        return new GameLevelSpec(LevelType.HARVEST, level)
             .withWave(new Wave()
                 .maxEnemyCount(20)
                 .withEnemies(new ProbabilityMap<EnemyType>()
@@ -75,6 +76,16 @@ public final class GameLevelCreator {
                 .put(CollectibleType.QUAD, 1));
     }
 
+    private GameLevelSpec getSpec(int level) {
+        // Makes sure RNG sequence is equal for equal seeds
+        // Specs are always generated from level 1 in order
+        if (this.specs.size() < level) {
+            this.generateSpecs(level);
+        }
+
+        return this.specs.get(level-1);
+    }
+
     /**
      * Returns a specific level generated with the seed of the instance.
      * A specific seed and level number will always produce a level 
@@ -84,12 +95,10 @@ public final class GameLevelCreator {
      * @return generated level
      **/
     public GameLevel createLevel(int level) {
-        // Makes sure RNG sequence is equal for equal seeds
-        // Specs are always generated from level 1 in order
-        if (this.specs.size() < level) {
-            this.generateSpecs(level);
-        }
+        return new GameLevel(this.getSpec(level));
+    }
 
-        return new GameLevel(this.specs.get(level-1));
+    public GameLevel createLevel(int level, Entity player) {
+        return new GameLevel(this.getSpec(level), player);
     }
 }

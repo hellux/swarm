@@ -7,7 +7,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
  * Handles thrust mechanics for entities.
  **/
 public class ThrustComponent extends LiveComponent {
-    private static final double MAX_THRUST = 8;
+    private static final double MAX_THRUST = 4;
 
     private double thrustPower;
     private boolean thrust;

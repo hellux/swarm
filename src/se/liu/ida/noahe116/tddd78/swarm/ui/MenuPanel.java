@@ -6,6 +6,8 @@ import java.util.logging.*;
 import java.io.IOException;
 import java.nio.file.*;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.Game;
+
 @SuppressWarnings("serial")
 public final class MenuPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MenuPanel.class.getName());
@@ -13,6 +15,8 @@ public final class MenuPanel extends JPanel {
     private static String MAINMENU = "mainMenu";
     private static String PLAYMENU = "playMenu";
     private static String HELPMENU = "helpMenu";
+
+    private final MainPanel mainPanel;
 
     private final MainMenu mainMenu;
     private final PlayMenu playMenu;
@@ -40,8 +44,50 @@ public final class MenuPanel extends JPanel {
     }
 
     public final class PlayMenu extends JPanel {
+        private JLabel info = new JLabel();
+        private JTextField levelField = new JTextField(1);
+        private JButton begin = new JButton("Begin");
+
+        private Game game = null;
+
         public PlayMenu() {
-            
+            JButton back = new JButton("Back");
+            back.addActionListener((e) -> MenuPanel.this.showMenu(MAINMENU));
+            this.setLayout(new GridLayout(2, 2));
+            this.begin.addActionListener((e) -> this.play()); 
+            this.add(info);
+            this.add(levelField);
+            this.add(begin);
+            this.add(back);
+        }
+
+        public void play() {
+            int level;
+            try {
+                level = Integer.parseInt(this.levelField.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter an integer as level.");
+                return;
+            }
+            if (this.game.validLevel(level)) {
+                game.setCurrentLevel(level);
+                MenuPanel.this.mainPanel.startGame(this.game);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter a level between 1 and " +
+                    this.game.getMaxLevel());
+            }
+        }
+
+        public void setGame(Game game) {
+            this.game = game;
+            this.info.setText("Level: " + game.getMaxLevel() + " Name: " + game.getName());
+            this.levelField.setText(Integer.toString((game.getMaxLevel())));
+        }
+    }
+
+    public final class CreateGameMenu extends JPanel {
+        public CreateGameMenu() {
+
         }
     }
 
@@ -73,7 +119,9 @@ public final class MenuPanel extends JPanel {
         }
     }
 
-    public MenuPanel() {
+    public MenuPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+
         this.layout = new CardLayout();
         this.setLayout(this.layout);
 
@@ -86,6 +134,8 @@ public final class MenuPanel extends JPanel {
         this.add(helpMenu, HELPMENU);
 
         this.showMenu(MAINMENU);
+
+        this.playMenu.setGame(new Game(1, "Noah"));
     }
 
     private void showMenu(String menu) {

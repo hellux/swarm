@@ -98,7 +98,7 @@ public final class EntityCreator {
     }
 
     private static void createAsteroid(Entity e) {
-        PositionComponent pc = new PositionComponent(new Vector2D(-500, 0));
+        PositionComponent pc = new PositionComponent();
         pc.setActive(false);
         e.add(pc);
 

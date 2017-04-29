@@ -1,22 +1,52 @@
 package se.liu.ida.noahe116.tddd78.swarm.game;
 
+import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
+
 public class Game {
     private int score;
     private int maxLevel;
+    private String name;
+    private GameLevelCreator gameLevelCreator;
    
-    private int currentLevel;
+    private int currentLevel = 0;
 
-    private Game(int level) {
+    public Game(int level, String name) {
         this.score = 0;
-
         this.maxLevel = level;
+        this.name = name;
+        this.gameLevelCreator = new GameLevelCreator(name);
     }
 
-    public Game() {
-        this(1);
+    public boolean validLevel(int level) {
+        return 0 < level && level <= this.maxLevel;
     }
 
-    public Game(String savedSession) {
-        this(1);
+    public GameLevel getLevel() {
+        return this.gameLevelCreator.createLevel(this.currentLevel);
+    }
+
+    public void setCurrentLevel(int level) {
+        if (this.validLevel(level)) {
+            this.currentLevel = level;
+        } else {
+            throw new IllegalArgumentException("Invalid level: " + level);
+        }
+    }
+
+    public GameLevel getNextLevel(GameLevel gameLevel) {
+        int level = gameLevel.getLevel();
+        if (level == this.maxLevel) {
+            this.maxLevel++;
+        }
+        this.currentLevel = level+1;
+        return this.gameLevelCreator.createLevel(this.currentLevel, gameLevel.getPlayer());
+    }
+
+    public int getMaxLevel() {
+        return this.maxLevel;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

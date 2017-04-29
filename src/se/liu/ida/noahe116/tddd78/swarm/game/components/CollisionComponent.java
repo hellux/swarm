@@ -60,7 +60,7 @@ public class CollisionComponent extends Component {
         Vector2D wrappedCenter = level.wrapAround(this.center(), cc.center());
         Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);
         return Vector2D.multiply(
-            difference.normal(),
+            difference.unit(),
             Math.abs(difference.magnitude() - this.radius - cc.radius)
         );
     }

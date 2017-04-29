@@ -18,6 +18,7 @@ public class GameLevelSpec {
     private int size = 15000;
 
     public final LevelType levelType;
+    public final int level;
     private int crystalCount = 0;
 
     private int collectibleCount= 0;
@@ -27,8 +28,9 @@ public class GameLevelSpec {
 
     private List<Wave> waves = new ArrayList<>();
 
-    public GameLevelSpec(LevelType levelType) {
+    public GameLevelSpec(LevelType levelType, int level) {
         this.levelType = levelType;
+        this.level = level;
     }
 
     public GameLevelSpec ofSize(int size) {

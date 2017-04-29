@@ -12,7 +12,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.*;
 public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
 
-    private Entity player;
+    private final Entity player;
 
     private final List<Entity> entities = new LinkedList<>();
     private final double size;
@@ -28,12 +28,17 @@ public class GameLevel {
     private boolean objectiveComplete = false;
     private boolean levelComplete = false;
 
-    public GameLevel(GameLevelSpec spec) {
+    public GameLevel(GameLevelSpec spec, Entity player) {
         this.size = spec.getSize();
+        this.player = player;
+        this.spec = spec;
+
         this.spawn(spec.createStartEntities());
         this.spawnPlayer();
+    }
 
-        this.spec = spec;
+    public GameLevel(GameLevelSpec spec) {
+        this(spec, EntityCreator.create(EntityType.PLAYER));
     }
 
     /**
@@ -64,7 +69,6 @@ public class GameLevel {
     private void spawnPlayer() {
         Entity teleporter = EntityCreator.create(EntityType.TELEPORTER);
         teleporter.add(new TimerComponent(200));
-        this.player = EntityCreator.create(EntityType.PLAYER);
 
         this.spawn(teleporter);
         this.player.get(PositionComponent.class).setPosition(
@@ -130,6 +134,10 @@ public class GameLevel {
         }
     }
 
+    public int getLevel() {
+        return this.spec.level;
+    }
+
     public boolean update() {
         this.updateWave();
         this.checkCollisions();
@@ -183,12 +191,16 @@ public class GameLevel {
             objective = this.closestOfType(EntityType.COLLECTIBLE_CRYSTAL, this.player);
         }
 
-        return objective == null ? 
-            null : 
-            Vector2D.subtract(
-                objective.get(PositionComponent.class).futurePos(interpolation),
-                this.player.get(PositionComponent.class).futurePos(interpolation)
-            ).normal();
+        if (objective == null) {
+            return null;
+        } else {
+            Vector2D objPos = objective.get(PositionComponent.class).futurePos(interpolation);
+            Vector2D playerPos = this.player.get(PositionComponent.class).futurePos(interpolation);
+            return Vector2D.subtract(
+                this.wrapAround(playerPos, objPos),
+                playerPos
+            ).unit();
+        }
     }
     
     public Entity closestOfType(EntityType type, Entity entity) {
@@ -199,10 +211,11 @@ public class GameLevel {
         for (Entity e : this.entities) {
             if (e.getType() == type) {
                 Vector2D pos = e.get(PositionComponent.class).getPosition();
-                double distance = Vector2D.distanceSq(entityPos, pos);
+                Vector2D wrappedPos = this.wrapAround(entityPos, pos);
+                double distance = Vector2D.distanceSq(entityPos, wrappedPos);
                 if (closestPos == null || distance < minDistance) {
                     closestEntity = e;
-                    closestPos = pos;
+                    closestPos = wrappedPos;
                     minDistance = distance;
                 }
             }
@@ -216,7 +229,7 @@ public class GameLevel {
      * <pre> {@code
      *
      * P   :  position of this component 
-     * P'  :  position of point to eventually be wrapped around
+     * P'  :  position of point to possibly be wrapped around
      * )(  :  pivot = (C+S/2) % S
      *
      * Cases:
@@ -236,8 +249,8 @@ public class GameLevel {
      *
      * } </pre>
      * @param p1 position 
-     * @param p2 position to eventually wrap around
-     * @return same position but eventually wrapped around.
+     * @param p2 position to possibly wrap around
+     * @return same position but possibly wrapped around.
      **/
     private double wrapAround(double p1, double p2) {
         double pivot = Math2.floorMod(p1 + this.size/2, this.size);

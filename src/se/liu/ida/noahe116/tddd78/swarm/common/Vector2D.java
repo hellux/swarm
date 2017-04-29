@@ -49,7 +49,7 @@ public class Vector2D {
         return Vector2D.multiply(this, -1);
     }
 
-    public Vector2D normal() {
+    public Vector2D unit() {
         return Vector2D.fromLengthRotation(1, this.rotation());
     }
 

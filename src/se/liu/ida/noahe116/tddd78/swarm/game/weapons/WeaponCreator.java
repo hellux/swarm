@@ -15,26 +15,26 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 public final class WeaponCreator {
     private static final Logger LOGGER = Logger.getLogger(WeaponCreator.class.getName());
 
-    private static final int DEF_CDN = 3;
+    private static final int DEF_CDN = 7;
     private static final int DEF_DMG = 5;
     private static final int DEF_RAD = 10;
-    private static final int DEF_SPD = 30;
+    private static final int DEF_SPD = 20;
 
-    private static final int SPR_CDN = 2;
+    private static final int SPR_CDN = 5;
     private static final int SPR_DMG = 10;
     private static final int SPR_RAD = 10;
     private static final int SPR_SPD = 80;
     private static final int SPR_SPR = 25;
 
-    private static final int RED_CDN = 4;
+    private static final int RED_CDN = 6;
     private static final int RED_DMG = 10;
     private static final int RED_RAD = 30;
-    private static final int RED_SPD = 50;
+    private static final int RED_SPD = 30;
 
-    private static final int QAD_CDN = 2;
+    private static final int QAD_CDN = 4;
     private static final int QAD_DMG = 40;
     private static final int QAD_RAD = 30;
-    private static final int QAD_SPD = 80;
+    private static final int QAD_SPD = 35;
 
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})
     private static final AbstractMap<WeaponType, Weapon> WEAPONS =
