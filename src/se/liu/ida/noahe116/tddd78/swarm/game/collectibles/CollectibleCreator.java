@@ -18,6 +18,7 @@ public final class CollectibleCreator {
             put(CollectibleType.QUAD, new WeaponCollectible(WeaponType.QUAD, 25));
             put(CollectibleType.SHIELD, new ShieldCollectible());
             put(CollectibleType.CRYSTAL, new CrystalCollectible());
+            put(CollectibleType.SHIP, new ExtraLifeCollectible());
         }};
 
     public static Collectible get(CollectibleType type) {

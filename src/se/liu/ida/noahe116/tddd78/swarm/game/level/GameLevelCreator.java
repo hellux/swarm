@@ -68,12 +68,13 @@ public final class GameLevelCreator {
                 .withSpawnDelay(10))
             .asteroidCount(15)
             .crystalCount(1)
-            .collectibleCount(25)
+            .collectibleCount(50)
             .withCollectibles(new ProbabilityMap<CollectibleType>()
                 .put(CollectibleType.SHIELD, 2)
                 .put(CollectibleType.RED_LASER, 1)
                 .put(CollectibleType.SPREAD, 1)
-                .put(CollectibleType.QUAD, 1));
+                .put(CollectibleType.QUAD, 1)
+                .put(CollectibleType.SHIP, 20));
     }
 
     private GameLevelSpec getSpec(int level) {
