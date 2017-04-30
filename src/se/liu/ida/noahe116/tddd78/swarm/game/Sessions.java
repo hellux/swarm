@@ -17,19 +17,10 @@ public final class Sessions {
     public static String FILE_EXTENSION = ".swrm";
     public static byte[] HEADER = "SWARM".getBytes();
 
-    @SuppressWarnings("serial")
-    public static class NoSuchSessionException extends Exception {
-        NoSuchSessionException(String message) {super(message);}
-    }
-
-    public static Game load(String name) throws NoSuchSessionException {
+    public static Game load(String name) throws IOException { 
         byte[] fileContents;
 
-        try {
-            fileContents = Files.readAllBytes(getPath(name));
-        } catch (IOException e) {
-            throw new NoSuchSessionException("could not read session file");
-        }
+        fileContents = Files.readAllBytes(getPath(name));
 
         if (hasHeader(fileContents)) {
             int index = HEADER.length;
@@ -38,7 +29,7 @@ public final class Sessions {
             );
             return new Game(level, name);
         } else {
-            throw new NoSuchSessionException("session file has no header");
+            throw new IOException("session file has no header");
         }
         
     }
@@ -48,8 +39,10 @@ public final class Sessions {
         Files.write(getPath(game.getName()), fileContents);
     }
 
-    public static Game create(String name) {
-        return new Game(1, name);
+    public static Game create(String name) throws IOException {
+        Game game = new Game(1, name);
+        Sessions.save(game);
+        return game;
     }
 
     private static boolean hasHeader(byte[] fileContents) {

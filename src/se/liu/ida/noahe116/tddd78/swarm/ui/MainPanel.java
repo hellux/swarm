@@ -3,6 +3,7 @@ package se.liu.ida.noahe116.tddd78.swarm.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.logging.*;
+import java.io.IOException;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
@@ -19,6 +20,7 @@ public final class MainPanel extends JPanel {
     private CardLayout layout;
 
     private Game game;
+    private boolean quit;
 
     public MainPanel() {
         this.setBackground(Color.BLACK);
@@ -39,15 +41,24 @@ public final class MainPanel extends JPanel {
         GameLevel gameLevel = this.game.getLevel();
         Thread gameThread = this.startLevel(gameLevel);
 
-        while (true) {
+        while (!this.quit) {
             try {
                 gameThread.join();
             } catch (InterruptedException e) {
                 LOGGER.log(Level.SEVERE, "failed to create thread for game loop");
             }
-            gameLevel = this.game.getNextLevel(gameLevel);
-            gameThread = this.startLevel(gameLevel);
+            if (!this.quit) {
+                gameLevel = this.game.getNextLevel(gameLevel);
+                try {
+                    Sessions.save(this.game);
+                } catch (IOException e) {
+                    LOGGER.log(Level.WARNING, "could not save game!", e);
+                }
+                gameThread = this.startLevel(gameLevel);
+            }
         }
+
+        System.exit(0);
     }
 
     private Thread startLevel(GameLevel gameLevel) {
@@ -59,5 +70,9 @@ public final class MainPanel extends JPanel {
         this.game = game;
         Thread thread = new Thread(this::mainLoop, "mainLoop");
         thread.start();
+    }
+
+    public void quit() {
+        this.quit = true;
     }
 }

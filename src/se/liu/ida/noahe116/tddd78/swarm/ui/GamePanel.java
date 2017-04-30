@@ -153,8 +153,8 @@ public final class GamePanel extends JPanel {
         }
     }
 
-    private void queue(Runnable method, int seconds) {
-        this.taskQueue.put(method, System.nanoTime() + NANOSECONDS_PER_SECOND*seconds);
+    private void queue(Runnable method, double seconds) {
+        this.taskQueue.put(method, System.nanoTime() + (long) (NANOSECONDS_PER_SECOND*seconds));
     }
 
     private void executeQueue() {
@@ -202,7 +202,7 @@ public final class GamePanel extends JPanel {
                 if (this.gameLevel.update()) {
                     levelEnded = true;
                     this.tickrate = SLOW_TICKRATE;
-                    this.queue(this::quit, 1);
+                    this.queue(this::quit, 0.5);
                 }
                 nextTick += this.tickPeriod();
             } 
@@ -228,9 +228,11 @@ public final class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        this.scene.render((Graphics2D) g, this.interpolation);
-        this.drawHud(g);
+        
+        if (this.scene != null) {
+            this.scene.render((Graphics2D) g, this.interpolation);
+            this.drawHud(g);
+        }
     }
 
     private void drawHud(Graphics g) {
@@ -276,7 +278,8 @@ public final class GamePanel extends JPanel {
 
         this.bindKey(KeyStroke.getKeyStroke("F3"), () -> this.showFPS = !this.showFPS);
         this.bindKey(KeyStroke.getKeyStroke("F5"), this.scene::toggleShowHitBoxes);
-        
+        this.bindKey(KeyStroke.getKeyStroke("ESCAPE"), () -> this.exit());
+
         this.bindKey(KeyStroke.getKeyStroke("A"), () -> this.playerComponent.equipPrimary(1));
         this.bindKey(KeyStroke.getKeyStroke("O"), () -> this.playerComponent.equipPrimary(2));
         this.bindKey(KeyStroke.getKeyStroke("E"), () -> this.playerComponent.equipPrimary(3));
@@ -353,6 +356,11 @@ public final class GamePanel extends JPanel {
 
     private long tickPeriod() {
         return NANOSECONDS_PER_SECOND / this.tickrate;
+    }
+
+    private void exit() {
+        this.quit = true;
+        this.mainPanel.quit();
     }
 }
 

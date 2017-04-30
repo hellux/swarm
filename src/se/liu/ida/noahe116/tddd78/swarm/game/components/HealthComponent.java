@@ -7,6 +7,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 public class HealthComponent extends Component implements CollidingComponent {
     public static final double START_SHIELD_RATIO = 0.3;
 
+    private int extraLives;
     private int healthPoints;
     private int shieldStrength;
     private final int maxShieldStrength;
@@ -15,6 +16,7 @@ public class HealthComponent extends Component implements CollidingComponent {
         if (hp < 1) throw new IllegalArgumentException("hp < 1: " + hp);
         if (shield < 0) throw new IllegalArgumentException("shield < 0: " + shield);
 
+        this.extraLives = 0;
         this.healthPoints = hp;
         this.maxShieldStrength = shield;
         this.shieldStrength = (int) (shield*START_SHIELD_RATIO);
@@ -34,6 +36,21 @@ public class HealthComponent extends Component implements CollidingComponent {
                 this.entity.kill();
             }
         }
+    }
+
+    public boolean hasExtraLives() {
+        return 0 < this.extraLives;
+    }
+
+    public void respawn() {
+        this.extraLives--;
+        this.entity.resurrect();
+    }
+
+    public void addExtraLives(int lives) {
+        if (lives < 0) throw new IllegalArgumentException("lives must be positive");
+
+        this.extraLives += lives;
     }
 
     public void addShield(int shield) {

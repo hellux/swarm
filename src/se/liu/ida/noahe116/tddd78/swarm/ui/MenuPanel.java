@@ -6,7 +6,7 @@ import java.util.logging.*;
 import java.io.IOException;
 import java.nio.file.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.Game;
+import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 @SuppressWarnings("serial")
 public final class MenuPanel extends JPanel {
@@ -44,37 +44,74 @@ public final class MenuPanel extends JPanel {
     }
 
     public final class PlayMenu extends JPanel {
-        private JLabel info = new JLabel();
+        private JLabel info = new JLabel("", SwingConstants.CENTER);
         private JTextField levelField = new JTextField(1);
-        private JButton begin = new JButton("Begin");
 
         private Game game = null;
 
         public PlayMenu() {
             JButton back = new JButton("Back");
+            JButton begin = new JButton("Begin");
+            JButton create = new JButton("Create game");
+            JButton load = new JButton("Load game");
+
             back.addActionListener((e) -> MenuPanel.this.showMenu(MAINMENU));
-            this.setLayout(new GridLayout(2, 2));
-            this.begin.addActionListener((e) -> this.play()); 
-            this.add(info);
-            this.add(levelField);
+            begin.addActionListener((e) -> this.play()); 
+            create.addActionListener((e) -> this.create());
+            load.addActionListener((e) -> this.load());
+
+            this.setLayout(new GridLayout(2, 3));
+
+            this.add(this.info);
+            this.add(this.levelField);
             this.add(begin);
             this.add(back);
+            this.add(create);
+            this.add(load);
         }
 
-        public void play() {
-            int level;
-            try {
-                level = Integer.parseInt(this.levelField.getText());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Please enter an integer as level.");
-                return;
-            }
-            if (this.game.validLevel(level)) {
-                game.setCurrentLevel(level);
-                MenuPanel.this.mainPanel.startGame(this.game);
+        private void play() {
+            if (this.game == null) {
+                JOptionPane.showMessageDialog(this, "Load or create a game first!");
             } else {
-                JOptionPane.showMessageDialog(this, "Please enter a level between 1 and " +
-                    this.game.getMaxLevel());
+                int level;
+                try {
+                    level = Integer.parseInt(this.levelField.getText());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Please enter an integer as level.");
+                    return;
+                }
+                if (this.game.validLevel(level)) {
+                    game.setCurrentLevel(level);
+                    MenuPanel.this.mainPanel.startGame(this.game);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please enter a level between 1 and " +
+                        this.game.getMaxLevel());
+                }
+            }
+        }
+
+        private void create() {
+            String name = JOptionPane.showInputDialog(this, "Enter a name for your new game:");
+            if (name != null) {
+                try {
+                    this.setGame(Sessions.create(name));
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Failed to create game, try a different name");
+                }
+            }
+        }
+
+        private void load() {
+            String name = JOptionPane.showInputDialog(this, "Enter the name of your saved game");
+            if (name != null) {
+                try {
+                    this.setGame(Sessions.load(name));
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Could not load session"); 
+                    LOGGER.log(Level.INFO, "failed to load session: " + e.getMessage());
+                }
             }
         }
 
@@ -134,8 +171,6 @@ public final class MenuPanel extends JPanel {
         this.add(helpMenu, HELPMENU);
 
         this.showMenu(MAINMENU);
-
-        this.playMenu.setGame(new Game(1, "Noah"));
     }
 
     private void showMenu(String menu) {

@@ -99,6 +99,10 @@ public class Entity {
         this.killed = true;
     }
 
+    public void resurrect() {
+        this.killed = false;
+    }
+
     public void collideWith(Entity e, GameLevel level) {
         for (Component c : this.components.values()) {
             if (c instanceof CollidingComponent) {

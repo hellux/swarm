@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
+import java.util.ConcurrentModificationException;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
@@ -75,11 +76,15 @@ public class Scene {
         //FIXME often causes concurrency exception at start
         //seems to be caused by awt calling paintcomponent outside the 
         //main loop in a separate thread. How to prevent awt from doing this?
-        for (Entity e : this.gameLevel.getEntities()) {
-            if (!this.renderComponents.containsKey(e)) {
-                RenderComponent rc = RcCreator.createRenderComponent(e);
-                if (rc != null) this.renderComponents.put(e, rc); 
+        try {
+            for (Entity e : this.gameLevel.getEntities()) {
+                if (!this.renderComponents.containsKey(e)) {
+                    RenderComponent rc = RcCreator.createRenderComponent(e);
+                    if (rc != null) this.renderComponents.put(e, rc); 
+                }
             }
+        } catch (ConcurrentModificationException e) {
+            LOGGER.log(Level.WARNING, "entities was modified during rendering!");
         }
     }
 

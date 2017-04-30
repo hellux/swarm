@@ -112,11 +112,11 @@ public final class EntityCreator {
 
     private static void createTeleporter(Entity e) {
         PositionComponent pc = new PositionComponent();
-        pc.setRotationalSpeed(0.04);
+        pc.setRotationalSpeed(0.01);
         pc.setRotation(Math.random()*2*Math.PI);
         e.add(pc);
 
-        CollisionComponent cc = new CollisionComponent(1);
+        CollisionComponent cc = new CollisionComponent(113);
         cc.whitelist(EntityType.PLAYER);
         e.add(cc);
 
@@ -124,7 +124,10 @@ public final class EntityCreator {
     }
 
     private static void createPlayer(Entity e) {
-        e.add(new HealthComponent(1, 100));
+        HealthComponent hc = new HealthComponent(1, 100);
+        hc.addExtraLives(2);
+        e.add(hc);
+
         e.add(new ThrustComponent());
 
         PositionComponent pc = new PositionComponent();
