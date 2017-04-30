@@ -18,17 +18,6 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 public final class EntityCreator {
     private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
 
-    @SuppressWarnings({"unchecked", "serial", "rawtypes"})
-    private static final AbstractMap<CollectibleType, EntityType> COLLECTIBLES =
-        new EnumMap(CollectibleType.class) {{
-            put(CollectibleType.RED_LASER, EntityType.COLLECTIBLE_RED_LASER);
-            put(CollectibleType.SPREAD, EntityType.COLLECTIBLE_SPREAD);
-            put(CollectibleType.QUAD, EntityType.COLLECTIBLE_QUAD);
-            put(CollectibleType.SHIELD, EntityType.COLLECTIBLE_SHIELD);
-            put(CollectibleType.CRYSTAL, EntityType.COLLECTIBLE_CRYSTAL);
-            put(CollectibleType.SHIP, EntityType.COLLECTIBLE_SHIP);
-        }};
-
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
     
@@ -63,15 +52,11 @@ public final class EntityCreator {
      * Create an entity representing a collectible of a specific collectible type.
      **/
     public static Entity create(CollectibleType type) {
-        if (COLLECTIBLES.containsKey(type)) {
-            Collectible coll = CollectibleCreator.get(type);
-            if (coll != null) {
-                Entity e = new Entity(COLLECTIBLES.get(type));
-                createCollectible(e, coll);
-                return e;
-            }
-        } else {
-            LOGGER.log(Level.WARNING, "no entity type for collectible " + type);
+        Collectible coll = CollectibleCreator.get(type);
+        if (coll != null) {
+            Entity e = new Entity(type.entityType);
+            createCollectible(e, coll);
+            return e;
         }
         return null;
     }
