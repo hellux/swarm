@@ -26,7 +26,8 @@ public class GameLevel {
 
     private int crystalCount = 0;
     private boolean objectiveComplete = false;
-    private boolean levelComplete = false;
+    private boolean playerDied = false;
+    private LevelStatus status;
 
     public GameLevel(GameLevelSpec spec, Entity player) {
         this.size = spec.getSize();
@@ -34,7 +35,10 @@ public class GameLevel {
         this.spec = spec;
 
         this.spawn(spec.createStartEntities());
+        this.add(this.player);
         this.spawnPlayer();
+
+        this.status = LevelStatus.IN_PROGRESS;
     }
 
     public GameLevel(GameLevelSpec spec) {
@@ -74,7 +78,6 @@ public class GameLevel {
         this.player.get(PositionComponent.class).setPosition(
             teleporter.get(PositionComponent.class).getPosition()
         );
-        this.add(this.player);
     }
 
     private void spawnEndTeleporter() {
@@ -107,24 +110,33 @@ public class GameLevel {
         for (int i = entities.size()-1; i >= 0; i--) {
             Entity entity = this.entities.get(i);
             if (entity.isKilled()) {
-                this.entities.remove(entity);
-            }
+                if (entity == this.player) {
+                    HealthComponent hc = this.player.get(HealthComponent.class);
+                    if (hc.hasExtraLives()) {
+                        hc.respawn();
+                        this.spawnPlayer();
+                    } else {
+                        this.status = LevelStatus.FAILED;
+                    }
+                } else {
+                    this.entities.remove(entity);
+                }
+            } 
             entity.update(this);
         }
     }
 
-    //TODO improve and move to own class
     private void checkCollisions() {
         for (int e1 = 0; e1 < this.entities.size(); e1++) {
             Entity ent1 = this.entities.get(e1);
+            if (!ent1.has(CollisionComponent.class)) continue;
             CollisionComponent cc1 = ent1.get(CollisionComponent.class);
-            if (cc1 == null) continue;
 
             for (int e2 = e1+1; e2 < this.entities.size(); e2++) {
                 Entity ent2 = this.entities.get(e2);
+                if (!ent2.has(CollisionComponent.class)) continue;
                 if (ent1.getType() == ent2.getType()) continue;
                 CollisionComponent cc2 = ent2.get(CollisionComponent.class);
-                if (cc2 == null) continue;
 
                 if (cc1.collidesWith(cc2, this)) {
                     ent1.collideWith(ent2, this);
@@ -138,20 +150,24 @@ public class GameLevel {
         return this.spec.level;
     }
 
-    public boolean update() {
+    public LevelStatus update() {
         this.updateWave();
         this.checkCollisions();
         this.updateEntities();
-        return this.levelComplete;
+        return this.status;
     }
 
     public double getSize() {
         return this.size;
     }
 
+    public LevelStatus getStatus() {
+        return this.status;
+    }
+
     public void endLevel() {
         if (this.objectiveComplete) {
-            this.levelComplete = true;
+            this.status = LevelStatus.COMPLETED;
         }
     }
 

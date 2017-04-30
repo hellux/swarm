@@ -73,6 +73,7 @@ public class Entity {
      * Update all live components that are active.
      **/
     public void update(GameLevel level) {
+        // some components depend on pc being updated before
         if (this.has(PositionComponent.class)) {
             PositionComponent pc = this.get(PositionComponent.class);
             if (pc.isActive()) {

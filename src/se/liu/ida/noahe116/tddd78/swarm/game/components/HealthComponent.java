@@ -7,19 +7,27 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 public class HealthComponent extends Component implements CollidingComponent {
     public static final double START_SHIELD_RATIO = 0.3;
 
+    private final int maxHealth;
+    private final int maxShieldStrength;
+
     private int extraLives;
     private int healthPoints;
     private int shieldStrength;
-    private final int maxShieldStrength;
 
     public HealthComponent(int hp, int shield) {
         if (hp < 1) throw new IllegalArgumentException("hp < 1: " + hp);
         if (shield < 0) throw new IllegalArgumentException("shield < 0: " + shield);
 
         this.extraLives = 0;
-        this.healthPoints = hp;
+        this.maxHealth = hp;
         this.maxShieldStrength = shield;
-        this.shieldStrength = (int) (shield*START_SHIELD_RATIO);
+
+        this.setStartHealth();
+    }
+
+    private void setStartHealth() {
+        this.healthPoints = this.maxHealth;
+        this.shieldStrength = (int) (this.maxShieldStrength*START_SHIELD_RATIO);
     }
 
     public HealthComponent(int hp) {
@@ -38,24 +46,10 @@ public class HealthComponent extends Component implements CollidingComponent {
         }
     }
 
-    public boolean hasExtraLives() {
-        return 0 < this.extraLives;
-    }
-
     public void respawn() {
         this.extraLives--;
+        this.setStartHealth();
         this.entity.resurrect();
-    }
-
-    public void addExtraLives(int lives) {
-        if (lives < 0) throw new IllegalArgumentException("lives must be positive");
-
-        this.extraLives += lives;
-    }
-
-    public void addShield(int shield) {
-        this.shieldStrength = Math.min(this.shieldStrength + shield,
-                                       this.maxShieldStrength);
     }
 
     @Override
@@ -64,5 +58,20 @@ public class HealthComponent extends Component implements CollidingComponent {
         if (cc != null) {
             this.hurt(cc.getDamage());
         }
+    }
+
+    public void addShield(int shield) {
+        this.shieldStrength = Math.min(this.shieldStrength + shield,
+                                       this.maxShieldStrength);
+    }
+
+    public void addExtraLives(int lives) {
+        if (lives < 0) throw new IllegalArgumentException("lives must be positive");
+
+        this.extraLives += lives;
+    }
+
+    public boolean hasExtraLives() {
+        return 0 < this.extraLives;
     }
 }

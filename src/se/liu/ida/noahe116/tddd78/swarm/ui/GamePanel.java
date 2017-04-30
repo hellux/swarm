@@ -60,7 +60,7 @@ public final class GamePanel extends JPanel {
     private boolean gameActive = false;
     private boolean showFPS = true;
 
-    private Map<Runnable, Long> taskQueue = new HashMap<>();
+    private Map<Runnable, Long> taskSchedule = new HashMap<>();
 
     public GamePanel(MainPanel mainPanel) {
         this.setBackground(Color.BLACK);
@@ -75,7 +75,7 @@ public final class GamePanel extends JPanel {
         }
     }
 
-    public Thread startGame(GameLevel gameLevel) {
+    public LevelStatus startGame(GameLevel gameLevel) {
         this.gameLevel = gameLevel;
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
@@ -84,15 +84,12 @@ public final class GamePanel extends JPanel {
         this.setMouseBinds();
         this.updateDimensions();
         this.tickrate = NORMAL_TICKRATE;
-        this.taskQueue.clear();
+        this.taskSchedule.clear();
 
         this.gameActive = true;
         this.quit = false;
 
-        Thread thread = new Thread(this::gameLoop, "gameLoop");
-        thread.start();
-
-        return thread;
+        return this.gameLoop();
     }
 
     /**
@@ -153,15 +150,15 @@ public final class GamePanel extends JPanel {
         }
     }
 
-    private void queue(Runnable method, double seconds) {
-        this.taskQueue.put(method, System.nanoTime() + (long) (NANOSECONDS_PER_SECOND*seconds));
+    private void schedule(Runnable method, double seconds) {
+        this.taskSchedule.put(method, System.nanoTime() + (long) (NANOSECONDS_PER_SECOND*seconds));
     }
 
-    private void executeQueue() {
+    private void executeSchedule() {
         List<Runnable> remove = new ArrayList<>();
         Long currentTime = System.nanoTime();
 
-        for (Map.Entry<Runnable, Long> item : this.taskQueue.entrySet()) {
+        for (Map.Entry<Runnable, Long> item : this.taskSchedule.entrySet()) {
             if (item.getValue() < currentTime) {
                 Runnable method = item.getKey();
                 method.run();
@@ -170,7 +167,7 @@ public final class GamePanel extends JPanel {
         }
 
         for (Runnable method : remove) {
-            this.taskQueue.remove(method);
+            this.taskSchedule.remove(method);
         }
     }
 
@@ -181,7 +178,7 @@ public final class GamePanel extends JPanel {
      * the max frame rate). Drawing the gameLevel state between updates of the gameLevel is
      * done by interpolation. The max framerate must be higher than max the gameLevel's tickrate.
      **/
-    private void gameLoop() {
+    private LevelStatus gameLoop() {
         long nextTick = System.nanoTime();
         long lastFrame = nextTick;
         long currentFrame = nextTick;
@@ -192,17 +189,17 @@ public final class GamePanel extends JPanel {
         while (!this.quit) {
             sleepUntil(nextFrame);
 
-            this.executeQueue();
+            this.executeSchedule();
             currentFrame = System.nanoTime();
             this.delay = currentFrame - lastFrame;
             lastFrame = currentFrame;
             nextFrame = currentFrame + MIN_FRAME_PERIOD;
 
             if (currentFrame > nextTick) {
-                if (this.gameLevel.update()) {
+                if (this.gameLevel.update() != LevelStatus.IN_PROGRESS) {
                     levelEnded = true;
                     this.tickrate = SLOW_TICKRATE;
-                    this.queue(this::quit, 0.5);
+                    this.schedule(this::quit, 0.5);
                 }
                 nextTick += this.tickPeriod();
             } 
@@ -214,6 +211,8 @@ public final class GamePanel extends JPanel {
         }
        
         this.gameActive = false;
+
+        return this.gameLevel.getStatus();
     }
 
     private void quit() {
@@ -222,7 +221,7 @@ public final class GamePanel extends JPanel {
 
     private void activateSlowMotion() {
         this.tickrate = SLOW_TICKRATE;
-        this.queue(() -> this.tickrate = NORMAL_TICKRATE, 3);
+        this.schedule(() -> this.tickrate = NORMAL_TICKRATE, 3);
     }
 
     @Override
@@ -360,7 +359,6 @@ public final class GamePanel extends JPanel {
 
     private void exit() {
         this.quit = true;
-        this.mainPanel.quit();
     }
 }
 

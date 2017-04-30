@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel {
     private CardLayout layout;
 
     private Game game;
-    private boolean quit;
 
     public MainPanel() {
         this.setBackground(Color.BLACK);
@@ -39,40 +38,38 @@ public final class MainPanel extends JPanel {
 
     private void mainLoop() {
         GameLevel gameLevel = this.game.getLevel();
-        Thread gameThread = this.startLevel(gameLevel);
-
-        while (!this.quit) {
-            try {
-                gameThread.join();
-            } catch (InterruptedException e) {
-                LOGGER.log(Level.SEVERE, "failed to create thread for game loop");
-            }
-            if (!this.quit) {
+        this.layout.show(this, GAMEPANEL);
+        
+        boolean quit = false;
+        while (!quit) {
+            LevelStatus status = this.gamePanel.startGame(gameLevel);
+            switch (status) {
+            case COMPLETED:
                 gameLevel = this.game.getNextLevel(gameLevel);
-                try {
-                    Sessions.save(this.game);
-                } catch (IOException e) {
-                    LOGGER.log(Level.WARNING, "could not save game!", e);
-                }
-                gameThread = this.startLevel(gameLevel);
+                this.saveGame();
+                break;
+            case IN_PROGRESS:
+            case FAILED:
+                quit = true;
+                break;
             }
         }
 
-        System.exit(0);
+        this.layout.show(this, MENUPANEL);
     }
 
-    private Thread startLevel(GameLevel gameLevel) {
-        this.layout.show(this, GAMEPANEL);
-        return this.gamePanel.startGame(gameLevel);
+    private void saveGame() {
+        try {
+            Sessions.save(this.game);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "could not save game!", e);
+        }
     }
+
 
     public void startGame(Game game) {
         this.game = game;
-        Thread thread = new Thread(this::mainLoop, "mainLoop");
-        thread.start();
-    }
 
-    public void quit() {
-        this.quit = true;
+        new Thread(this::mainLoop, "mainLoop").start();
     }
 }
