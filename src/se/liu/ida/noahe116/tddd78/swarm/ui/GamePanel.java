@@ -220,8 +220,16 @@ public final class GamePanel extends JPanel {
     }
 
     private void activateSlowMotion() {
-        this.tickrate = SLOW_TICKRATE;
-        this.schedule(() -> this.tickrate = NORMAL_TICKRATE, 3);
+        double transition = 1;
+        int duration = 4;
+        int steps = NORMAL_TICKRATE - SLOW_TICKRATE;
+        double deltaTime = transition/steps;
+        for (int i = 0; i < steps; i++) {
+            final int j = i;
+            this.schedule(() -> this.tickrate = NORMAL_TICKRATE - j, deltaTime*j);
+            this.schedule(() -> this.tickrate = NORMAL_TICKRATE - j, duration-deltaTime*j);
+
+        }
     }
 
     @Override

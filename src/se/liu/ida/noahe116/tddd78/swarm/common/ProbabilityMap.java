@@ -8,10 +8,13 @@ public class ProbabilityMap<T> {
     public static final Random RAND = new Random();
     
     private List<T> items = new ArrayList<>();
-    private List<Integer> probabilities = new ArrayList<>();
-    private int totalSum = 0;
+    private List<Double> probabilities = new ArrayList<>();
+    private double totalSum = 0;
 
-    public ProbabilityMap<T> put(T item, int probability) {
+    public ProbabilityMap<T> put(T item, double probability) {
+        if (probability < 0) {
+            throw new IllegalArgumentException("probability can't be negative: " + probability);
+        }
         int index = this.items.indexOf(item);
 
         if (index == -1) {
@@ -35,8 +38,12 @@ public class ProbabilityMap<T> {
     }
 
     public T get() {
-        int index = RAND.nextInt(totalSum);
-        int cumulativeSum = 0;
+        return this.get(RAND);
+    }
+
+    public T get(Random rand) {
+        double index = this.totalSum * rand.nextDouble();
+        double cumulativeSum = 0;
 
         for (int i = 0; i < this.items.size(); i++) {
             cumulativeSum += this.probabilities.get(i);

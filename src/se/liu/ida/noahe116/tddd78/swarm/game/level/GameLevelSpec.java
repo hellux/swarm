@@ -20,6 +20,7 @@ public class GameLevelSpec {
     public final LevelType levelType;
     public final int level;
     private int crystalCount = 0;
+    private int lootTime;
 
     private int collectibleCount= 0;
     private ProbabilityMap<CollectibleType> collectibles = new ProbabilityMap<>();
@@ -58,17 +59,21 @@ public class GameLevelSpec {
         return this;
     }
 
+    public GameLevelSpec lootTime(int ticks) {
+        this.lootTime = ticks;
+        return this;
+    }
+
     public GameLevelSpec withWave(Wave wave) {
         if (this.waves.isEmpty()) {
             if (wave.startTick != 0) {
-                LOGGER.log(Level.WARNING,
-                           "first wave must start at 0 ticks not " + wave.startTick);
-                return null;
+                throw new IllegalArgumentException("first wave must start at tick 0");
             }
         }
         else if (this.waves.get(this.waves.size()-1).startTick >= wave.startTick) {
-            LOGGER.log(Level.WARNING, "wave must have start time later than previous wave");
-            return null;
+            throw new IllegalArgumentException(
+                "wave must have start time later than previous wave: " + 
+                this.waves.get(this.waves.size()-1).startTick + " >= " + wave.startTick);
         }
 
         this.waves.add(wave);
@@ -123,6 +128,10 @@ public class GameLevelSpec {
 
     public int getWaveCount() {
         return this.waves.size();
+    }
+    
+    public int getLootTime() {
+        return this.lootTime;
     }
 
     public long getEnemySpawnDelay(int wave) {

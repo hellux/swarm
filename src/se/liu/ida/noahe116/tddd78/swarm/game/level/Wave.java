@@ -8,7 +8,7 @@ public class Wave {
 
     public int maxEnemies = -1;
     public long enemySpawnDelay = -1;
-    public ProbabilityMap<EnemyType> enemies = null;
+    public ProbabilityMap<EnemyType> enemies = new ProbabilityMap<>();
 
     public Wave(int startTick) {
 	this.startTick = startTick;
@@ -24,8 +24,8 @@ public class Wave {
     }
 
     public Wave withEnemies(ProbabilityMap<EnemyType> enemies) {
-	this.enemies = enemies;
-	return this;
+	    this.enemies.put(enemies);
+	    return this;
     }
 
     public Wave maxEnemyCount(int max) {

@@ -88,6 +88,9 @@ public class GameLevel {
 
 
     private void updateWave() {
+        if (this.spec.levelType == LevelType.LOOT && this.tick < this.spec.getLootTime()) {
+            this.status = LevelStatus.COMPLETED;
+        }
         if (this.wave < this.spec.getWaveCount()) {
             if (this.spec.getNextWaveTick(this.wave) <= this.tick) {
                 this.wave++;
@@ -102,8 +105,6 @@ public class GameLevel {
             this.spawn(EntityCreator.create(this.enemyProbabilites.get()));
             this.enemyCount++;
         }
-
-        this.tick++;
     }
 
     private void updateEntities() {
@@ -151,9 +152,10 @@ public class GameLevel {
     }
 
     public LevelStatus update() {
-        this.updateWave();
+        if (!this.objectiveComplete) this.updateWave();
         this.checkCollisions();
         this.updateEntities();
+        this.tick++;
         return this.status;
     }
 

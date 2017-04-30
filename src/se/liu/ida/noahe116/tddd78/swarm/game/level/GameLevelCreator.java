@@ -23,9 +23,8 @@ public final class GameLevelCreator {
     private final List<GameLevelSpec> specs;
 
     {
-        GENERATORS.put(this::generateHarvestSpec, 20);
-        GENERATORS.put(this::generateEliminateSpec, 1);
-        GENERATORS.put(this::generateLootSpec, 2000);
+        GENERATORS.put(this::generateHarvestSpec, 10);
+        GENERATORS.put(this::generateLootSpec, 1);
     }
     
     public GameLevelCreator(long seed) {
@@ -39,42 +38,64 @@ public final class GameLevelCreator {
 
     private void generateSpecs(int level) {
         for (int i = specs.size(); i < level; i++) {
-            this.specs.add(this.GENERATORS.get().apply(level));
+            this.specs.add(this.GENERATORS.get(this.rand).apply(level));
         }
     }
 
-    private int nonUniformRandInt(int average, int standardDeviation) {
-        return average + (int) (standardDeviation*this.rand.nextGaussian());
+    /**
+     * Generate non-uniform random doubles with normal distribution.
+     **/
+    private double normRand(double mean, double standardDeviation) {
+        return mean + standardDeviation*this.rand.nextGaussian();
+    }
+    
+    /**
+     * Generate non-uniform random doubles with half-normal distribution.
+     **/
+    private double halfNormRand(double mean, double standardDeviation) {
+        return mean + standardDeviation*Math.abs(this.rand.nextGaussian());
     }
 
     private GameLevelSpec generateHarvestSpec(int level) {
         GameLevelSpec spec = new GameLevelSpec(LevelType.HARVEST, level);
 
-        return spec;
-    }
+        int waveCount = (int) this.halfNormRand(1 + Math.log(level), 0.2);
+        for (int i = 0; i < waveCount; i++) {
+            spec.withWave(new Wave((int) (i*halfNormRand(Math.pow(i, 2), i)))
+                .maxEnemyCount((int) normRand(10, 3))
+                .withEnemies(new ProbabilityMap<EnemyType>()
+                    .put(EnemyType.CLAG_BOT, 1))
+                .withSpawnDelay((long) Math.pow(Math.sin(Math.PI*i/waveCount), 2)));
+        }
 
-    private GameLevelSpec generateEliminateSpec(int level) {
-        GameLevelSpec spec = new GameLevelSpec(LevelType.ELIMINATE, level);
-
-        return spec;
+        return spec
+            .ofSize((int)((Math.log(level)+1)*2000))
+            .asteroidCount(1)
+            .crystalCount(1)
+            .collectibleCount(1)
+            .withCollectibles(new ProbabilityMap<CollectibleType>()
+                .put(CollectibleType.SHIELD, 0)
+                .put(CollectibleType.SHIP, 0)
+                .put(CollectibleType.RED_LASER, 1)
+                .put(CollectibleType.SPREAD, 1)
+                .put(CollectibleType.QUAD, 1));
     }
 
     private GameLevelSpec generateLootSpec(int level) {
-        return new GameLevelSpec(LevelType.HARVEST, level)
+        GameLevelSpec spec = new GameLevelSpec(LevelType.LOOT, level);
+        return spec
+            .ofSize((int)((Math.log(level)+1)*1000))
             .withWave(new Wave()
-                .maxEnemyCount(20)
-                .withEnemies(new ProbabilityMap<EnemyType>()
-                    .put(EnemyType.CLAG_BOT, 1))
-                .withSpawnDelay(10))
-            .asteroidCount(15)
-            .crystalCount(1)
-            .collectibleCount(50)
+                .maxEnemyCount(0)
+            )
+            .asteroidCount(level)
+            .collectibleCount(level)
             .withCollectibles(new ProbabilityMap<CollectibleType>()
-                .put(CollectibleType.SHIELD, 2)
-                .put(CollectibleType.RED_LASER, 1)
-                .put(CollectibleType.SPREAD, 1)
-                .put(CollectibleType.QUAD, 1)
-                .put(CollectibleType.SHIP, 20));
+                .put(CollectibleType.SHIELD, 20)
+                .put(CollectibleType.SHIP, 1)
+                .put(CollectibleType.RED_LASER, halfNormRand(level/10.0, 3))
+                .put(CollectibleType.SPREAD, halfNormRand(level/20.0, 2))
+                .put(CollectibleType.QUAD, halfNormRand(level/30.0, 1)));
     }
 
     private GameLevelSpec getSpec(int level) {
