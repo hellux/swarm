@@ -28,12 +28,12 @@ public final class WeaponCreator {
 
     private static final int RED_CDN = 6;
     private static final int RED_DMG = 10;
-    private static final int RED_RAD = 30;
+    private static final int RED_RAD = 25;
     private static final int RED_SPD = 30;
 
     private static final int QAD_CDN = 4;
     private static final int QAD_DMG = 20;
-    private static final int QAD_RAD = 45;
+    private static final int QAD_RAD = 30;
     private static final int QAD_SPD = 35;
 
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})

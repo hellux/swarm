@@ -96,7 +96,7 @@ public class GameLevel {
 
 
     private void updateWave() {
-        if (this.spec.levelType == LevelType.LOOT && this.tick < this.spec.getLootTime()) {
+        if (this.spec.levelType == LevelType.LOOT && this.spec.getLootTime() < this.tick) {
             this.status = LevelStatus.COMPLETED;
         }
         if (this.wave < this.spec.getWaveCount()) {

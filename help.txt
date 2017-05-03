@@ -2,3 +2,5 @@ Controls:
 
 - Steer and fire with mouse, activate thrust with space.
 - Select weapon with A, O, E, U.
+
+Follow the white circle to the objective.

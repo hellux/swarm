@@ -88,6 +88,7 @@ public final class GameLevelCreator {
             .withWave(new Wave()
                 .maxEnemyCount(0)
             )
+            .lootTime((int) normRand(1000, 100))
             .asteroidCount(5 + (int) normRand(level, level/3.0))
             .collectibleCount(10 + (int) normRand(level, level/3.0))
             .withCollectibles(new ProbabilityMap<CollectibleType>()
