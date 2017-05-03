@@ -110,7 +110,7 @@ public final class EntityCreator {
     }
 
     private static void createPlayer(Entity e) {
-        HealthComponent hc = new HealthComponent(1, 100);
+        HealthComponent hc = new HealthComponent(1, 200);
         hc.addExtraLives(2);
         e.add(hc);
 
@@ -137,7 +137,7 @@ public final class EntityCreator {
     private static Entity createClagBot() {
         Entity e = new Entity(EntityType.ENEMY_CLAG_BOT);
         
-        e.add(new HealthComponent(20));
+        e.add(new HealthComponent(35));
         e.add(new ClagBotComponent());
         e.add(new KnockbackComponent());
 

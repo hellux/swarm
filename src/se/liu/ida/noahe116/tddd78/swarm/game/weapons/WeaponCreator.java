@@ -21,10 +21,10 @@ public final class WeaponCreator {
     private static final int DEF_SPD = 20;
 
     private static final int SPR_CDN = 5;
-    private static final int SPR_DMG = 10;
+    private static final int SPR_DMG = 7;
     private static final int SPR_RAD = 10;
-    private static final int SPR_SPD = 45;
-    private static final int SPR_SPR = 25;
+    private static final int SPR_SPD = 40;
+    private static final int SPR_SPR = 20;
 
     private static final int RED_CDN = 6;
     private static final int RED_DMG = 10;
@@ -32,7 +32,7 @@ public final class WeaponCreator {
     private static final int RED_SPD = 30;
 
     private static final int QAD_CDN = 4;
-    private static final int QAD_DMG = 40;
+    private static final int QAD_DMG = 20;
     private static final int QAD_RAD = 45;
     private static final int QAD_SPD = 35;
 

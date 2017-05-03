@@ -62,37 +62,37 @@ public final class GameLevelCreator {
         int waveCount = (int) this.halfNormRand(1 + Math.log(level), 0.2);
         for (int i = 0; i < waveCount; i++) {
             spec.withWave(new Wave((int) (i*halfNormRand(Math.pow(i, 2), i)))
-                .maxEnemyCount((int) normRand(10, 3))
+                .maxEnemyCount((int) (Math.log(level) + normRand(10, 3)))
                 .withEnemies(new ProbabilityMap<EnemyType>()
                     .put(EnemyType.CLAG_BOT, 1))
-                .withSpawnDelay((long) Math.pow(Math.sin(Math.PI*i/waveCount), 2)));
+                .withSpawnDelay((long) (5.0/level*Math.pow(Math.sin(Math.PI*i/waveCount), 2))));
         }
 
         return spec
-            .ofSize((int)((Math.log(level)+1)*2000))
-            .asteroidCount(1)
-            .crystalCount(1)
-            .collectibleCount(1)
+            .ofSize(5000 + (int)((Math.log(level)+1)*3000))
+            .asteroidCount(5 + (int) normRand(level, level/3.0))
+            .crystalCount(5 + (int) halfNormRand(level, level))
+            .collectibleCount(5 + (int) normRand(level, level/3.0))
             .withCollectibles(new ProbabilityMap<CollectibleType>()
-                .put(CollectibleType.SHIELD, 0)
-                .put(CollectibleType.SHIP, 0)
-                .put(CollectibleType.RED_LASER, 1)
-                .put(CollectibleType.SPREAD, 1)
-                .put(CollectibleType.QUAD, 1));
+                .put(CollectibleType.SHIELD, 5)
+                .put(CollectibleType.SHIP, 0.5)
+                .put(CollectibleType.RED_LASER, halfNormRand(level/10.0, 3))
+                .put(CollectibleType.SPREAD, halfNormRand(level/20.0, 2))
+                .put(CollectibleType.QUAD, halfNormRand(Math.log(level)/30.0, 1)));
     }
 
     private GameLevelSpec generateLootSpec(int level) {
         GameLevelSpec spec = new GameLevelSpec(LevelType.LOOT, level);
         return spec
-            .ofSize((int)((Math.log(level)+1)*1000))
+            .ofSize((int)((Math.log(level)+1)*4000))
             .withWave(new Wave()
                 .maxEnemyCount(0)
             )
-            .asteroidCount(level)
-            .collectibleCount(level)
+            .asteroidCount(5 + (int) normRand(level, level/3.0))
+            .collectibleCount(10 + (int) normRand(level, level/3.0))
             .withCollectibles(new ProbabilityMap<CollectibleType>()
-                .put(CollectibleType.SHIELD, 20)
-                .put(CollectibleType.SHIP, 1)
+                .put(CollectibleType.SHIELD, 1)
+                .put(CollectibleType.SHIP, 0.3)
                 .put(CollectibleType.RED_LASER, halfNormRand(level/10.0, 3))
                 .put(CollectibleType.SPREAD, halfNormRand(level/20.0, 2))
                 .put(CollectibleType.QUAD, halfNormRand(level/30.0, 1)));
