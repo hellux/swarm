@@ -24,7 +24,7 @@ public final class WeaponCreator {
     private static final int SPR_DMG = 7;
     private static final int SPR_RAD = 10;
     private static final int SPR_SPD = 40;
-    private static final int SPR_SPR = 20;
+    private static final int SPR_SPR = 10;
 
     private static final int RED_CDN = 6;
     private static final int RED_DMG = 10;

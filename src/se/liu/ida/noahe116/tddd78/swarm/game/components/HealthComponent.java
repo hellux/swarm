@@ -74,4 +74,16 @@ public class HealthComponent extends Component implements CollidingComponent {
     public boolean hasExtraLives() {
         return 0 < this.extraLives;
     }
+
+    public int getExtraLives() {
+        return this.extraLives;
+    }
+
+    public int getShieldStrength() {
+        return this.shieldStrength;
+    }
+
+    public int getMaxShieldStrength() {
+        return this.maxShieldStrength;
+    }
 }

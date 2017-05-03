@@ -27,6 +27,15 @@ public class PlayerComponent extends Component {
         return this.entity.get(ThrustComponent.class).hasThrust();
     }
 
+    public double shieldStrength() {
+        HealthComponent hc = this.entity.get(HealthComponent.class);
+        return (double) hc.getShieldStrength() / hc.getMaxShieldStrength();
+    }
+    
+    public int extraLives() {
+        return this.entity.get(HealthComponent.class).getExtraLives();
+    }
+
     public void setThrustPower(double tp) {
         this.entity.get(ThrustComponent.class).setThrustPower(tp);
     }

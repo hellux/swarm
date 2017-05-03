@@ -58,7 +58,7 @@ public final class GamePanel extends JPanel {
 
     private boolean quit = false;
     private boolean gameActive = false;
-    private boolean showFPS = true;
+    private boolean showFPS = false;
 
     private Map<Runnable, Long> taskSchedule = new HashMap<>();
 
@@ -245,6 +245,8 @@ public final class GamePanel extends JPanel {
     private void drawHud(Graphics g) {
         this.drawCursor(g);
         this.drawObjective(g);
+        this.drawShield(g);
+        this.drawLives(g);
         if (this.showFPS) this.displayFPS(g);
     }
 
@@ -271,6 +273,21 @@ public final class GamePanel extends JPanel {
             );
             this.drawCircle(g, pos, Color.WHITE);
         }
+    }
+
+    private void drawShield(Graphics g) {
+        final int width = 4;
+        double shield = this.playerComponent.shieldStrength();
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0, 0, this.getWidth(), width);
+        g.setColor(Color.MAGENTA);
+        g.fillRect(0, 0, (int) (this.getWidth()*shield), width);
+    }
+
+    private void drawLives(Graphics g) {
+        int lives = this.playerComponent.extraLives();
+        g.setColor(Color.WHITE);
+        g.drawString("Lives: " + lives, 0, 20);
     }
 
     private void drawCursor(Graphics g) {
