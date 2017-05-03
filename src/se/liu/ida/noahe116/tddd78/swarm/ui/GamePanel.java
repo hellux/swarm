@@ -109,13 +109,12 @@ public final class GamePanel extends JPanel {
     }
     
     private void handleMouse() {
-        // FIXME thrust is based on mousepos before limiting (allowing more than max acc)
         Point2D mousePos = this.getMousePosition();
         if (mousePos != null) {
             Vector2D mouseVector = Vector2D.subtract(new Vector2D(mousePos), this.center);
-            this.playerComponent.setThrustPower(mouseVector.magnitude()/cursorAreaRadius);
-            this.playerComponent.setRotation(mouseVector.rotation());
-            this.limitMouse(mouseVector);
+            Vector2D limitedMouse = this.limitMouse(mouseVector);
+            this.playerComponent.setThrustPower(limitedMouse.magnitude()/cursorAreaRadius);
+            this.playerComponent.setRotation(limitedMouse.rotation());
         }
     }
 
@@ -125,15 +124,28 @@ public final class GamePanel extends JPanel {
      * inside the radius.
      * @param mouseVector current position of the mouse relative to the center
      *                    of the panel.
+     * @return the limited position of the mouse relative to the center
+     *         of the panel
      **/
-    private void limitMouse(Vector2D mouseVector) {
+    private Vector2D limitMouse(Vector2D mouseVector) {
         if (mouseVector.magnitude() > this.cursorAreaRadius) {
-            Vector2D newMouse = Vector2D.add(this.center, Vector2D.add(
-                Vector2D.fromLengthRotation(cursorAreaRadius,
-                                            mouseVector.rotation()),
-                new Vector2D(this.getLocationOnScreen())));
-            this.robot.mouseMove((int) newMouse.x, (int) newMouse.y);
+            Vector2D limited = Vector2D.fromLengthRotation(
+                cursorAreaRadius,
+                mouseVector.rotation()
+            );
+
+            Vector2D limitedTranslated = Vector2D.add(
+                Vector2D.add(
+                    this.center,
+                    limited),
+                new Vector2D(this.getLocationOnScreen())
+            );
+
+            this.robot.mouseMove((int) limitedTranslated.x,
+                                 (int) limitedTranslated.y);
+            return limited;
         }
+        return mouseVector;
     }
     
     private void sleepUntil(long time) {
