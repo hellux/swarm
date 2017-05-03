@@ -242,6 +242,7 @@ public final class GamePanel extends JPanel {
         }
     }
 
+    //TODO move to separate heads up display similar to scene
     private void drawHud(Graphics g) {
         this.drawCursor(g);
         this.drawObjective(g);

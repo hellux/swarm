@@ -93,6 +93,7 @@ public class Entity {
         }
     }
     
+    //TODO move live/dead status to healthcomp
     /**
      * Flag the entity as killed.
      **/
@@ -104,6 +105,11 @@ public class Entity {
         this.killed = false;
     }
 
+    public boolean isKilled() {
+        return this.killed;
+    }
+
+    //TODO move to collide component
     public void collideWith(Entity e, GameLevel level) {
         for (Component c : this.components.values()) {
             if (c instanceof CollidingComponent) {
@@ -115,10 +121,6 @@ public class Entity {
 
     public EntityType getType() {
         return this.type;
-    }
-
-    public boolean isKilled() {
-        return this.killed;
     }
 
     @Override
