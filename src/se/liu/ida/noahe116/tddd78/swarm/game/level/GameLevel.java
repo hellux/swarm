@@ -12,6 +12,8 @@ import se.liu.ida.noahe116.tddd78.swarm.common.*;
 public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
 
+    private static final COLLISION_TIMEOUT = 10;
+
     private final Entity player;
 
     private final List<Entity> entities = new LinkedList<>();
@@ -48,7 +50,6 @@ public class GameLevel {
     /**
      * Place an entity randomly on the map.
      * A PositionComponent will be added if the entity doesn't have one.
-     * TODO avoid collisions
      **/
     private void spawn(Entity e) {
         PositionComponent pc;
@@ -59,8 +60,15 @@ public class GameLevel {
             pc = new PositionComponent();
             e.add(pc);
         }
+            
 
-        pc.setPosition(new Vector2D(Math.random()*this.size, Math.random()*this.size));
+        for (int i = 0; i < COLLISION_TIMEOUT; i++) {
+            pc.setPosition(new Vector2D(Math.random()*this.size, Math.random()*this.size));
+            if (!this.hasCollision(e)) {
+                break;
+            }
+        }
+
         this.add(e);
     }
 
@@ -125,6 +133,21 @@ public class GameLevel {
             } 
             entity.update(this);
         }
+    }
+
+    private boolean hasCollision(Entity e) {
+        if (e.has(CollisionComponent.class) {
+            cc = e.get(CollisionComponent.class);
+            for (Entity e2 : this.entities) {
+                if (e2.has(CollisionComponent.class) {
+                    cc2 = e2.get(CollisionComponent.class);
+                    if (cc.collidesWith(cc2, this)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void checkCollisions() {

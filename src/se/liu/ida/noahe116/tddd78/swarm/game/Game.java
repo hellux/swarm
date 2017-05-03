@@ -33,6 +33,9 @@ public class Game {
         }
     }
 
+    /**
+     * Get a GameLevel one level higher with the same player.
+     **/
     public GameLevel getNextLevel(GameLevel gameLevel) {
         int level = gameLevel.getLevel();
         if (level == this.maxLevel) {

@@ -185,6 +185,7 @@ public final class GamePanel extends JPanel {
 
     /**
      * Run the main loop that updates and draws the gameLevel.
+     * TODO move to separate cl
      * <p> The gameLevel is updated depending on the TICKRATE constant. The drawing
      * of the gameLevel, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the gameLevel state between updates of the gameLevel is
