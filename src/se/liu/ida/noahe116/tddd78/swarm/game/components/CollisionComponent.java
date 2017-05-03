@@ -7,6 +7,17 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Handle collisions between entities.
+ * Collision areas can only be circles.
+ *
+ * Black/whiteList:
+ * Types of entities can be either ignored (blacklist) or
+ * exclusively checked for collisions (whitelist).
+ * By default the blacklist is used and is empty, thus
+ * all collisions will be checked. When entities are
+ * added to the whitelist, the whitelist will be used instead.
+ **/
 public class CollisionComponent extends Component {
     public final double radius;
     private int damage = 0;
@@ -16,6 +27,10 @@ public class CollisionComponent extends Component {
     private List<EntityType> typeBlacklist = new ArrayList<>();
     private List<EntityType> typeWhitelist = new ArrayList<>();
 
+    /**
+     * Create a collision with the collision circle radius r.
+     * @param r radius of the collision circle
+     **/
     public CollisionComponent(double r) {
         this.radius = r;
     }
@@ -117,6 +132,9 @@ public class CollisionComponent extends Component {
         return this.damage;
     }
 
+    /**
+     * Blacklist entities from collision checking.
+     **/
     public void blacklist(EntityType...entityTypes) {
         this.blacklist = true;
         for (EntityType e : entityTypes) {
@@ -124,6 +142,9 @@ public class CollisionComponent extends Component {
         }
     }
 
+    /**
+     * Whitelist entities for collision checking.
+     **/
     public void whitelist(EntityType...entityTypes) {
         this.blacklist = false;
         for (EntityType e : entityTypes) {
@@ -131,6 +152,9 @@ public class CollisionComponent extends Component {
             }
         }
 
+    /**
+     * Check if one of the entities ignores the other.
+     **/
     public boolean ignores(Entity e) {
         EntityType type = e.getType();
         if (this.blacklist) {

@@ -2,6 +2,9 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Kill a entity after a certain amount of ticks
+ **/
 public class TimerComponent extends LiveComponent {
     private int time;
 

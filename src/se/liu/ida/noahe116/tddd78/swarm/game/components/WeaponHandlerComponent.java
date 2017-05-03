@@ -8,6 +8,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Handle equipped weapons of an entity.
+ **/
 public class WeaponHandlerComponent extends LiveComponent {
     private static final Logger LOGGER =
         Logger.getLogger(WeaponHandlerComponent.class.getName());
@@ -71,7 +74,7 @@ public class WeaponHandlerComponent extends LiveComponent {
     }
 
     /**
-     * Wrapper for Weapon that handles ammo.
+     * Wrapper for Weapon that also handles ammo.
      **/
     public class EquippedWeapon {
         public final WeaponType type;
@@ -138,6 +141,11 @@ public class WeaponHandlerComponent extends LiveComponent {
         }
     }
 
+    /**
+     * Get the weapon type of the currently equipped weapon in a slot.
+     * @param slot a slot
+     * @return weapon type of equipped weapon.
+     **/
     public WeaponType getEquippedType(int slot) {
         return this.getSlot(slot).getEquippedType();
     }
@@ -149,7 +157,7 @@ public class WeaponHandlerComponent extends LiveComponent {
     public void equip(WeaponType type) {
         WeaponSlot slot = slotWithWeapon(type);
         if (slot == null) {
-            LOGGER.log(Level.WARNING, "entity has no weapon of type: " + type);
+            throw new IllegalArgumentException("entity has no weapon of type: " + type);
         } else if (slot.hasAmmo(type)) {
             slot.equip(type);
         }
@@ -160,7 +168,6 @@ public class WeaponHandlerComponent extends LiveComponent {
             this.getSlot(slot).add(type);
             return true;
         } else {
-            LOGGER.log(Level.WARNING, "weapon is already equipped: " + type);
             return false;
         }
     }
@@ -181,6 +188,10 @@ public class WeaponHandlerComponent extends LiveComponent {
         }
     }
 
+    /**
+     * Update ammo and cooldown of equipped weapons.
+     * @param level game level
+     **/
     @Override
     public void update(GameLevel level) {
         for (WeaponSlot slot : this.slots) {

@@ -3,6 +3,9 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Handle positioning (incl speed, accel) of entities.
+ **/
 public class PositionComponent extends LiveComponent {
     private static final double DRAG = 0.94;
 

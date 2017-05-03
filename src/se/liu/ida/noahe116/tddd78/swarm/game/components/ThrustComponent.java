@@ -34,7 +34,22 @@ public class ThrustComponent extends LiveComponent {
         return this.thrust;
     }
 
+    /**
+     * Set the thrust power.
+     * if the ratio is larger than 1 or lower than 0
+     * the thrust will still be limited within 0 and 1.
+     * (exception if outside range is not used 
+     * in order to avoid having to account for floating 
+     * point errors)
+     * @param tp ratio of max thrust 
+     **/
     public void setThrustPower(double tp) {
-        this.thrustPower = tp;
+        if (tp < 0) {
+            this.thrustPower = 0;
+        } else if (tp > 1) {
+            this.thrustPower= 1;
+        } else {
+            this.thrustPower = tp;
+        }
     }
 }

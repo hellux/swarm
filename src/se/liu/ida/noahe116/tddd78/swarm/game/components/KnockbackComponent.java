@@ -4,6 +4,9 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Cause knockback to other entities on collision.
+ **/
 public class KnockbackComponent extends Component implements CollidingComponent {
     private static final double KNOCKBACK_MULTIPLIER = 20;
 

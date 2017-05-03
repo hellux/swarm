@@ -6,6 +6,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Objects that can be collected.
+ **/
 public class CollectibleComponent extends Component implements CollidingComponent {
     private final Collectible collectible;
 

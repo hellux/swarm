@@ -4,6 +4,9 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Handles health, shield and lives of entities.
+ **/
 public class HealthComponent extends Component implements CollidingComponent {
     public static final double START_SHIELD_RATIO = 0.3;
 
