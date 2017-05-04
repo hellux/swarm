@@ -38,6 +38,8 @@ public final class EntityCreator {
 
     /**
      * Create an entity representing a specific entity type.
+     * @param type type of entity to create
+     * @return entity of given type
      **/
     public static Entity create(EntityType type) {
         Entity e = new Entity(type);
@@ -52,6 +54,8 @@ public final class EntityCreator {
 
     /**
      * Create an entity representing a collectible of a specific collectible type.
+     * @param type type of collectible to create
+     * @return entity of given collectible type
      **/
     public static Entity create(CollectibleType type) {
         Collectible coll = CollectibleCreator.get(type);
@@ -66,6 +70,7 @@ public final class EntityCreator {
     /**
      * Create an entity representing an enemy of a specific type.
      * @param type type of enemy
+     * @return entity of given enemy type
      **/
     public static Entity create(EnemyType type) {
         if (ENEMY_CREATORS.containsKey(type)) {

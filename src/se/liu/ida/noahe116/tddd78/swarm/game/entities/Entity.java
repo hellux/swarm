@@ -1,5 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.AbstractMap;
 
@@ -9,7 +10,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 /**
- * Contain behavioural components for entities.
+ * Contains behavioural components for entity.
  **/
 public class Entity {
     /**
@@ -42,6 +43,7 @@ public class Entity {
 
     /**
      * Remove a component of a certain class.
+     * @param <T> type of component
      * @param componentClass class of component to be removed.
      * @return the removed component or null, if it doesn't exist.
      **/
@@ -55,6 +57,7 @@ public class Entity {
 
     /**
      * Get a component of a certain class.
+     * @param <T> type of component
      * @param componentClass class of component to get.
      * @return the component or null, if it doesn't exist.
      **/
@@ -63,8 +66,13 @@ public class Entity {
         return (T) this.components.get(componentClass);
     }
 
+    public Collection<Component> getComponents() {
+        return this.components.values();
+    }
+
     /**
      * Check if entity has a component of a certain class.
+     * @param <T> type of component
      * @param componentClass class of component.
      * @return whether entity has component.
      **/
@@ -74,6 +82,7 @@ public class Entity {
 
     /**
      * Update all live components that are active.
+     * @param level current game level
      **/
     public void update(GameLevel level) {
         // some components depend on pc being updated before
@@ -96,7 +105,6 @@ public class Entity {
         }
     }
     
-    //TODO move live/dead status to healthcomp
     /**
      * Flag the entity as killed.
      **/
@@ -104,6 +112,9 @@ public class Entity {
         this.killed = true;
     }
 
+    /**
+     * Flag the entity as not killed.
+     **/
     public void resurrect() {
         this.killed = false;
     }
@@ -112,15 +123,6 @@ public class Entity {
         return this.killed;
     }
 
-    //TODO move to collide component
-    public void collideWith(Entity e, GameLevel level) {
-        for (Component c : this.components.values()) {
-            if (c instanceof CollidingComponent) {
-                CollidingComponent cc = (CollidingComponent) c;
-                cc.collideWith(e, level);
-            }
-        }
-    }
 
     public EntityType getType() {
         return this.type;

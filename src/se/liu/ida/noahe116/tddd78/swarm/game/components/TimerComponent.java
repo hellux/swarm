@@ -12,6 +12,9 @@ public class TimerComponent extends LiveComponent {
         this.time = time;
     }
 
+    /**
+     * Update timer, kill entity if time has passed.
+     **/
     @Override
     public void update(GameLevel level) {
         if (this.time == 0) {

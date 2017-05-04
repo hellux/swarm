@@ -59,6 +59,8 @@ public final class RcCreator {
 
     /**
      * Create a RenderComponent for a specific entity.
+     * @param e entity to attach to rendercomponent
+     * @return render component with attached entity and corresponding sprite
      **/
     public static RenderComponent createRenderComponent(Entity e) {
         EntityType type = e.getType();

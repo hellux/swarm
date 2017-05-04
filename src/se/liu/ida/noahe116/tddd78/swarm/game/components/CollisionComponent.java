@@ -2,6 +2,7 @@ package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
@@ -106,6 +107,7 @@ public class CollisionComponent extends Component {
      * } </pre>
      * @param cc collisioncomponent to check for collisions with
      * @param level game level of current game
+     * @return whether an collision occurs or not
      **/ 
     public boolean collidesWith(CollisionComponent cc, GameLevel level) {
         //TODO check future postitons and interpolate the collision point
@@ -123,6 +125,22 @@ public class CollisionComponent extends Component {
         }
     }
 
+    /**
+     * Collide with an entity.
+     * Call collideWith methods in all components.
+     * @param e entity collided with
+     * @param level current game level
+     **/
+    public void collideWith(Entity e, GameLevel level) {
+        Collection<Component> components = e.getComponents();
+        for (Component c : components) {
+            if (c instanceof CollidingComponent) {
+                CollidingComponent cc = (CollidingComponent) c;
+                cc.collideWith(this.entity, level);
+            }
+        }
+    }
+
     public Vector2D center() {
         return this.entity.get(PositionComponent.class).getPosition();
     }
@@ -137,6 +155,7 @@ public class CollisionComponent extends Component {
 
     /**
      * Blacklist entities from collision checking.
+     * @param entityTypes entity types to blacklist
      **/
     public void blacklist(EntityType...entityTypes) {
         this.blacklist = true;
@@ -147,6 +166,7 @@ public class CollisionComponent extends Component {
 
     /**
      * Whitelist entities for collision checking.
+     * @param entityTypes entity types to whitelist
      **/
     public void whitelist(EntityType...entityTypes) {
         this.blacklist = false;
@@ -157,6 +177,8 @@ public class CollisionComponent extends Component {
 
     /**
      * Check if one of the entities ignores the other.
+     * @param e entity to check if it's ignored
+     * @return whether the entity is ignored
      **/
     public boolean ignores(Entity e) {
         EntityType type = e.getType();

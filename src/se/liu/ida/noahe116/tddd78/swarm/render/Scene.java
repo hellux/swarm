@@ -45,6 +45,7 @@ public class Scene {
 
     /**
      * Render an interpolated frame of the gameLevel's current state.
+     * @param g2d graphics object to draw frame with.
      * @param interpolation ratio of time that has passed since the last tick to the
      *                      period between ticks.
      **/

@@ -38,6 +38,7 @@ public class Game {
     /**
      * Get a GameLevel one level higher with the same player.
      * @param gameLevel current game level
+     * @return next game level
      **/
     public GameLevel getNextLevel(GameLevel gameLevel) {
         int level = gameLevel.getLevel();

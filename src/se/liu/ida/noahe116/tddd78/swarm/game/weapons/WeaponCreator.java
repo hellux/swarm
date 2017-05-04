@@ -80,10 +80,12 @@ public final class WeaponCreator {
 
     /**
      * Return a ProjectileWeapon of a specific type.
+     * @param type type of weapon to retrieve
+     * @return weapon of given type
      **/
     public static Weapon get(WeaponType type) {
         if (!WEAPONS.containsKey(type)) {
-            LOGGER.log(Level.WARNING, "can't create weapon of type " + type);
+            LOGGER.log(Level.WARNING, "can't get weapon of type " + type);
             return WEAPONS.get(WeaponType.DEFAULT);
         }
         return WEAPONS.get(type);

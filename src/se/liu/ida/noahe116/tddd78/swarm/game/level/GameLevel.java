@@ -167,8 +167,8 @@ public class GameLevel {
                 CollisionComponent cc2 = ent2.get(CollisionComponent.class);
 
                 if (cc1.collidesWith(cc2, this)) {
-                    ent1.collideWith(ent2, this);
-                    ent2.collideWith(ent1, this);
+                    cc1.collideWith(ent2, this);
+                    cc2.collideWith(ent1, this);
                 }
             }
         }
@@ -309,7 +309,7 @@ public class GameLevel {
     
     /**
      * Wrap around a position if it's on the other side of the level.
-     * <strong>Usefulness of wraparound</strong><br>
+     * <br><br><strong>Usefulness of wraparound</strong><br>
      * <p>The game level is finite and when the edge is reached, the other edge
      * of the map is used (entities seamlessly teleport to the other side with simple modulus).
      * This creates a problem for rendering and collision detection and other operations

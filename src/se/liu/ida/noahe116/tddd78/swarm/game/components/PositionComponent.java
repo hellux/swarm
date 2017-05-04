@@ -26,6 +26,10 @@ public class PositionComponent extends LiveComponent {
         this(new Vector2D());
     }
 
+    /**
+     * Update position, rotation, velocities and acceleration.
+     * @param level current game level
+     **/
     @Override
     public void update(GameLevel level) {
         this.position.add(this.velocity);
@@ -38,6 +42,11 @@ public class PositionComponent extends LiveComponent {
         this.velocity.multiply(this.drag);
     }
 
+    /**
+     * Calculate the interpolated position.
+     * @param interpolation ratio of time that has passed since last tick
+     * @return interpolated position
+     **/
     public Vector2D futurePos(double interpolation) {
         if (this.active && !this.entity.isKilled()) {
             Vector2D futureVel = Vector2D.multiply(
@@ -57,6 +66,11 @@ public class PositionComponent extends LiveComponent {
         }
     }
 
+    /**
+     * Calculate the interpolated rotation.
+     * @param interpolation ratio of time that has passed since last tick
+     * @return interpolated rotation
+     **/
     public double futureRot(double interpolation) {
         if (this.active) {
             return this.rotation + this.rotationalSpeed * interpolation;

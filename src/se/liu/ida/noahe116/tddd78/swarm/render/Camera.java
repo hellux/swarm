@@ -99,6 +99,7 @@ public class Camera {
      *
      *   } </pre>
      * @param gameCoordinate a position in the game's coordinate system. 
+     * @param level current game level
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate, GameLevel level) {

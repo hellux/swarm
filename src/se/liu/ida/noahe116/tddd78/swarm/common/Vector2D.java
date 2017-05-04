@@ -68,7 +68,7 @@ public class Vector2D {
     
     /**
      * Rotation of this vector (angle from the x axis).
-     * <pre> {@code
+     * @return rotation of this vector
      **/
     public double rotation() {
         return Math.atan2(this.y, this.x);
@@ -110,6 +110,9 @@ public class Vector2D {
 
     /**
      * Create a vector from a length and direction.
+     * @param length length of vector
+     * @param rotation rotation of vector
+     * @return vector with given length and rotation
      **/
     public static Vector2D fromLengthRotation(double length, double rotation) {
         return new Vector2D(Math.cos(rotation)*length, Math.sin(rotation)*length);
@@ -180,6 +183,8 @@ public class Vector2D {
      *
      * x' = xcosr - ysinr ~ [x'] = [cosr -sinr][x]
      * y' = xsinr + ycosr   [y']   [sinr cosr ][y]
+     * @param rotation rotation of rotation matrix
+     * @return rotation matrix with given rotation
      **/
     public static double[][] rotationMatrix(double rotation) {
         return new double[][] {
