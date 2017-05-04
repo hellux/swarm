@@ -6,6 +6,10 @@ import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 
+/**
+ * Create different types of collectibles.
+ * Collectibles are created once on startup. 
+ **/
 public final class CollectibleCreator {
     private static final Logger LOGGER =
         Logger.getLogger(CollectibleCreator.class.getName());
@@ -21,6 +25,11 @@ public final class CollectibleCreator {
             put(CollectibleType.SHIP, new ExtraLifeCollectible());
         }};
 
+    /**
+     * Retrieve a specific type of collectible.
+     * @param type collectible type
+     * @return collectible of given type.
+     **/
     public static Collectible get(CollectibleType type) {
         if (!COLLECTIBLES.containsKey(type)) {
             LOGGER.log(Level.WARNING, "can't create collectible of type " + type);

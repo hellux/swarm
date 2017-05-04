@@ -1,7 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.AbstractMap;
 import java.util.EnumMap;
 import java.util.logging.*;
@@ -15,13 +14,16 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
 //TODO make less messy, maybe builder method that handles component initialization
 // values should be moved to xml files or similar
+/**
+ * Create entities of specific types.
+ **/
 public final class EntityCreator {
     private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
 
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
     
-    private static final AbstractMap<EnemyType, Supplier<Entity>> ENEMY_CREATORS =
+    private static final AbstractMap<EnemyType, Consumer<Entity>> ENEMY_CREATORS =
         new EnumMap<>(EnemyType.class);
 
     static {
@@ -61,9 +63,15 @@ public final class EntityCreator {
         return null;
     }
 
+    /**
+     * Create an entity representing an enemy of a specific type.
+     * @param type type of enemy
+     **/
     public static Entity create(EnemyType type) {
         if (ENEMY_CREATORS.containsKey(type)) {
-            return ENEMY_CREATORS.get(type).get();
+            Entity e = new Entity(type.entityType);
+            ENEMY_CREATORS.get(type).accept(e);
+            return e;
         } else {
             LOGGER.log(Level.WARNING, "no creator for " + type);
             return null;
@@ -134,9 +142,7 @@ public final class EntityCreator {
         e.add(new PlayerComponent());
     }
 
-    private static Entity createClagBot() {
-        Entity e = new Entity(EntityType.ENEMY_CLAG_BOT);
-        
+    private static void createClagBot(Entity e) {
         e.add(new HealthComponent(35));
         e.add(new ClagBotComponent());
         e.add(new KnockbackComponent());
@@ -148,7 +154,5 @@ public final class EntityCreator {
         ThrustComponent tc = new ThrustComponent();
         tc.setThrustPower(0.05);
         e.add(tc);
-
-        return e;
     }
 }

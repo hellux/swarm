@@ -6,6 +6,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
+/**
+ * Object used by scene to keep track of entities to draw and their sprites.
+ **/
 public class RenderComponent implements Comparable<RenderComponent> {
     protected final Sprite sprite;
     protected final Entity entity;

@@ -2,8 +2,10 @@ package se.liu.ida.noahe116.tddd78.swarm.game;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Keep track of game session and create game levels.
+ **/
 public class Game {
-    private int score;
     private int maxLevel;
     private String name;
     private GameLevelCreator gameLevelCreator;
@@ -12,7 +14,6 @@ public class Game {
 
     public Game(int level, String name) {
         if (level < 1) throw new IllegalArgumentException("Invalid level!" + level);
-        this.score = 0;
         this.maxLevel = level;
         this.name = name;
         this.gameLevelCreator = new GameLevelCreator(name);

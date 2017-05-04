@@ -9,6 +9,10 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.*;
 
+/**
+ * Store and update entities and level properties.
+ * TODO: separate game objective and collisions from this class (make them like plug-ins)
+ **/
 public class GameLevel {
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
 
@@ -266,9 +270,8 @@ public class GameLevel {
     }
 
     /**
-     * Wrap a coordinate around the game level if it's on the other side relative to p2.
+     * Wrap a coordinate (p1) around the game level if it's on the other side relative to p2.
      * <pre> {@code
-     *
      * P   :  position of this component 
      * P'  :  position of point to possibly be wrapped around
      * )(  :  pivot = (C+S/2) % S
@@ -287,7 +290,6 @@ public class GameLevel {
      *
      *       pivot < P , P'   =>   P' =  P'
      *       P' < pivot < P   =>   P' += S  (*)
-     *
      * } </pre>
      * @param p1 position 
      * @param p2 position to possibly wrap around
@@ -306,10 +308,45 @@ public class GameLevel {
     }
     
     /**
-     * Eventually wrap around a position if it's on the other side of the level
+     * Wrap around a position if it's on the other side of the level.
+     * <strong>Usefulness of wraparound</strong><br>
+     * <p>The game level is finite and when the edge is reached, the other edge
+     * of the map is used (entities seamlessly teleport to the other side with simple modulus).
+     * This creates a problem for rendering and collision detection and other operations
+     * when at the edge. If the camera is near the edge, it will not be able to render 
+     * the screen correctly. By "wrapping around" positions the edge can be seemingly removed
+     * in the perspective of the specific entity.</p>
+     *
+     * <p>For an example; look at the diagram below.
+     * There is only one level but there are seemingly parallel universes in a tile
+     * pattern. Observe the level from the perspective of entity e. e is actually very 
+     * far from both a and b. But since the world wraps around, they should be very close
+     * to each other. The camera should render a close to the e's right even though a
+     * is actually to the far left of e. This is why positions need to be wrapped around. 
+     * This method will move a and b so the closest ones are used.
+     * </p>
+     * <strong>Diagram</strong>
+     * <pre> {@code
+     *  __________________________________________________
+     * |              b |              b |              b |
+     * |                |                |                |
+     * |                |                |                |
+     * | a            e | a            e | a            e |
+     * |________________|________________|________________|
+     * |              b |              b |              b |
+     * |                |                |                |
+     * |                |                |                |
+     * | a            e | a            e | a            e |
+     * |________________|________________|________________|
+     * |              b |              b |              b |
+     * |                |                |                |
+     * |                |                |                |
+     * | a            e | a            e | a            e |
+     * |________________|________________|________________|
+     * }</pre>
      * @param pos1 a position
-     * @param pos2 position to eventually wrap around
-     * @return pos2 eventually wrapped around
+     * @param pos2 position to wrap around if needed
+     * @return pos2, possibly wrapped around
      **/
     public Vector2D wrapAround(Vector2D pos1, Vector2D pos2) {
         return new Vector2D(

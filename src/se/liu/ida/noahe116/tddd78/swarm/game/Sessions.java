@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.io.IOException;
 
 /**
- * Saves and loads game sessions to and from files.
+ * Save and load game sessions to and from save files.
  * 
- * File format specification:
+ * Save file format specification:
  *  Uses .swrm extension. Is simple binary file with a header and data.
  *
  *  File contents:

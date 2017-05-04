@@ -8,6 +8,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
+/**
+ * Contain behavioural components for entities.
+ **/
 public class Entity {
     /**
      * Map of entity's components.
@@ -50,12 +53,12 @@ public class Entity {
         return oldComponent;
     }
 
-    @SuppressWarnings("unchecked") // key always represent type of value
     /**
      * Get a component of a certain class.
      * @param componentClass class of component to get.
      * @return the component or null, if it doesn't exist.
      **/
+    @SuppressWarnings("unchecked") // key always represent type of value
     public <T extends Component> T get(Class<T> componentClass) {
         return (T) this.components.get(componentClass);
     }

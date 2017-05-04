@@ -6,6 +6,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
+/**
+ * Collectible that increases an entity's shield.
+ **/
 public class ShieldCollectible implements Collectible {
     private static final Logger LOGGER =
         Logger.getLogger(ShieldCollectible.class.getName());

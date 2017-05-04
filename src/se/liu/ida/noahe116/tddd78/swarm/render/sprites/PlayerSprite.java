@@ -8,6 +8,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 
+/**
+ * Handle the sprites of the player entity.
+ **/
 public class PlayerSprite extends Sprite {
     private static final String BASE = "ship_base.png";
     private static final String DEFAULT = "ship_default.png";

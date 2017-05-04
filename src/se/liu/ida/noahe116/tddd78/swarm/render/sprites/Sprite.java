@@ -13,6 +13,9 @@ import java.util.Collections;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 
+/**
+ * Load images from disk and store them.
+ **/
 public class Sprite {
     private static final Logger LOGGER = Logger.getLogger(Sprite.class.getName());
     
@@ -75,8 +78,12 @@ public class Sprite {
         return imageArray;
     }
 
+    /**
+     * Retrieve all images of the sprite in alphabetical order.
+     * @param entity entity that sprite is drawn on.
+     * @return array of the sprite's buffered images
+     **/
     public BufferedImage[] getImages(Entity entity) {
-        // toArray() only returns Object array
         List<String> fileNames = new ArrayList<>(this.images.keySet());
         Collections.sort(fileNames);
         BufferedImage[] images = new BufferedImage[this.images.size()];
@@ -84,6 +91,5 @@ public class Sprite {
             images[i] = this.images.get(fileNames.get(i));
         }
         return images;
-        //return this.images.values().toArray(new BufferedImage[0]);
     }
 }

@@ -4,6 +4,11 @@ import se.liu.ida.noahe116.tddd78.swarm.common.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.PositionComponent;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Camera of the scene.
+ * Can be attached to an entity by using it's position component.
+ * Interpolation should be updated once per frame.
+ **/
 public class Camera {
     /**
      * Center of camera's view.
@@ -41,6 +46,12 @@ public class Camera {
         this.size.y = componentHeight/this.scale;
     }
 
+    /**
+     * Update the interpolated position of the camera.
+     * Should only be done once every frame, more is unnecessary.
+     * @param interpolation ratio of passed time since last tick
+     *                      until the next.
+     **/
     public void updateInterpolation(double interpolation) {
         this.interpolatedPos = this.posComp.futurePos(interpolation);
     }

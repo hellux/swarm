@@ -8,6 +8,9 @@ import java.nio.file.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
+/**
+ * Handle menu's of game.
+ **/
 @SuppressWarnings("serial")
 public final class MenuPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MenuPanel.class.getName());
@@ -23,7 +26,10 @@ public final class MenuPanel extends JPanel {
     private final HelpMenu helpMenu;
     private final CardLayout layout;
 
-    public final class MainMenu extends JPanel {
+    /**
+     * Redirect user to sub menus or exit.
+     **/
+    private final class MainMenu extends JPanel {
         public MainMenu() {
             this.setLayout(new GridLayout(4, 1));
 
@@ -43,7 +49,10 @@ public final class MenuPanel extends JPanel {
         }
     }
 
-    public final class PlayMenu extends JPanel {
+    /**
+     * Create, load, start game.
+     **/
+    private final class PlayMenu extends JPanel {
         private JLabel info = new JLabel("", SwingConstants.CENTER);
         private JTextField levelField = new JTextField(1);
 
@@ -122,13 +131,10 @@ public final class MenuPanel extends JPanel {
         }
     }
 
-    public final class CreateGameMenu extends JPanel {
-        public CreateGameMenu() {
-
-        }
-    }
-
-    public final class HelpMenu extends JPanel {
+    /**
+     * Display text area with game instructions.
+     **/
+    private final class HelpMenu extends JPanel {
         private final String HELP_FILE = "help.txt";
 
         public HelpMenu() {

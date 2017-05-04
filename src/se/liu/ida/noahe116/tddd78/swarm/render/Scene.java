@@ -19,7 +19,8 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
 /**
- * Handles visualization of the game.
+ * Handle visualization of the game.
+ * TODO: add visual entities, not part of the game (such as stars and galaxies in the background).
  **/
 public class Scene {
     private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());

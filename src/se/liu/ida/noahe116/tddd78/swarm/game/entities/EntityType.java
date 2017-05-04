@@ -1,5 +1,8 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 
+/**
+ * All possible types of entities.
+ **/
 public enum EntityType {
     PLAYER,
     ASTEROID,

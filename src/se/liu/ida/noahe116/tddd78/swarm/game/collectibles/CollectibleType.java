@@ -2,6 +2,9 @@ package se.liu.ida.noahe116.tddd78.swarm.game.collectibles;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 
+/**
+ * Types of collectibles with corresponding entity types.
+ **/
 public enum CollectibleType {
     SHIELD(EntityType.COLLECTIBLE_SHIELD),
     SHIP(EntityType.COLLECTIBLE_SHIP),

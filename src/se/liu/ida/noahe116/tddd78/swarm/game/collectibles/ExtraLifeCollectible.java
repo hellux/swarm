@@ -6,6 +6,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
+/**
+ * Collectible that gives entity an extra life.
+ **/
 public class ExtraLifeCollectible implements Collectible {
     private static final Logger LOGGER =
         Logger.getLogger(ExtraLifeCollectible.class.getName());
