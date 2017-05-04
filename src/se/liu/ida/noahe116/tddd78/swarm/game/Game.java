@@ -11,6 +11,7 @@ public class Game {
     private int currentLevel = 0;
 
     public Game(int level, String name) {
+        if (level < 1) throw new IllegalArgumentException("Invalid level!" + level);
         this.score = 0;
         this.maxLevel = level;
         this.name = name;

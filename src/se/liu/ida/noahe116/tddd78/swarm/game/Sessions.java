@@ -34,6 +34,7 @@ public final class Sessions {
             int level = byteArraytoInt(
                 Arrays.copyOfRange(fileContents, HEADER.length, HEADER.length+SIZEOF_INT)
             );
+            if (level < 1) throw new IOException("save file is corrupted");
             return new Game(level, name);
         } else {
             throw new IOException("session file has no header");
