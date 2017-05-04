@@ -10,7 +10,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
 /**
  * Main panel of swarm game.
- * Contains game panel and menu panel, switches with cardlayout.
+ * Contains game panel and menu panel, switches inbetween with cardlayout.
  **/
 @SuppressWarnings("serial")
 public final class MainPanel extends JPanel {

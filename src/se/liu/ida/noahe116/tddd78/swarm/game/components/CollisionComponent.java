@@ -9,14 +9,14 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 /**
  * Handle collisions between entities.
- * Collision areas can only be circles.
+ * <p>Collision areas can only be circles.</p>
  *
- * Black/whiteList:
- * Types of entities can be either ignored (blacklist) or
+ * <br><strong>Black/whiteList:</strong>
+ * <p>Types of entities can be either ignored (blacklist) or
  * exclusively checked for collisions (whitelist).
  * By default the blacklist is used and is empty, thus
  * all collisions will be checked. When entities are
- * added to the whitelist, the whitelist will be used instead.
+ * added to the whitelist, the whitelist will be used instead.</p>
  **/
 public class CollisionComponent extends Component {
     public final double radius;
@@ -103,6 +103,9 @@ public class CollisionComponent extends Component {
      *
      *  d < r1+r2
      *  d^2 < (r1+r2)^2
+     * } </pre>
+     * @param cc collisioncomponent to check for collisions with
+     * @param level game level of current game
      **/ 
     public boolean collidesWith(CollisionComponent cc, GameLevel level) {
         //TODO check future postitons and interpolate the collision point

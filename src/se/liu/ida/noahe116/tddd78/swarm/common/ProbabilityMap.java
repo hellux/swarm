@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * List of items with probabilities mapped to them.
+ **/
 public class ProbabilityMap<T> {
     public static final Random RAND = new Random();
     

@@ -18,6 +18,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
+/**
+ * Handle inputs and graphics canvas of game.
+ **/
 @SuppressWarnings("serial")
 public final class GamePanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());

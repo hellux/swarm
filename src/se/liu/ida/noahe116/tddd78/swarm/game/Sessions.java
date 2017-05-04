@@ -8,12 +8,14 @@ import java.io.IOException;
 /**
  * Save and load game sessions to and from save files.
  * 
- * Save file format specification:
- *  Uses .swrm extension. Is simple binary file with a header and data.
+ * <strong>Save file format specification</strong><br>
+ *  Uses .swrm extension. A simple binary file with a header and data.<br>
  *
  *  File contents:
- *  -a header with encoded string "SWARM"
- *  -4 byte integer representing the max level of the session
+ *  <ul>
+ *  <li>a header with encoded string "SWARM"</li>
+ *  <li>4 byte integer representing the max level of the session</li>
+ *  </ul>
  **/
 public final class Sessions {
     private static final Logger LOGGER = Logger.getLogger(Sessions.class.getName());

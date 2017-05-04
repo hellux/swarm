@@ -71,13 +71,21 @@ public class PositionComponent extends LiveComponent {
         this.acceleration.x = 0;
         this.acceleration.y = 0;
     }
+
     public void accelerate(Vector2D acc) {
         this.velocity.add(acc);
     }
 
+    public void setPosition(Vector2D pos) {
+        this.position.set(pos);
+    }
+
+    public void setVelocity(Vector2D vel) {
+        this.velocity.set(vel);
+    }
+
     public void setAcceleration(Vector2D acc) {
-        this.acceleration.x = acc.x;
-        this.acceleration.y = acc.y;
+        this.acceleration.set(acc);
     }
 
     public void setRotation(double rotation) {
@@ -92,25 +100,16 @@ public class PositionComponent extends LiveComponent {
         this.drag = b ? DRAG : 1;
     }
 
+    public Vector2D getPosition() {
+        return this.position.copy();
+    }
+
+    public Vector2D getVelocity() {
+        return this.velocity.copy();
+    }
+
     public double getRotation() {
         return this.rotation;
     }
 
-    public void setPosition(Vector2D pos) {
-        this.position.x = pos.x;
-        this.position.y = pos.y;
-    }
-
-    public void setVelocity(Vector2D vel) {
-        this.velocity.x = vel.x;
-        this.velocity.y = vel.y;
-    }
-
-    public Vector2D getPosition() {
-        return this.position;
-    }
-
-    public Vector2D getVelocity() {
-        return this.velocity;
-    }
 }
