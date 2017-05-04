@@ -5,6 +5,9 @@ import java.awt.*;
 import java.util.logging.*;
 import java.io.IOException;
 
+/**
+ * Creates window frame with main panel.
+ **/
 public final class Swarm {
     private static final Logger LOGGER = Logger.getLogger(Swarm.class.getName());
 

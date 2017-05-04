@@ -8,6 +8,10 @@ import java.io.IOException;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.*;
 
+/**
+ * Main panel of swarm game.
+ * Contains game panel and menu panel, switches with cardlayout.
+ **/
 @SuppressWarnings("serial")
 public final class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
@@ -27,7 +31,7 @@ public final class MainPanel extends JPanel {
         this.layout = new CardLayout();
         this.setLayout(this.layout);
 
-        this.gamePanel = new GamePanel(this);
+        this.gamePanel = new GamePanel();
         this.menuPanel = new MenuPanel(this);
 
         this.add(this.gamePanel, GAMEPANEL);
@@ -42,16 +46,12 @@ public final class MainPanel extends JPanel {
         
         boolean quit = false;
         while (!quit) {
-            LevelStatus status = this.gamePanel.startGame(gameLevel);
-            switch (status) {
-            case COMPLETED:
+            LevelStatus status = this.gamePanel.runGame(gameLevel);
+            if (status == LevelStatus.COMPLETED) {
                 gameLevel = this.game.getNextLevel(gameLevel);
                 this.saveGame();
-                break;
-            case IN_PROGRESS:
-            case FAILED:
+            } else {
                 quit = true;
-                break;
             }
         }
 

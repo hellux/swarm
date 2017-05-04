@@ -43,8 +43,6 @@ public final class GamePanel extends JPanel {
      **/
     private static final double CURSOR_RADIUS_RATIO = 0.3;
 
-    private final MainPanel mainPanel;
-
     private Robot robot = null;
     private GameLevel gameLevel = null;
     private Scene scene = null;
@@ -62,9 +60,8 @@ public final class GamePanel extends JPanel {
 
     private Map<Runnable, Long> taskSchedule = new HashMap<>();
 
-    public GamePanel(MainPanel mainPanel) {
+    public GamePanel() {
         this.setBackground(Color.BLACK);
-        this.mainPanel = mainPanel;
         this.createComponentListener();
         this.hideCursor();
 
@@ -75,7 +72,7 @@ public final class GamePanel extends JPanel {
         }
     }
 
-    public LevelStatus startGame(GameLevel gameLevel) {
+    public LevelStatus runGame(GameLevel gameLevel) {
         this.gameLevel = gameLevel;
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
