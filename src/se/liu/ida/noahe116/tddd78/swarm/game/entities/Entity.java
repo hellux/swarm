@@ -6,7 +6,6 @@ import java.util.AbstractMap;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 /**
@@ -48,7 +47,7 @@ public class Entity {
      * @return the removed component or null, if it doesn't exist.
      **/
     public <T extends Component> T remove(Class<T> componentClass) {
-        // remove always returns instance of componentClass (or null)
+        // remove always returns instance of type componentClass (or null)
         @SuppressWarnings("unchecked") 
         T oldComponent = (T) this.components.remove(componentClass);
         if (oldComponent != null) oldComponent.setEntity(null);
@@ -86,6 +85,9 @@ public class Entity {
      **/
     public void update(GameLevel level) {
         // some components depend on pc being updated before
+        // components has to be sure where the entity will be on the next
+        // tick. if pc isn't updated first or last it can be updated
+        // either before or after a certain component.
         if (this.has(PositionComponent.class)) {
             PositionComponent pc = this.get(PositionComponent.class);
             if (pc.isActive()) {

@@ -1,7 +1,7 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
 import java.util.AbstractMap;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
@@ -10,14 +10,15 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 /**
  * Handle equipped weapons of an entity.
+ *
+ * An entity can has any amount of weapon slots (decided on instantiation of handler).
+ * Each weapon slot can have any amount of weapons (can be added at any time).
  **/
 public class WeaponHandlerComponent extends LiveComponent {
     private static final Logger LOGGER =
         Logger.getLogger(WeaponHandlerComponent.class.getName());
         
-    private static final int DEFAULT_SLOT_COUNT = 1;
-
-    public WeaponSlot[] slots;
+    private WeaponSlot[] slots;
 
     /**
      * List of EquippedWeapon at a entity's slot of weapons.
@@ -26,7 +27,7 @@ public class WeaponHandlerComponent extends LiveComponent {
         private EquippedWeapon equipped = null;
         private boolean fire;
         private int cooldown;
-        private AbstractMap<WeaponType, EquippedWeapon> weapons = new HashMap<>();
+        private AbstractMap<WeaponType, EquippedWeapon> weapons = new EnumMap<>(WeaponType.class);
 
         public boolean has(WeaponType type) {
             return this.weapons.containsKey(type);
@@ -56,10 +57,6 @@ public class WeaponHandlerComponent extends LiveComponent {
             this.weapons.get(type).setUnlimitedAmmo(state);
         }
         
-        public void setFire(boolean state) {
-            this.fire = state;
-        }
-
         public WeaponType getEquippedType() {
             return this.equipped.type;
         }
@@ -77,7 +74,11 @@ public class WeaponHandlerComponent extends LiveComponent {
      * Wrapper for Weapon that also handles ammo.
      **/
     public class EquippedWeapon {
+        /**
+         * weapon type of equipped weapon
+         */
         public final WeaponType type;
+
         private int ammo = 0;
         private Weapon weapon;
         private boolean unlimitedAmmo = false;
@@ -117,10 +118,6 @@ public class WeaponHandlerComponent extends LiveComponent {
         for (int i = 0; i < slotCount; i++) {
             this.slots[i] = new WeaponSlot();
         }
-    }
-
-    public WeaponHandlerComponent() {
-        this(DEFAULT_SLOT_COUNT);
     }
 
     private WeaponSlot slotWithWeapon(WeaponType type) {
@@ -163,22 +160,21 @@ public class WeaponHandlerComponent extends LiveComponent {
         }
     }
 
-    public boolean add(WeaponType type, int slot) {
+    /**
+     * Add a weapon of a specific type to a weapon slot.
+     * @param type type of weapon
+     * @param slot weapon slot
+     */
+    public void add(WeaponType type, int slot) {
         if (this.slotWithWeapon(type) == null) {
             this.getSlot(slot).add(type);
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public boolean addUnlimited(WeaponType type, int slot) {
-        if (this.add(type, slot)) {
-            this.slotWithWeapon(type).setUnlimitedAmmo(type, true);
-            return true;
-        } else {
-            return false;
-        }
+    public void addUnlimited(WeaponType type, int slot) {
+        this.add(type, slot);
+        // cannot return null because the weapon type was just added
+	this.slotWithWeapon(type).setUnlimitedAmmo(type, true);
     }
 
     public void addAmmo(WeaponType type, int ammo) {

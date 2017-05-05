@@ -8,7 +8,7 @@ import java.util.Random;
  * List of items with probabilities mapped to them.
  **/
 public class ProbabilityMap<T> {
-    public static final Random RAND = new Random();
+    private static final Random RAND = new Random();
     
     private List<T> items = new ArrayList<>();
     private List<Double> probabilities = new ArrayList<>();
