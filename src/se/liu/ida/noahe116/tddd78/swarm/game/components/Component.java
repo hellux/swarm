@@ -17,8 +17,4 @@ public abstract class Component {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
-
-    public Entity getEntity() {
-        return this.entity;
-    }
 }

@@ -7,6 +7,9 @@ public enum EnemyType {
     CLAG_BOT(EntityType.ENEMY_CLAG_BOT),
     CLAG_SCOUT(EntityType.ENEMY_CLAG_SCOUT);
 
+    /**
+     * EntityType of enemy
+     */
     public final EntityType entityType;
 
     private EnemyType(EntityType type) {

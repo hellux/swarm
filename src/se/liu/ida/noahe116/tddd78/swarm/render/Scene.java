@@ -16,7 +16,6 @@ import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
-import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
 
 /**
  * Handle visualization of the game.
@@ -121,8 +120,6 @@ public class Scene {
                 g2d.drawOval((int) Math.round(translatedPos.x)-radius,
                              (int) Math.round(translatedPos.y)-radius,
                              2*radius, 2*radius);
-            } else {
-                continue;
             }
         }
     }

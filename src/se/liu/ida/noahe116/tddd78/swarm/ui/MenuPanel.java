@@ -15,15 +15,12 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
 public final class MenuPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MenuPanel.class.getName());
 
-    private static String MAINMENU = "mainMenu";
-    private static String PLAYMENU = "playMenu";
-    private static String HELPMENU = "helpMenu";
+    private static final String MAINMENU = "mainMenu";
+    private static final String PLAYMENU = "playMenu";
+    private static final String HELPMENU = "helpMenu";
 
     private final MainPanel mainPanel;
 
-    private final MainMenu mainMenu;
-    private final PlayMenu playMenu;
-    private final HelpMenu helpMenu;
     private final CardLayout layout;
 
     /**
@@ -135,13 +132,14 @@ public final class MenuPanel extends JPanel {
      * Display text area with game instructions.
      **/
     private final class HelpMenu extends JPanel {
-        private final String HELP_FILE = "help.txt";
+        private static final String HELP_FILE = "help.txt";
 
         public HelpMenu() {
             this.setBackground(Color.WHITE);
             this.setLayout(new BorderLayout());
 
             JTextArea textArea = new JTextArea(this.readTextFile());
+            textArea.setEditable(false);
             JButton back = new JButton("Back to menu");
             back.addActionListener((e) -> MenuPanel.this.showMenu(MAINMENU));
 
@@ -168,9 +166,9 @@ public final class MenuPanel extends JPanel {
         this.layout = new CardLayout();
         this.setLayout(this.layout);
 
-        this.mainMenu = new MainMenu();
-        this.playMenu = new PlayMenu();
-        this.helpMenu = new HelpMenu();
+        final MainMenu mainMenu = new MainMenu();
+        final PlayMenu playMenu = new PlayMenu();
+        final HelpMenu helpMenu = new HelpMenu();
 
         this.add(mainMenu, MAINMENU);
         this.add(playMenu, PLAYMENU);

@@ -14,11 +14,6 @@ public class PlayerComponent extends Component {
             WeaponType.QUAD,
     };
 
-    private static final WeaponType[] SECONDARY_WEAPONS =
-        new WeaponType[] {
-
-    };
-
     public void setThrust(boolean state) {
         this.entity.get(ThrustComponent.class).setThrust(state);
     }
@@ -49,16 +44,7 @@ public class PlayerComponent extends Component {
             .equip(PRIMARY_WEAPONS[slot-1]);
     }
 
-    public void equipSecondary(int slot) {
-        this.entity.get(WeaponHandlerComponent.class)
-            .equip(SECONDARY_WEAPONS[slot-1]);
-    }
-
     public void firePrimary(boolean state) {
         this.entity.get(WeaponHandlerComponent.class).fire(state, 0);
-    }
-
-    public void fireSecondary(boolean state) {
-        this.entity.get(WeaponHandlerComponent.class).fire(state, 1);
     }
 }

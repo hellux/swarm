@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 
@@ -16,29 +15,27 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
  * to make sure that levels generated with identical seeds have identical specs.
  **/
 public final class GameLevelCreator {
-    private final ProbabilityMap<Function<Integer, GameLevelSpec>> GENERATORS =
+    private final ProbabilityMap<Function<Integer, GameLevelSpec>> generators =
         new ProbabilityMap<>(); 
 
     private final Random rand;
     private final List<GameLevelSpec> specs;
 
-    {
-        GENERATORS.put(this::generateHarvestSpec, 10);
-        GENERATORS.put(this::generateLootSpec, 1);
-    }
-    
     public GameLevelCreator(long seed) {
         this.rand = new Random(seed);
         this.specs = new ArrayList<>();
+
+        generators.put(this::generateHarvestSpec, 10);
+        generators.put(this::generateLootSpec, 1);
     }
 
     public GameLevelCreator(String seed) {
-        this((long) seed.hashCode());
+        this(seed.hashCode());
     }
 
     private void generateSpecs(int level) {
         for (int i = specs.size(); i < level; i++) {
-            this.specs.add(this.GENERATORS.get(this.rand).apply(level));
+            this.specs.add(this.generators.get(this.rand).apply(level));
         }
     }
 
@@ -65,7 +62,7 @@ public final class GameLevelCreator {
                 .maxEnemyCount((int) (Math.log(level) + normRand(10, 3)))
                 .withEnemies(new ProbabilityMap<EnemyType>()
                     .put(EnemyType.CLAG_BOT, 1))
-                .withSpawnDelay((long) (5.0/level*Math.pow(Math.sin(Math.PI*i/waveCount), 2))));
+                .withSpawnDelay((int) (5.0/level*Math.pow(Math.sin(Math.PI*i/waveCount), 2))));
         }
 
         return spec

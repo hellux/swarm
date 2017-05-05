@@ -3,7 +3,6 @@ package se.liu.ida.noahe116.tddd78.swarm.game.level;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
@@ -13,8 +12,6 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 
 public class GameLevelSpec {
-    private static final Logger LOGGER = Logger.getLogger(GameLevelSpec.class.getName());
-
     private int size = 15000;
 
     public final LevelType levelType;
@@ -134,7 +131,7 @@ public class GameLevelSpec {
         return this.lootTime;
     }
 
-    public long getEnemySpawnDelay(int wave) {
+    public int getEnemySpawnDelay(int wave) {
         return this.getWave(wave).enemySpawnDelay;
     }
 

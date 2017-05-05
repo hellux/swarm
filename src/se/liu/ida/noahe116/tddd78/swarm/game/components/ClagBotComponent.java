@@ -9,7 +9,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
  * Controller component for the clag bot enemy AI.
  **/
 public class ClagBotComponent extends LiveComponent implements CollidingComponent {
-    public static final int DETECT_DISTANCE = 2000;
+    private static final int DETECT_DISTANCE = 2000;
 
     @Override
     public void update(GameLevel level) {

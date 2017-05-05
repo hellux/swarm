@@ -19,11 +19,10 @@ public final class MainPanel extends JPanel {
     private final static String GAMEPANEL = "gamePanel";
     private final static String MENUPANEL = "menuPanel";
 
-    private GamePanel gamePanel; 
-    private MenuPanel menuPanel;
+    private GamePanel gamePanel;
     private CardLayout layout;
 
-    private Game game;
+    private Game game = null;
 
     public MainPanel() {
         this.setBackground(Color.BLACK);
@@ -32,10 +31,10 @@ public final class MainPanel extends JPanel {
         this.setLayout(this.layout);
 
         this.gamePanel = new GamePanel();
-        this.menuPanel = new MenuPanel(this);
+        final MenuPanel menuPanel = new MenuPanel(this);
 
         this.add(this.gamePanel, GAMEPANEL);
-        this.add(this.menuPanel, MENUPANEL);
+        this.add(menuPanel, MENUPANEL);
 
         this.layout.show(this, MENUPANEL);
     }

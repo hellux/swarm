@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.event.*;
+import java.util.Map.Entry;
 import java.util.logging.*;
 import java.util.function.Consumer;
 import java.util.Map;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
-import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
 import se.liu.ida.noahe116.tddd78.swarm.render.*;
 import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 
@@ -170,7 +170,7 @@ public final class GamePanel extends JPanel {
         List<Runnable> remove = new ArrayList<>();
         Long currentTime = System.nanoTime();
 
-        for (Map.Entry<Runnable, Long> item : this.taskSchedule.entrySet()) {
+        for (Entry<Runnable, Long> item : this.taskSchedule.entrySet()) {
             if (item.getValue() < currentTime) {
                 Runnable method = item.getKey();
                 method.run();
@@ -194,23 +194,19 @@ public final class GamePanel extends JPanel {
     private LevelStatus gameLoop() {
         long nextTick = System.nanoTime();
         long lastFrame = nextTick;
-        long currentFrame = nextTick;
         long nextFrame = nextTick;
-
-        boolean levelEnded = false;
 
         while (!this.quit) {
             sleepUntil(nextFrame);
 
             this.executeSchedule();
-            currentFrame = System.nanoTime();
+            long currentFrame = System.nanoTime();
             this.delay = currentFrame - lastFrame;
             lastFrame = currentFrame;
             nextFrame = currentFrame + MIN_FRAME_PERIOD;
 
             if (currentFrame > nextTick) {
                 if (this.gameLevel.update() != LevelStatus.IN_PROGRESS) {
-                    levelEnded = true;
                     this.tickrate = SLOW_TICKRATE;
                     this.schedule(this::quit, 0.5);
                 }
@@ -316,13 +312,13 @@ public final class GamePanel extends JPanel {
 
         this.bindKey(KeyStroke.getKeyStroke("F3"), () -> this.showFPS = !this.showFPS);
         this.bindKey(KeyStroke.getKeyStroke("F5"), this.scene::toggleShowHitBoxes);
-        this.bindKey(KeyStroke.getKeyStroke("ESCAPE"), () -> this.exit());
+        this.bindKey(KeyStroke.getKeyStroke("ESCAPE"), this::exit);
 
         this.bindKey(KeyStroke.getKeyStroke("A"), () -> this.playerComponent.equipPrimary(1));
         this.bindKey(KeyStroke.getKeyStroke("S"), () -> this.playerComponent.equipPrimary(2));
         this.bindKey(KeyStroke.getKeyStroke("D"), () -> this.playerComponent.equipPrimary(3));
         this.bindKey(KeyStroke.getKeyStroke("F"), () -> this.playerComponent.equipPrimary(4));
-        this.bindKey(KeyStroke.getKeyStroke("G"), () -> this.activateSlowMotion());
+        this.bindKey(KeyStroke.getKeyStroke("G"), this::activateSlowMotion);
 
     }
 
@@ -331,7 +327,6 @@ public final class GamePanel extends JPanel {
             this.removeMouseListener(ml);
         }
         this.bindMouseToggle(MouseEvent.BUTTON1, this.playerComponent::firePrimary);
-        this.bindMouseToggle(MouseEvent.BUTTON2, this.playerComponent::fireSecondary);
     }
 
     private void bindMouseToggle(int button, Consumer<Boolean> bind) {

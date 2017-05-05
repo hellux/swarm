@@ -4,6 +4,8 @@ package se.liu.ida.noahe116.tddd78.swarm.common;
  * Utility math functions that are not in Math.
  **/
 public final class Math2 {
+    private Math2() {}
+
     /**
      * Returns the floor modulus of the double arguments.
      * @param x the dividend

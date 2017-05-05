@@ -13,7 +13,7 @@ public class Camera {
     /**
      * Center of camera's view.
      **/
-    private PositionComponent posComp;
+    private PositionComponent positionComponent;
 
     /**
      * Vector representing size of camera view
@@ -27,12 +27,12 @@ public class Camera {
     private double scale;
     private Vector2D interpolatedPos = null;
 
-    public Camera(PositionComponent posComp) {
-        this.posComp = posComp;
+    public Camera(PositionComponent positionComponent) {
+        this.positionComponent = positionComponent;
     }
 
     public void setPositionComponent(PositionComponent posComp) {
-        this.posComp = posComp;
+        this.positionComponent = posComp;
     }
 
     public void changeScale(double scale) {
@@ -53,11 +53,11 @@ public class Camera {
      *                      until the next.
      **/
     public void updateInterpolation(double interpolation) {
-        this.interpolatedPos = this.posComp.futurePos(interpolation);
+        this.interpolatedPos = this.positionComponent.futurePos(interpolation);
     }
 
     public PositionComponent getPositionComponent() {
-        return this.posComp;
+        return this.positionComponent;
     }
 
     public double getScale() {
@@ -103,7 +103,7 @@ public class Camera {
      * @return same position in the component's coordinate system.
      **/
     public Vector2D translate(Vector2D gameCoordinate, GameLevel level) {
-        Vector2D wrappedPos = level.wrapAround(this.posComp.getPosition(), gameCoordinate);
+        Vector2D wrappedPos = level.wrapAround(this.positionComponent.getPosition(), gameCoordinate);
         Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
                                                      Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(

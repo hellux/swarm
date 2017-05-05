@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.AbstractMap;
 
-import se.liu.ida.noahe116.tddd78.swarm.game.components.Component;
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 

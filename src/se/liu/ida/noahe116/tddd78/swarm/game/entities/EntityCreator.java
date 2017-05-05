@@ -5,7 +5,6 @@ import java.util.AbstractMap;
 import java.util.EnumMap;
 import java.util.logging.*;
 
-import se.liu.ida.noahe116.tddd78.swarm.common.Vector2D;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.Collectible;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleCreator;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
@@ -18,8 +17,6 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
  * Create entities of specific types.
  **/
 public final class EntityCreator {
-    private static final Logger LOGGER = Logger.getLogger(EntityCreator.class.getName());
-
     private static final AbstractMap<EntityType, Consumer<Entity>> CREATORS =
         new EnumMap<>(EntityType.class);
     
@@ -47,8 +44,7 @@ public final class EntityCreator {
             CREATORS.get(type).accept(e);
             return e;
         } else {
-            LOGGER.log(Level.WARNING, "no creator for " + type);
-            return null;
+            throw new IllegalArgumentException("no creator for " + type);
         }
     }
 
@@ -59,12 +55,9 @@ public final class EntityCreator {
      **/
     public static Entity create(CollectibleType type) {
         Collectible coll = CollectibleCreator.get(type);
-        if (coll != null) {
-            Entity e = new Entity(type.entityType);
-            createCollectible(e, coll);
-            return e;
-        }
-        return null;
+	Entity e = new Entity(type.entityType);
+	createCollectible(e, coll);
+	return e;
     }
 
     /**
@@ -78,8 +71,7 @@ public final class EntityCreator {
             ENEMY_CREATORS.get(type).accept(e);
             return e;
         } else {
-            LOGGER.log(Level.WARNING, "no creator for " + type);
-            return null;
+            throw new IllegalArgumentException("no creator for " + type);
         }
     }
 

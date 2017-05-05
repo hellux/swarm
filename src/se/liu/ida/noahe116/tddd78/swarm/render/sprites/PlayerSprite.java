@@ -22,6 +22,7 @@ public class PlayerSprite extends Sprite {
     
     @SuppressWarnings({ "unchecked", "serial", "rawtypes"})
     // anonymous class is static and will only be initialized once (at startup)
+    // this is the least tedious way I can think of to map enums to stuff
     private static final AbstractMap<WeaponType, String> WEAPONS = new EnumMap(WeaponType.class) {{
         put(WeaponType.DEFAULT, DEFAULT);
         put(WeaponType.RED_LASER, RED_LASER);

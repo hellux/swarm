@@ -26,6 +26,8 @@ public final class Sessions {
     public static String FILE_EXTENSION = ".swrm";
     public static byte[] HEADER = "SWARM".getBytes();
 
+    private Sessions() {}
+
     public static Game load(String name) throws IOException { 
         byte[] fileContents;
 

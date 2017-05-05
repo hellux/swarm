@@ -20,9 +20,8 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
  * added to the whitelist, the whitelist will be used instead.</p>
  **/
 public class CollisionComponent extends Component {
-    public final double radius;
+    private final double radius;
     private int damage = 0;
-    private boolean knockback = false;
 
     private boolean blacklist = true;
     private List<EntityType> typeBlacklist = new ArrayList<>();
@@ -118,7 +117,6 @@ public class CollisionComponent extends Component {
         Vector2D wrappedCenter = level.wrapAround(this.center(), cc.center());
         if (Vector2D.distanceSq(this.center(), wrappedCenter) <
             Math.pow(this.radius+cc.radius, 2)) {
-            Vector2D difference = Vector2D.subtract(this.center(), wrappedCenter);
             return true;
         } else {
             return false;

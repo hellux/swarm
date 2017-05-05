@@ -1,6 +1,5 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.level;
 
-import java.util.Random;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.*;
@@ -32,7 +31,6 @@ public class GameLevel {
 
     private int crystalCount = 0;
     private boolean objectiveComplete = false;
-    private boolean playerDied = false;
     private LevelStatus status;
 
     public GameLevel(GameLevelSpec spec, Entity player) {
@@ -112,10 +110,11 @@ public class GameLevel {
 
         if (this.enemySpawnCooldown > 0) {
             this.enemySpawnCooldown--;
-        }
-        else if (this.enemyCount < this.spec.getMaxEnemies(this.wave)) {
+        } else if (this.enemySpawnCooldown == 0 &&
+                   this.enemyCount < this.spec.getMaxEnemies(this.wave)) {
             this.spawn(EntityCreator.create(this.enemyProbabilites.get()));
             this.enemyCount++;
+            this.enemySpawnCooldown = this.spec.getEnemySpawnDelay(this.wave);
         }
     }
 
@@ -123,6 +122,8 @@ public class GameLevel {
         for (int i = entities.size()-1; i >= 0; i--) {
             Entity entity = this.entities.get(i);
             if (entity.isKilled()) {
+                //should be ==, need to know if it points to the exact same entity
+		//using equals makes it unclear if it's similar entities or the exact same
                 if (entity == this.player) {
                     HealthComponent hc = this.player.get(HealthComponent.class);
                     if (hc.hasExtraLives()) {

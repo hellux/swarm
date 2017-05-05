@@ -11,9 +11,6 @@ import se.liu.ida.noahe116.tddd78.swarm.game.weapons.*;
  * Collectibles are created once on startup. 
  **/
 public final class CollectibleCreator {
-    private static final Logger LOGGER =
-        Logger.getLogger(CollectibleCreator.class.getName());
-
     @SuppressWarnings({"unchecked", "serial", "rawtypes"}) // IDEA: rawtypes is not reduntant
     private static final AbstractMap<CollectibleType, Collectible> COLLECTIBLES =
         new EnumMap(CollectibleType.class) {{
@@ -25,6 +22,8 @@ public final class CollectibleCreator {
             put(CollectibleType.SHIP, new ExtraLifeCollectible());
         }};
 
+    private CollectibleCreator() {}
+
     /**
      * Retrieve a specific type of collectible.
      * @param type collectible type
@@ -32,8 +31,7 @@ public final class CollectibleCreator {
      **/
     public static Collectible get(CollectibleType type) {
         if (!COLLECTIBLES.containsKey(type)) {
-            LOGGER.log(Level.WARNING, "can't create collectible of type " + type);
-            return null;
+            throw new IllegalArgumentException("can't create collectible of type " + type);
         }
         return COLLECTIBLES.get(type);
     }
