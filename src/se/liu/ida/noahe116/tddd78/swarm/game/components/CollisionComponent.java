@@ -1,5 +1,6 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.components;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,9 +158,7 @@ public class CollisionComponent extends Component {
      **/
     public void blacklist(EntityType...entityTypes) {
         this.blacklist = true;
-        for (EntityType e : entityTypes) {
-            this.typeBlacklist.add(e);
-        }
+        Collections.addAll(this.typeBlacklist, entityTypes);
     }
 
     /**
@@ -168,9 +167,7 @@ public class CollisionComponent extends Component {
      **/
     public void whitelist(EntityType...entityTypes) {
         this.blacklist = false;
-        for (EntityType e : entityTypes) {
-                this.typeWhitelist.add(e);
-            }
+        Collections.addAll(this.typeWhitelist, entityTypes);
         }
 
     /**

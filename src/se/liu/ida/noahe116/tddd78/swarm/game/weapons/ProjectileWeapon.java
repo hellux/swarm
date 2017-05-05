@@ -8,6 +8,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.Entity;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
+/**
+ * Behaviour for projectile weapons.
+ */
 public class ProjectileWeapon extends Weapon {
     private static final Logger LOGGER = Logger.getLogger(ProjectileWeapon.class.getName());
     private static final int LIFETIME = 100;

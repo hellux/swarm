@@ -14,7 +14,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.*;
  **/
 @SuppressWarnings("serial")
 public final class MainPanel extends JPanel {
-    private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MainPanel.class.getName());
 
     private final static String GAMEPANEL = "gamePanel";
     private final static String MENUPANEL = "menuPanel";

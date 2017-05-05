@@ -3,6 +3,18 @@ package se.liu.ida.noahe116.tddd78.swarm.game.level;
 import se.liu.ida.noahe116.tddd78.swarm.common.ProbabilityMap;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EnemyType;
 
+/**
+ * Specify properties of a wave of enemies.
+ *
+ * Can be initialized like:
+ * <pre> {@code
+ * 	new Wave()
+ * 		.withSpawnDelay(d)
+ * 		.withEnemies(e)
+ * 		.maxEnemyCount(m);
+ * } </pre>
+ * This is more to make it more readable compared to using a constructor.
+ */
 public class Wave {
     /**
      * tick when wave should start
@@ -17,7 +29,10 @@ public class Wave {
     /**
      * delay for respawning a new enemy
      */
-    public int enemySpawnDelay = -1;
+    public int enemySpawnDelay = 0;
+    /**
+     * probabilities for different types of enemies to spawn
+     */
     public ProbabilityMap<EnemyType> enemies = new ProbabilityMap<>();
 
     public Wave(int startTick) {

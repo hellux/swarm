@@ -7,7 +7,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
  * Handles health, shield and lives of entities.
  **/
 public class HealthComponent extends Component implements CollidingComponent {
-    public static final double START_SHIELD_RATIO = 0.3;
+    private static final double START_SHIELD_RATIO = 0.3;
 
     private final int maxHealth;
     private final int maxShieldStrength;

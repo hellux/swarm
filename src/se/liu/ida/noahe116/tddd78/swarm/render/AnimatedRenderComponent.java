@@ -10,7 +10,7 @@ import se.liu.ida.noahe116.tddd78.swarm.render.sprites.Sprite;
  * Currently unused because my animation sprites look terrible.
  **/
 public class AnimatedRenderComponent extends RenderComponent {
-    private static int NANOSECONDS_PER_MILLISECOND = 1000000;
+    private static final long NANOSECONDS_PER_MILLISECOND = 1000000;
     private long startTime;
     private long length;
 

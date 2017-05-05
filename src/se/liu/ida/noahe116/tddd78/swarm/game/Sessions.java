@@ -23,8 +23,8 @@ public final class Sessions {
     private static final int BYTESIZE = 8;
     private static final int SIZEOF_INT = 4;
 
-    public static String FILE_EXTENSION = ".swrm";
-    public static byte[] HEADER = "SWARM".getBytes();
+    private static final String FILE_EXTENSION = ".swrm";
+    private static final byte[] HEADER = "SWARM".getBytes();
 
     private Sessions() {}
 

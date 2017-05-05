@@ -7,7 +7,14 @@ import java.awt.geom.Point2D;
  * all angles are in radians
  **/
 public class Vector2D {
-    public double x, y;
+    /**
+     * x coordinate of vector
+     */
+    public double x;
+    /**
+     * y coordinate of vector
+     */
+    public double y;
 
     public Vector2D(double x, double y) {
         this.x = x;

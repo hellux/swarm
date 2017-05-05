@@ -84,7 +84,7 @@ public class Scene {
                     if (rc != null) this.renderComponents.put(e, rc); 
                 }
             }
-        } catch (ConcurrentModificationException e) {
+        } catch (ConcurrentModificationException ignore) {
             LOGGER.log(Level.WARNING, "entities was modified during rendering!");
         }
     }

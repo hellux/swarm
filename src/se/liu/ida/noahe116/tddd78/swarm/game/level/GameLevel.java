@@ -26,7 +26,6 @@ public class GameLevel {
     private int enemySpawnCooldown = 0;
     private int wave = 0;
     private long tick = 0;
-    private int enemyCount = 0;
     private ProbabilityMap<EnemyType> enemyProbabilites = null;
 
     private int crystalCount = 0;
@@ -111,9 +110,8 @@ public class GameLevel {
         if (this.enemySpawnCooldown > 0) {
             this.enemySpawnCooldown--;
         } else if (this.enemySpawnCooldown == 0 &&
-                   this.enemyCount < this.spec.getMaxEnemies(this.wave)) {
+                   this.countEnemies() < this.spec.getMaxEnemies(this.wave)) {
             this.spawn(EntityCreator.create(this.enemyProbabilites.get()));
-            this.enemyCount++;
             this.enemySpawnCooldown = this.spec.getEnemySpawnDelay(this.wave);
         }
     }
@@ -214,6 +212,19 @@ public class GameLevel {
         if (this.crystalCount == this.spec.getCrystalCount()) {
             this.spawnEndTeleporter();
         }
+    }
+
+    public int countEnemies() {
+        int enemies = 0;
+        for (Entity e : this.entities) {
+            for (EnemyType et : EnemyType.values()) {
+                if(e.getType() == et.entityType) {
+                    enemies += 1;
+                    break;
+                }
+            }
+        }
+        return enemies;
     }
 
     public Entity getPlayer() {

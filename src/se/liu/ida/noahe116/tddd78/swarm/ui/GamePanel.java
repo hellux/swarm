@@ -27,6 +27,8 @@ public final class GamePanel extends JPanel {
 
     private static final long NANOSECONDS_PER_SECOND = 1000000000;
     private static final long MILLISECONDS_PER_SECOND = 1000;
+    private static final long NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
+                                                            / MILLISECONDS_PER_SECOND;
 
     /**
      * Amount of times the gameLevel will be updated (tick) per second.
@@ -45,6 +47,7 @@ public final class GamePanel extends JPanel {
      * Ratio of radius of the cursor's area to the min of the component's width and height.
      **/
     private static final double CURSOR_RADIUS_RATIO = 0.3;
+    private static final double SCALE_FACTOR = 1920;
 
     private Robot robot = null;
     private GameLevel gameLevel = null;
@@ -99,8 +102,8 @@ public final class GamePanel extends JPanel {
         int width = this.getWidth();
         int height = this.getHeight();
         int min = Math.min(width, height);
-        final double SCALE_FACTOR = 1920;
 
+        // int float error is negligible
         this.center = new Vector2D(width/2, height/2);
         this.cursorAreaRadius =
             (int) (CURSOR_RADIUS_RATIO*min);
@@ -153,8 +156,6 @@ public final class GamePanel extends JPanel {
 
         if (sleepPeriod >= 0) {
             try {
-                final long NANOSECONDS_PER_MILLISECOND = NANOSECONDS_PER_SECOND
-                                                         / MILLISECONDS_PER_SECOND;
                 Thread.sleep(sleepPeriod / NANOSECONDS_PER_MILLISECOND);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, e.getMessage(), e); 

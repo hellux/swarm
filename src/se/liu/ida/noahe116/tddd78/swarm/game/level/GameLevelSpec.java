@@ -11,10 +11,19 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityCreator;
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
 import se.liu.ida.noahe116.tddd78.swarm.game.collectibles.CollectibleType;
 
+/**
+ * Specification for game level.
+ */
 public class GameLevelSpec {
-    private int size = 15000;
+    private int size;
 
+    /**
+     * type of level
+     */
     public final LevelType levelType;
+    /**
+     * level number
+     */
     public final int level;
     private int crystalCount = 0;
     private int lootTime;

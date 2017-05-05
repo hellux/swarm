@@ -27,7 +27,7 @@ public final class MenuPanel extends JPanel {
      * Redirect user to sub menus or exit.
      **/
     private final class MainMenu extends JPanel {
-        public MainMenu() {
+        private MainMenu() {
             this.setLayout(new GridLayout(4, 1));
 
             JLabel title = new JLabel("SWARM", SwingConstants.CENTER);
@@ -55,7 +55,7 @@ public final class MenuPanel extends JPanel {
 
         private Game game = null;
 
-        public PlayMenu() {
+        private PlayMenu() {
             JButton back = new JButton("Back");
             JButton begin = new JButton("Begin");
             JButton create = new JButton("Create game");
@@ -83,7 +83,7 @@ public final class MenuPanel extends JPanel {
                 int level;
                 try {
                     level = Integer.parseInt(this.levelField.getText());
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignore) {
                     JOptionPane.showMessageDialog(null, "Please enter an integer as level.");
                     return;
                 }
@@ -102,7 +102,7 @@ public final class MenuPanel extends JPanel {
             if (name != null) {
                 try {
                     this.setGame(Sessions.create(name));
-                } catch (IOException e) {
+                } catch (IOException ignore) {
                     JOptionPane.showMessageDialog(this,
                         "Failed to create game, try a different name");
                 }
@@ -134,7 +134,7 @@ public final class MenuPanel extends JPanel {
     private final class HelpMenu extends JPanel {
         private static final String HELP_FILE = "help.txt";
 
-        public HelpMenu() {
+        private HelpMenu() {
             this.setBackground(Color.WHITE);
             this.setLayout(new BorderLayout());
 
