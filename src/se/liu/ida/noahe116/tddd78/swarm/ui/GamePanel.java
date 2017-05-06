@@ -58,7 +58,7 @@ public final class GamePanel extends JPanel {
     private Vector2D center = null;
     private int cursorAreaRadius;
 
-    private double interpolation;
+    private double extrapolation;
     private long delay;
 
     private boolean quit = false;
@@ -194,7 +194,7 @@ public final class GamePanel extends JPanel {
      * <p> The gameLevel is updated depending on the TICKRATE constant. The drawing
      * of the gameLevel, however, is done as fast as possible (given it doesn't exceed
      * the max frame rate). Drawing the gameLevel state between updates of the gameLevel is
-     * done by interpolation. The max framerate must be higher than max the gameLevel's tickrate.
+     * done by extrapolation. The max framerate must be higher than max the gameLevel's tickrate.
      **/
     private LevelStatus gameLoop() {
         long nextTick = System.nanoTime();
@@ -218,7 +218,7 @@ public final class GamePanel extends JPanel {
                 nextTick += this.tickPeriod();
             } 
             
-            this.interpolation = (double) (System.nanoTime() + this.tickPeriod() - nextTick)
+            this.extrapolation = (double) (System.nanoTime() + this.tickPeriod() - nextTick)
                                         / this.tickPeriod();
             this.handleMouse();
             this.repaint();
@@ -251,8 +251,8 @@ public final class GamePanel extends JPanel {
         super.paintComponent(g);
         
         if (this.scene != null) {
-            this.scene.render((Graphics2D) g, this.interpolation);
-            this.hud.draw(g, this.interpolation,
+            this.scene.render((Graphics2D) g, this.extrapolation);
+            this.hud.draw(g, this.extrapolation,
                 new Vector2D(this.getMousePosition()));
             if (this.showFPS) this.displayFPS(g);
         }

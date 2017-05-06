@@ -110,7 +110,7 @@ public class CollisionComponent extends Component {
      * @return whether an collision occurs or not
      **/ 
     public boolean collidesWith(CollisionComponent cc, GameLevel level) {
-        //TODO check future postitons and interpolate the collision point
+        //TODO check future postitons and extrapolate the collision point
         if (this.ignores(cc.entity) || cc.ignores(this.entity)) {
             return false;
         }

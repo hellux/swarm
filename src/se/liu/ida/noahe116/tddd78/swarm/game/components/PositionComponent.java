@@ -43,21 +43,21 @@ public class PositionComponent extends LiveComponent {
     }
 
     /**
-     * Calculate the interpolated position.
-     * @param interpolation ratio of time that has passed since last tick
-     * @return interpolated position
+     * Calculate the extrapolated position.
+     * @param extrapolation ratio of time that has passed since last tick
+     * @return extrapolated position
      **/
-    public Vector2D futurePos(double interpolation) {
+    public Vector2D futurePos(double extrapolation) {
         if (this.active && !this.entity.isKilled()) {
             Vector2D futureVel = Vector2D.multiply(
                 Vector2D.add(
                     this.velocity, 
                     Vector2D.multiply(
                         this.acceleration,
-                        interpolation
+                        extrapolation
                     )
                 ),
-                interpolation*(1-(1-drag)*interpolation)
+                extrapolation*(1-(1-drag)*extrapolation)
             );
             return Vector2D.add(this.position,
                                 futureVel);
@@ -67,13 +67,13 @@ public class PositionComponent extends LiveComponent {
     }
 
     /**
-     * Calculate the interpolated rotation.
-     * @param interpolation ratio of time that has passed since last tick
-     * @return interpolated rotation
+     * Calculate the extrapolated rotation.
+     * @param extrapolation ratio of time that has passed since last tick
+     * @return extrapolated rotation
      **/
-    public double futureRot(double interpolation) {
+    public double futureRot(double extrapolation) {
         if (this.active) {
-            return this.rotation + this.rotationalSpeed * interpolation;
+            return this.rotation + this.rotationalSpeed * extrapolation;
         } else {
             return this.rotation;
         }

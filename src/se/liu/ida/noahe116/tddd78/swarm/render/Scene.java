@@ -41,17 +41,17 @@ public class Scene {
     }
 
     /**
-     * Render an interpolated frame of the gameLevel's current state.
+     * Render an extrapolated frame of the gameLevel's current state.
      * @param g2d graphics object to draw frame with.
-     * @param interpolation ratio of time that has passed since the last tick to the
+     * @param extrapolation ratio of time that has passed since the last tick to the
      *                      period between ticks.
      **/
-    public void render(Graphics2D g2d, double interpolation) {
+    public void render(Graphics2D g2d, double extrapolation) {
         this.drawBackground(g2d);
-        this.camera.updateInterpolation(interpolation);
+        this.camera.updateExtrapolation(extrapolation);
         this.updateRenderComponents();
-        this.drawRenderComponents(g2d, interpolation);
-        if (this.showHitBoxes) this.drawHitBoxes(g2d, interpolation);
+        this.drawRenderComponents(g2d, extrapolation);
+        if (this.showHitBoxes) this.drawHitBoxes(g2d, extrapolation);
     }
 
     private void drawBackground(Graphics2D g2d) {
@@ -80,7 +80,7 @@ public class Scene {
         }
     }
 
-    private void drawRenderComponents(Graphics2D g2d, double interpolation) {
+    private void drawRenderComponents(Graphics2D g2d, double extrapolation) {
         this.renderComponents.entrySet()
                              .stream()
                              .sorted(Entry.comparingByValue())
@@ -93,13 +93,13 @@ public class Scene {
                     this.drawImage(g2d,
                                    image,
                                    pc,
-                                   interpolation);
+                                   extrapolation);
                 }
             }
         });
     }
 
-    private void drawHitBoxes(Graphics2D g2d, double interpolation) {
+    private void drawHitBoxes(Graphics2D g2d, double extrapolation) {
         g2d.setColor(Color.RED);
         for (Entity e : this.renderComponents.keySet()) {
             if (e.has(CollisionComponent.class)) {
@@ -107,7 +107,7 @@ public class Scene {
                 CollisionComponent cc = e.get(CollisionComponent.class);
                 int radius = (int) Math.round(cc.getRadius()*this.camera.getScale());
                 Vector2D translatedPos =
-                    this.camera.translate(pc.futurePos(interpolation), this.gameLevel);
+                    this.camera.translate(pc.futurePos(extrapolation), this.gameLevel);
                 g2d.drawOval((int) Math.round(translatedPos.x)-radius,
                              (int) Math.round(translatedPos.y)-radius,
                              2*radius, 2*radius);
@@ -118,13 +118,13 @@ public class Scene {
     private void drawImage(Graphics2D g2d,
                           BufferedImage img,
                           PositionComponent pc,
-                          double interpolation) {
-        Vector2D translatedPos = this.camera.translate(pc.futurePos(interpolation),
+                          double extrapolation) {
+        Vector2D translatedPos = this.camera.translate(pc.futurePos(extrapolation),
                                                        this.gameLevel);
         this.drawImage(g2d, img,
                        (int) Math.round(translatedPos.x),
                        (int) Math.round(translatedPos.y), 
-                       pc.futureRot(interpolation));   
+                       pc.futureRot(extrapolation));   
     }
 
     private void drawImage(Graphics2D g2d, BufferedImage img,

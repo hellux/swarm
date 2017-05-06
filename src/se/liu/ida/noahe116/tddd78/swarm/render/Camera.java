@@ -7,7 +7,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 /**
  * Camera of the scene.
  * Can be attached to an entity by using it's position component.
- * Interpolation should be updated once per frame.
+ * Extrapolation should be updated once per frame.
  **/
 public class Camera {
     /**
@@ -25,7 +25,7 @@ public class Camera {
      * scale * size = component size
      **/
     private double scale;
-    private Vector2D interpolatedPos = null;
+    private Vector2D extrapolatedPos = null;
 
     public Camera(PositionComponent positionComponent) {
         this.positionComponent = positionComponent;
@@ -47,13 +47,13 @@ public class Camera {
     }
 
     /**
-     * Update the interpolated position of the camera.
+     * Update the extrapolated position of the camera.
      * Should only be done once every frame, more is unnecessary.
-     * @param interpolation ratio of passed time since last tick
+     * @param extrapolation ratio of passed time since last tick
      *                      until the next.
      **/
-    public void updateInterpolation(double interpolation) {
-        this.interpolatedPos = this.positionComponent.futurePos(interpolation);
+    public void updateExtrapolation(double extrapolation) {
+        this.extrapolatedPos = this.positionComponent.futurePos(extrapolation);
     }
 
     public PositionComponent getPositionComponent() {
@@ -104,7 +104,7 @@ public class Camera {
      **/
     public Vector2D translate(Vector2D gameCoordinate, GameLevel level) {
         Vector2D wrappedPos = level.wrapAround(this.positionComponent.getPosition(), gameCoordinate);
-        Vector2D componentOrigin = Vector2D.subtract(this.interpolatedPos,
+        Vector2D componentOrigin = Vector2D.subtract(this.extrapolatedPos,
                                                      Vector2D.multiply(this.size, 0.5));
         Vector2D translatedCoordinate = Vector2D.multiply(
             Vector2D.subtract(wrappedPos, componentOrigin),

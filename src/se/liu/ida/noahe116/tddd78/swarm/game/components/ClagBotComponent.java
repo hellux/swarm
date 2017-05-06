@@ -22,7 +22,7 @@ public class ClagBotComponent extends LiveComponent implements CollidingComponen
 
         //TODO implement PD regulator for rotational speed
         // instead of lock-on (in separate class)
-        // currently it looks awkward and does not work with interpolation
+        // currently it looks awkward and does not work with extrapolation
         Vector2D difference = Vector2D.subtract(playerPos, pos);
         
         if (difference.magnitude() < DETECT_DISTANCE) {

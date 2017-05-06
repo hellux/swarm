@@ -244,7 +244,7 @@ public class GameLevel {
         return this.entities;
     }
 
-    public Vector2D getObjectiveDirection(double interpolation) {
+    public Vector2D getObjectiveDirection(double extrapolation) {
         Entity objective = null;
 
         if (this.objectiveComplete) {
@@ -256,8 +256,8 @@ public class GameLevel {
         if (objective == null) {
             return null;
         } else {
-            Vector2D objPos = objective.get(PositionComponent.class).futurePos(interpolation);
-            Vector2D playerPos = this.player.get(PositionComponent.class).futurePos(interpolation);
+            Vector2D objPos = objective.get(PositionComponent.class).futurePos(extrapolation);
+            Vector2D playerPos = this.player.get(PositionComponent.class).futurePos(extrapolation);
             return Vector2D.subtract(
                 this.wrapAround(playerPos, objPos),
                 playerPos

@@ -36,9 +36,9 @@ public class HeadsUpDisplay {
         this.cursorAreaRadius = cursorAreaRadius;
     }
 
-    public void draw(Graphics g, double interpolation, Vector2D mousePos) {
+    public void draw(Graphics g, double extrapolation, Vector2D mousePos) {
         this.drawCursor(g, mousePos);
-        this.drawObjective(g, interpolation);
+        this.drawObjective(g, extrapolation);
         this.drawShield(g);
         this.drawLives(g);
     }
@@ -49,8 +49,8 @@ public class HeadsUpDisplay {
         g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2, diameter, diameter); 
     }
 
-    private void drawObjective(Graphics g, double interpolation) {
-        Vector2D dir = this.gameLevel.getObjectiveDirection(interpolation);
+    private void drawObjective(Graphics g, double extrapolation) {
+        Vector2D dir = this.gameLevel.getObjectiveDirection(extrapolation);
         if (dir != null) {
             Vector2D pos = Vector2D.add(
                 this.center,
