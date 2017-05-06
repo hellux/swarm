@@ -1,7 +1,10 @@
 package se.liu.ida.noahe116.tddd78.swarm.game.level;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.entities.*;
@@ -19,7 +22,7 @@ public class GameLevel {
 
     private final Entity player;
 
-    private final List<Entity> entities = new LinkedList<>();
+    private final Collection<Entity> entities = new ConcurrentLinkedQueue<>();
     private final double size;
     private final GameLevelSpec spec;
 
@@ -116,12 +119,12 @@ public class GameLevel {
         }
     }
 
-    private void updateEntities() {
+    private void updateEntities(List<Entity> entities) {
         for (int i = entities.size()-1; i >= 0; i--) {
-            Entity entity = this.entities.get(i);
+            Entity entity = entities.get(i);
             if (entity.isKilled()) {
                 //should be ==, need to know if it points to the exact same entity
-		//using equals makes it unclear if it's similar entities or the exact same
+                //using equals makes it unclear if it's similar entities or the exact same
                 if (entity == this.player) {
                     HealthComponent hc = this.player.get(HealthComponent.class);
                     if (hc.hasExtraLives()) {
@@ -153,14 +156,14 @@ public class GameLevel {
         return false;
     }
 
-    private void checkCollisions() {
-        for (int e1 = 0; e1 < this.entities.size(); e1++) {
-            Entity ent1 = this.entities.get(e1);
+    private void checkCollisions(List<Entity> entities) {
+        for (int e1 = 0; e1 < entities.size(); e1++) {
+            Entity ent1 = entities.get(e1);
             if (!ent1.has(CollisionComponent.class)) continue;
             CollisionComponent cc1 = ent1.get(CollisionComponent.class);
 
-            for (int e2 = e1+1; e2 < this.entities.size(); e2++) {
-                Entity ent2 = this.entities.get(e2);
+            for (int e2 = e1+1; e2 < entities.size(); e2++) {
+                Entity ent2 = entities.get(e2);
                 if (!ent2.has(CollisionComponent.class)) continue;
                 if (ent1.getType() == ent2.getType()) continue;
                 CollisionComponent cc2 = ent2.get(CollisionComponent.class);
@@ -178,9 +181,11 @@ public class GameLevel {
     }
 
     public LevelStatus update() {
+        List<Entity> entities = new ArrayList<>(this.entities);
+
         if (!this.objectiveComplete) this.updateWave();
-        this.checkCollisions();
-        this.updateEntities();
+        this.checkCollisions(entities);
+        this.updateEntities(entities);
         this.tick++;
         return this.status;
     }
@@ -235,7 +240,7 @@ public class GameLevel {
         return this.spec.levelType;
     }
 
-    public List<Entity> getEntities() {
+    public Collection<Entity> getEntities() {
         return this.entities;
     }
 
