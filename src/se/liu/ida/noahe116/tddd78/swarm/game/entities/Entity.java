@@ -3,6 +3,7 @@ package se.liu.ida.noahe116.tddd78.swarm.game.entities;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.AbstractMap;
+import java.util.Map.Entry;
 
 import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
@@ -15,7 +16,11 @@ public class Entity {
      * Map of entity's components.
      * Key is class of component, value is instance.
      **/
-    private final AbstractMap<Class<? extends Component>, Component> components = new HashMap<>();
+    private final AbstractMap<Class<? extends Component>, Component> components =
+        new HashMap<>();
+    private final AbstractMap<Class<? extends Component>, LiveComponent> liveComponents =
+        new HashMap<>();
+
     private final EntityType type;
     private boolean killed;
     
@@ -35,6 +40,9 @@ public class Entity {
         } else {
             this.components.put(component.getClass(), component);
             component.setEntity(this);
+            if (component instanceof LiveComponent) {
+                this.liveComponents.put(component.getClass(), (LiveComponent) component);
+            }
             return true;
         }
     }
@@ -49,6 +57,7 @@ public class Entity {
         // remove always returns instance of type componentClass (or null)
         @SuppressWarnings("unchecked") 
         T oldComponent = (T) this.components.remove(componentClass);
+        this.liveComponents.remove(componentClass);
         if (oldComponent != null) oldComponent.setEntity(null);
         return oldComponent;
     }
@@ -83,37 +92,15 @@ public class Entity {
      * @param level current game level
      **/
     public void update(GameLevel level) {
-        // some components depend on pc being updated before
-        // components has to be sure where the entity will be on the next
-        // tick. if pc isn't updated first or last it can be updated
-        // either before or after a certain component.
-        // this is far from an optimal solution, other alternatives include
-        //  -attaching the positioncomponent to a field, either when it's added
-        //   or in the constructor (thus forcing it to be used by constructor)
-        //   however, this separates the poscomp from other and you have to 
-        //   prevent it from being added to the component map, otherwise it will
-        //   be updated several times.
-        //  -assigning update priority to every live component and sort them before updating
-        //   might be overly complicated in order to only solve this problem, but
-        //   it may also have uses for other components that could be added
-        //
-        if (this.has(PositionComponent.class)) {
-            PositionComponent pc = this.get(PositionComponent.class);
-            if (pc.isActive()) {
-                this.get(PositionComponent.class).update(level);
+        this.liveComponents.entrySet()
+                           .stream()
+                           .sorted(Entry.comparingByValue())
+                           .forEach(entry -> {
+            LiveComponent lc = entry.getValue();
+            if (lc.isActive()) {
+                lc.update(level);
             }
-        }
-        for (Component component : this.components.values()) {
-            if (component instanceof PositionComponent) {
-                continue;
-            }
-            if (component instanceof LiveComponent) {
-                LiveComponent liveComponent = (LiveComponent) component;
-                if (liveComponent.isActive()) {
-                    liveComponent.update(level);
-                }
-            }
-        }
+        });
     }
     
     /**

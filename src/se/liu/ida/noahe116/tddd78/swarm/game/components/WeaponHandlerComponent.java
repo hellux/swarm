@@ -17,7 +17,9 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 public class WeaponHandlerComponent extends LiveComponent {
     private static final Logger LOGGER =
         Logger.getLogger(WeaponHandlerComponent.class.getName());
-        
+
+    private static final int UPDATE_PRIORITY = 1;
+
     private WeaponSlot[] slots;
 
     /**
@@ -114,6 +116,7 @@ public class WeaponHandlerComponent extends LiveComponent {
     }
 
     public WeaponHandlerComponent(int slotCount) {
+        super(UPDATE_PRIORITY);
         this.slots = new WeaponSlot[slotCount];
         for (int i = 0; i < slotCount; i++) {
             this.slots[i] = new WeaponSlot();

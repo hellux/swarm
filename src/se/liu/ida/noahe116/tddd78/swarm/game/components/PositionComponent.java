@@ -4,7 +4,7 @@ import se.liu.ida.noahe116.tddd78.swarm.common.*;
 import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
 
 /**
- * Handle positioning (incl speed, accel) of entities.
+ * Handle positioning (incl velocity, accel, rotation) of entities.
  **/
 public class PositionComponent extends LiveComponent {
     private static final double DRAG = 0.94;
@@ -18,8 +18,7 @@ public class PositionComponent extends LiveComponent {
     private double drag = 1;
 
     public PositionComponent(Vector2D pos) {
-        this.position.x = pos.x;
-        this.position.y = pos.y;
+        this.position.set(pos);
     }
 
     public PositionComponent() {
