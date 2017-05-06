@@ -75,6 +75,8 @@ public class HeadsUpDisplay {
     }
 
     private void drawCursor(Graphics g, Vector2D mousePos) {
-        this.drawCircle(g, mousePos, CURSOR_COLOR);
+        if (mousePos != null) {
+            this.drawCircle(g, mousePos, CURSOR_COLOR);
+        }
     }
 }

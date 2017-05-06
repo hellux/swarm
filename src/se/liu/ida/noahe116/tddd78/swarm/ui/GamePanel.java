@@ -251,9 +251,10 @@ public final class GamePanel extends JPanel {
         super.paintComponent(g);
         
         if (this.scene != null) {
+            Point mp = this.getMousePosition();
+            Vector2D mousePos = mp == null ? null : new Vector2D(mp);
             this.scene.render((Graphics2D) g, this.extrapolation);
-            this.hud.draw(g, this.extrapolation,
-                new Vector2D(this.getMousePosition()));
+            this.hud.draw(g, this.extrapolation, mousePos);
             if (this.showFPS) this.displayFPS(g);
         }
     }
