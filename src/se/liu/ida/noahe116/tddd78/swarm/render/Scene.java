@@ -22,8 +22,6 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.*;
  * TODO: add visual entities, not part of the game (such as stars and galaxies in the background).
  **/
 public class Scene {
-    private static final Logger LOGGER = Logger.getLogger(Scene.class.getName());
-
     @SuppressWarnings({"unchecked", "serial", "rawtypes"})
     private static final AbstractMap<LevelType, Color> BG_COLORS = new EnumMap(LevelType.class) {{
         put(LevelType.HARVEST, new Color(0, 0, 20));
@@ -74,18 +72,11 @@ public class Scene {
             this.renderComponents.remove(e);
         }
 
-        //FIXME often causes concurrency exception at start
-        //seems to be caused by awt calling paintcomponent outside the 
-        //main loop in a separate thread. How to prevent awt from doing this?
-        try {
-            for (Entity e : this.gameLevel.getEntities()) {
-                if (!this.renderComponents.containsKey(e)) {
-                    RenderComponent rc = RcCreator.createRenderComponent(e);
-                    if (rc != null) this.renderComponents.put(e, rc); 
-                }
+        for (Entity e : this.gameLevel.getEntities()) {
+            if (!this.renderComponents.containsKey(e)) {
+                RenderComponent rc = RcCreator.createRenderComponent(e);
+                if (rc != null) this.renderComponents.put(e, rc); 
             }
-        } catch (ConcurrentModificationException ignore) {
-            LOGGER.log(Level.WARNING, "entities was modified during rendering!");
         }
     }
 

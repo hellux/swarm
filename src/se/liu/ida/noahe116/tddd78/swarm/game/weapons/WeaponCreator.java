@@ -11,7 +11,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.entities.EntityType;
  * Create weapon instances.
  * Weapons are created at program start.
  * Weapons are retrieved by WeaponType with the get method.
- * TODO: move constants to xml file
+ * TODO: move weapon properties to xml file
  **/
 public final class WeaponCreator {
     private static final Logger LOGGER = Logger.getLogger(WeaponCreator.class.getName());
@@ -33,7 +33,7 @@ public final class WeaponCreator {
     private static final int RED_SPD = 30;
 
     private static final int QAD_CDN = 4;
-    private static final int QAD_DMG = 20;
+    private static final int QAD_DMG = 8;
     private static final int QAD_RAD = 30;
     private static final int QAD_SPD = 35;
 
