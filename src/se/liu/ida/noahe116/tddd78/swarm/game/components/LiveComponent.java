@@ -27,7 +27,6 @@ public abstract class LiveComponent extends Component implements Comparable<Live
     }
 
     public int compareTo(LiveComponent lc) {
-        System.out.println(lc.updatePriority +" "+ this.updatePriority);
         return Integer.compare(this.updatePriority, lc.updatePriority);
     }
     
