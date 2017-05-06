@@ -9,7 +9,7 @@ import java.util.logging.*;
 import java.util.function.Consumer;
 import java.util.Map;
 import java.util.List;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public final class GamePanel extends JPanel {
      * Amount of times the gameLevel will be updated (tick) per second.
      **/
     private static final int NORMAL_TICKRATE = 40;
-    private static final int SLOW_TICKRATE = 5;
+    private static final int SLOW_TICKRATE = 2;
     private int tickrate = NORMAL_TICKRATE;
 
     /**
@@ -52,6 +52,7 @@ public final class GamePanel extends JPanel {
     private Robot robot = null;
     private GameLevel gameLevel = null;
     private Scene scene = null;
+    private HeadsUpDisplay hud = null;
     private PlayerComponent playerComponent = null;
 
     private Vector2D center = null;
@@ -64,7 +65,7 @@ public final class GamePanel extends JPanel {
     private boolean gameActive = false;
     private boolean showFPS = false;
 
-    private Map<Runnable, Long> taskSchedule = new HashMap<>();
+    private Map<Runnable, Long> taskSchedule = new ConcurrentHashMap<>();
 
     public GamePanel() {
         this.setBackground(Color.BLACK);
@@ -82,6 +83,7 @@ public final class GamePanel extends JPanel {
         this.gameLevel = gameLevel;
         this.playerComponent = this.gameLevel.getPlayer().get(PlayerComponent.class);
         this.scene = new Scene(gameLevel);
+        this.hud = new HeadsUpDisplay(gameLevel, this.playerComponent);
         
         this.setKeyBinds();
         this.setMouseBinds();
@@ -107,8 +109,10 @@ public final class GamePanel extends JPanel {
         this.center = new Vector2D(width/2, height/2);
         this.cursorAreaRadius =
             (int) (CURSOR_RADIUS_RATIO*min);
+
         this.scene.getCamera().changeScale(min/SCALE_FACTOR);
         this.scene.getCamera().updateSize(width, height);
+        this.hud.updateDimensions(width, height, cursorAreaRadius);
     }
     
     private void handleMouse() {
@@ -248,17 +252,10 @@ public final class GamePanel extends JPanel {
         
         if (this.scene != null) {
             this.scene.render((Graphics2D) g, this.interpolation);
-            this.drawHud(g);
+            this.hud.draw(g, this.interpolation,
+                new Vector2D(this.getMousePosition()));
+            if (this.showFPS) this.displayFPS(g);
         }
-    }
-
-    //TODO move to separate heads up display similar to scene
-    private void drawHud(Graphics g) {
-        this.drawCursor(g);
-        this.drawObjective(g);
-        this.drawShield(g);
-        this.drawLives(g);
-        if (this.showFPS) this.displayFPS(g);
     }
 
     private void displayFPS(Graphics g) {
@@ -269,50 +266,11 @@ public final class GamePanel extends JPanel {
         );
     }
 
-    private void drawCircle(Graphics g, Vector2D pos, Color color) {
-        g.setColor(color);
-        int diameter = this.cursorAreaRadius/30;
-        g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2, diameter, diameter); 
-    }
-
-    private void drawObjective(Graphics g) {
-        Vector2D dir = this.gameLevel.getObjectiveDirection(this.interpolation);
-        if (dir != null) {
-            Vector2D pos = Vector2D.add(
-                this.center,
-                Vector2D.fromLengthRotation(this.cursorAreaRadius/3, dir.rotation()) 
-            );
-            this.drawCircle(g, pos, Color.WHITE);
-        }
-    }
-
-    private void drawShield(Graphics g) {
-        final int width = 4;
-        double shield = this.playerComponent.shieldStrength();
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, this.getWidth(), width);
-        g.setColor(Color.MAGENTA);
-        g.fillRect(0, 0, (int) (this.getWidth()*shield), width);
-    }
-
-    private void drawLives(Graphics g) {
-        int lives = this.playerComponent.extraLives();
-        g.setColor(Color.WHITE);
-        g.drawString("Lives: " + lives, 0, 20);
-    }
-
-    private void drawCursor(Graphics g) {
-        Point mousePos = this.getMousePosition();
-        if (mousePos != null) {
-            this.drawCircle(g, new Vector2D(mousePos), Color.RED);
-        }
-    }
-
     private void setKeyBinds() {
         this.bindKeyToggle(KeyEvent.VK_SPACE, this.playerComponent::setThrust);
 
         this.bindKey(KeyStroke.getKeyStroke("F3"), () -> this.showFPS = !this.showFPS);
-        this.bindKey(KeyStroke.getKeyStroke("F5"), this.scene::toggleShowHitBoxes);
+        this.bindKey(KeyStroke.getKeyStroke("F4"), this.scene::toggleShowHitBoxes);
         this.bindKey(KeyStroke.getKeyStroke("ESCAPE"), this::exit);
 
         this.bindKey(KeyStroke.getKeyStroke("A"), () -> this.playerComponent.equipPrimary(1));
