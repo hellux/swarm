@@ -87,6 +87,16 @@ public class Entity {
         // components has to be sure where the entity will be on the next
         // tick. if pc isn't updated first or last it can be updated
         // either before or after a certain component.
+        // this is far from an optimal solution, other alternatives include
+        //  -attaching the positioncomponent to a field, either when it's added
+        //   or in the constructor (thus forcing it to be used by constructor)
+        //   however, this separates the poscomp from other and you have to 
+        //   prevent it from being added to the component map, otherwise it will
+        //   be updated several times.
+        //  -assigning update priority to every live component and sort them before updating
+        //   might be overly complicated in order to only solve this problem, but
+        //   it may also have uses for other components that could be added
+        //
         if (this.has(PositionComponent.class)) {
             PositionComponent pc = this.get(PositionComponent.class);
             if (pc.isActive()) {
