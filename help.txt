@@ -1,6 +1,10 @@
 Controls:
 
 - Steer and fire with mouse, activate thrust with space.
-- Select weapon with A, O, E, U.
+- Select weapon with:
+    A: Default
+    S: Red laser
+    D: Spread gun
+    F: Quad laser
 
 Follow the white circle to the objective.
