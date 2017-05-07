@@ -24,7 +24,7 @@ public class Wave {
     /**
      * maximum amount of enemies
      */
-    public int maxEnemies;
+    public int maxEnemies = 0;
 
     /**
      * delay for respawning a new enemy
@@ -36,7 +36,7 @@ public class Wave {
     public ProbabilityMap<EnemyType> enemies = new ProbabilityMap<>();
 
     public Wave(int startTick) {
-	this.startTick = startTick;
+	    this.startTick = startTick;
     }
 
     public Wave() {
@@ -44,8 +44,8 @@ public class Wave {
     }
 
     public Wave withSpawnDelay(int ticks) {
-	this.enemySpawnDelay = ticks;
-	return this;
+        this.enemySpawnDelay = ticks;
+        return this;
     }
 
     public Wave withEnemies(ProbabilityMap<EnemyType> enemies) {
@@ -54,8 +54,8 @@ public class Wave {
     }
 
     public Wave maxEnemyCount(int max) {
-	this.maxEnemies = max;
-	return this;
+        this.maxEnemies = max;
+        return this;
     }
 
     @Override

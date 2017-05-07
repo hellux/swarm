@@ -26,9 +26,9 @@ public class GameLevelSpec {
      */
     public final int level;
     private int crystalCount = 0;
-    private int lootTime;
+    private int lootTime = 0;
 
-    private int collectibleCount= 0;
+    private int collectibleCount = 0;
     private ProbabilityMap<CollectibleType> collectibles = new ProbabilityMap<>();
 
     private int asteroidCount = 0;
