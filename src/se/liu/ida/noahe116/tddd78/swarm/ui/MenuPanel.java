@@ -2,6 +2,7 @@ package se.liu.ida.noahe116.tddd78.swarm.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.logging.*;
 import java.io.IOException;
 import java.nio.file.*;
@@ -35,6 +36,10 @@ public final class MenuPanel extends JPanel {
             JButton help = new JButton("Help");
             JButton quit = new JButton("Quit");
            
+            play.setMnemonic(KeyEvent.VK_P);
+            help.setMnemonic(KeyEvent.VK_H);
+            quit.setMnemonic(KeyEvent.VK_Q);
+
             play.addActionListener((e) -> MenuPanel.this.showMenu(PLAYMENU));
             help.addActionListener((e) -> MenuPanel.this.showMenu(HELPMENU));
             quit.addActionListener((e) -> System.exit(0));
@@ -60,6 +65,11 @@ public final class MenuPanel extends JPanel {
             JButton begin = new JButton("Begin");
             JButton create = new JButton("Create game");
             JButton load = new JButton("Load game");
+
+            back.setMnemonic(KeyEvent.VK_K);
+            begin.setMnemonic(KeyEvent.VK_B);
+            create.setMnemonic(KeyEvent.VK_C);
+            load.setMnemonic(KeyEvent.VK_L);
 
             back.addActionListener((e) -> MenuPanel.this.showMenu(MAINMENU));
             begin.addActionListener((e) -> this.play()); 
@@ -154,6 +164,7 @@ public final class MenuPanel extends JPanel {
             JTextArea textArea = new JTextArea(this.readTextFile());
             textArea.setEditable(false);
             JButton back = new JButton("Back to menu");
+            back.setMnemonic(KeyEvent.VK_K);
             back.addActionListener((e) -> MenuPanel.this.showMenu(MAINMENU));
 
             this.add(textArea, BorderLayout.CENTER);
