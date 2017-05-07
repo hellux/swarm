@@ -57,4 +57,27 @@ public class Wave {
 	this.maxEnemies = max;
 	return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
+        Wave w = (Wave) o;
+        if (this.enemySpawnDelay != w.enemySpawnDelay) return false;
+        if (this.maxEnemies != w.maxEnemies) return false;
+        if (!this.enemies.equals(w.enemies)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+
+        hash = hash*73 + this.enemySpawnDelay;
+        hash = hash*293 + this.maxEnemies;
+        hash = hash*491 + this.enemies.hashCode();
+
+        return hash;
+    }
 }

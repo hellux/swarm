@@ -8,7 +8,6 @@ sourceSets {
         resources {
             srcDirs = [ "resources/img" ]
         }
-    }
 }
 
 jar {

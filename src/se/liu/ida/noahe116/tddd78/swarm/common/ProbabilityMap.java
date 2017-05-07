@@ -58,4 +58,26 @@ public class ProbabilityMap<T> {
         return null;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (this.getClass() != o.getClass()) return false;
+        ProbabilityMap<?> pm = (ProbabilityMap) o;
+        if (this.totalSum!= pm.totalSum) return false;
+        if (!this.items.equals(pm.items)) return false;
+        if (!this.probabilities.equals(pm.probabilities)) return false;
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+
+        hash = hash*281 + Double.hashCode(this.totalSum);
+        hash = hash*97 + this.items.hashCode();
+        hash = hash*89 + this.probabilities.hashCode();
+
+        return hash;
+    }
 }

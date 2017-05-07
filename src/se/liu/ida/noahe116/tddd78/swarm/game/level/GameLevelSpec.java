@@ -155,4 +155,38 @@ public class GameLevelSpec {
     public int getSize() {
         return this.size;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (this.getClass() != o.getClass()) return false;
+        GameLevelSpec gls = (GameLevelSpec) o;
+
+        if (this.levelType != gls.levelType) return false;
+        if (this.level != gls.level) return false;
+        if (this.crystalCount != gls.crystalCount) return false;
+        if (this.lootTime != gls.lootTime) return false;
+        if (this.collectibleCount != gls.collectibleCount) return false;
+        if (this.asteroidCount != gls.asteroidCount) return false;
+        if (!this.collectibles.equals(gls.collectibles)) return false;
+        if (!this.waves.equals(gls.waves)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+
+        hash = hash*359 + this.levelType.hashCode();
+        hash = hash*311 + this.level;
+        hash = hash*37 + this.crystalCount;
+        hash = hash*71 + this.lootTime;
+        hash = hash*29 + this.collectibleCount;
+        hash = hash*173 + this.asteroidCount;
+        hash = hash*103 + this.collectibles.hashCode();
+        hash = hash*23 + this.waves.hashCode();
+
+        return hash;
+    }
 }

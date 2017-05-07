@@ -25,16 +25,26 @@ public final class GameLevelCreator {
         this.rand = new Random(seed);
         this.specs = new ArrayList<>();
 
-        generators.put(this::generateHarvestSpec, 10);
-        generators.put(this::generateLootSpec, 1);
+        this.generators.put(this::generateHarvestSpec, 10);
+        this.generators.put(this::generateLootSpec, 1);
     }
 
     public GameLevelCreator(String seed) {
         this(seed.hashCode());
     }
 
-    private void generateSpecs(int level) {
-        for (int i = specs.size(); i < level; i++) {
+    public GameLevelSpec getSpec(int level) {
+        // Makes sure RNG sequence is equal for equal seeds
+        // Specs are always generated from level 1 in ascending order 
+        if (this.specs.size() < level) {
+            this.generateSpecs(level);
+        }
+
+        return this.specs.get(level-1);
+    }
+
+    private void generateSpecs(int generateToLevel) {
+        for (int level = specs.size()+1; level <= generateToLevel; level++) {
             this.specs.add(this.generators.get(this.rand).apply(level));
         }
     }
@@ -94,16 +104,6 @@ public final class GameLevelCreator {
                 .put(CollectibleType.RED_LASER, halfNormRand(level/10.0, 3))
                 .put(CollectibleType.SPREAD, halfNormRand(level/20.0, 2))
                 .put(CollectibleType.QUAD, halfNormRand(level/30.0, 1)));
-    }
-
-    private GameLevelSpec getSpec(int level) {
-        // Makes sure RNG sequence is equal for equal seeds
-        // Specs are always generated from level 1 in order
-        if (this.specs.size() < level) {
-            this.generateSpecs(level);
-        }
-
-        return this.specs.get(level-1);
     }
 
     /**
