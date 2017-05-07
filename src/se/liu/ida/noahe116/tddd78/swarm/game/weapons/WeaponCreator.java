@@ -79,7 +79,7 @@ public final class WeaponCreator {
     private WeaponCreator() {}
 
     /**
-     * Return a ProjectileWeapon of a specific type.
+     * Return a Weapon of a specific type.
      * @param type type of weapon to retrieve
      * @return weapon of given type
      **/

@@ -49,7 +49,7 @@ public final class MenuPanel extends JPanel {
     /**
      * Create, load, start game.
      **/
-    private final class PlayMenu extends JPanel {
+    private final class PlayMenu extends JComponent {
         private JLabel info = new JLabel("", SwingConstants.CENTER);
         private JTextField levelField = new JTextField(1);
 
@@ -121,10 +121,23 @@ public final class MenuPanel extends JPanel {
             }
         }
 
-        public void setGame(Game game) {
-            this.game = game;
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponents(g);
+            if (this.game != null) {
+                this.updateLabels();
+            }
+        }
+
+        private void updateLabels() {
             this.info.setText("Level: " + game.getMaxLevel() + " Name: " + game.getName());
             this.levelField.setText(Integer.toString((game.getMaxLevel())));
+        }
+
+        public void setGame(Game game) {
+            if (game == null) throw IllegalArgumentException("game may not be null!");
+            this.game = game;
+            this.updateLabels();
         }
     }
 

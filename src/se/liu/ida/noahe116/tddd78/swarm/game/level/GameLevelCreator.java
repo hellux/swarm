@@ -33,6 +33,11 @@ public final class GameLevelCreator {
         this(seed.hashCode());
     }
 
+    /**
+     * Get the spec for a certain level number.
+     * @param level level number
+     * @return level spec unique to that level number and the creator's seed
+     **/
     public GameLevelSpec getSpec(int level) {
         // Makes sure RNG sequence is equal for equal seeds
         // Specs are always generated from level 1 in ascending order 

@@ -5,6 +5,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.level.GameLevel;
 
 /**
  * An item that can be collected.
+ * The name might be slightly confusing..
  **/
 public interface Collectible {
     /**
