@@ -140,7 +140,7 @@ public final class EntityCreator {
     }
 
     private static void createClagBot(Entity e) {
-        e.add(new HealthComponent(35));
+        e.add(new HealthComponent(65));
         e.add(new ClagBotComponent());
         e.add(new KnockbackComponent());
 

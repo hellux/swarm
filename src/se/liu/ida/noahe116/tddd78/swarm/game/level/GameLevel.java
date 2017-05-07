@@ -76,7 +76,7 @@ public class GameLevel {
         this.add(e);
     }
 
-    private void spawn(List<Entity> entities) {
+    private void spawn(Collection<Entity> entities) {
         for (Entity e : entities) {
             this.spawn(e);
         }

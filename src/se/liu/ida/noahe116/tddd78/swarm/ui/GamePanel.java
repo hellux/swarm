@@ -275,10 +275,10 @@ public final class GamePanel extends JPanel {
         this.bindKey(KeyStroke.getKeyStroke("ESCAPE"), this::exit);
 
         this.bindKey(KeyStroke.getKeyStroke("A"), () -> this.playerComponent.equipPrimary(1));
-        this.bindKey(KeyStroke.getKeyStroke("S"), () -> this.playerComponent.equipPrimary(2));
-        this.bindKey(KeyStroke.getKeyStroke("D"), () -> this.playerComponent.equipPrimary(3));
-        this.bindKey(KeyStroke.getKeyStroke("F"), () -> this.playerComponent.equipPrimary(4));
-        this.bindKey(KeyStroke.getKeyStroke("G"), this::activateSlowMotion);
+        this.bindKey(KeyStroke.getKeyStroke("O"), () -> this.playerComponent.equipPrimary(2));
+        this.bindKey(KeyStroke.getKeyStroke("E"), () -> this.playerComponent.equipPrimary(3));
+        this.bindKey(KeyStroke.getKeyStroke("U"), () -> this.playerComponent.equipPrimary(4));
+        this.bindKey(KeyStroke.getKeyStroke("I"), this::activateSlowMotion);
 
     }
 

@@ -135,7 +135,7 @@ public final class MenuPanel extends JPanel {
         }
 
         public void setGame(Game game) {
-            if (game == null) throw IllegalArgumentException("game may not be null!");
+            if (game == null) throw new IllegalArgumentException("game may not be null!");
             this.game = game;
             this.updateLabels();
         }
