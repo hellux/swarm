@@ -63,7 +63,7 @@ public class ProbabilityMap<T> {
         if (o == this) return true;
         if (this.getClass() != o.getClass()) return false;
         ProbabilityMap<?> pm = (ProbabilityMap) o;
-        if (this.totalSum!= pm.totalSum) return false;
+        if (this.totalSum != pm.totalSum) return false;
         if (!this.items.equals(pm.items)) return false;
         if (!this.probabilities.equals(pm.probabilities)) return false;
         

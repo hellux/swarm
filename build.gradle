@@ -3,15 +3,15 @@ apply plugin: "java"
 sourceSets {
     main {
         java {
-            srcDirs = [ "src" ]
+            srcDirs = ["src"]
         }
         resources {
-            srcDirs = [ "resources/img" ]
+            srcDirs = ["resources/img"]
         }
+    }
 }
 
 jar {
     baseName "swarm"
     manifest.attributes "Main-Class": "se.liu.ida.noahe116.tddd78.swarm.ui.Swarm"
 }
-

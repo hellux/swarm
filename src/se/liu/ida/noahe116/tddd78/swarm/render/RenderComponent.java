@@ -33,7 +33,17 @@ public class RenderComponent implements Comparable<RenderComponent> {
         return this.priority.compareTo(rc.priority);
     }
 
-    public String toString() {
-        return "rc"; 
+    /**
+     * RenderComponents are considered equal if they have the same render priority.
+     * @param o object to compare
+     * @return if objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
+
+        RenderComponent rc = (RenderComponent) o;
+        return this.priority == rc.priority;
     }
 }

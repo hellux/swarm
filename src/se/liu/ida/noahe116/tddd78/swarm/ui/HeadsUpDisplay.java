@@ -12,7 +12,7 @@ import se.liu.ida.noahe116.tddd78.swarm.game.components.*;
 public class HeadsUpDisplay {
     private static final Color OBJ_IND_COLOR = new Color(0, 89, 170);
     private static final Color CURSOR_COLOR = Color.RED;
-    private static final double diameterRatio = 1./30;
+    private static final double DIAMETER_RATIO = 1. / 30;
     private static final double OBJ_IND_POS = 0.3;
     private static final int SHIELD_BAR_THICKNESS = 4;
 
@@ -45,7 +45,7 @@ public class HeadsUpDisplay {
 
     private void drawCircle(Graphics g, Vector2D pos, Color color) {
         g.setColor(color);
-        int diameter = (int) (this.cursorAreaRadius*diameterRatio);
+        int diameter = (int) (this.cursorAreaRadius * DIAMETER_RATIO);
         g.drawOval((int) pos.x-diameter/2, (int) pos.y-diameter/2, diameter, diameter); 
     }
 

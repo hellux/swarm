@@ -26,10 +26,25 @@ public abstract class LiveComponent extends Component implements Comparable<Live
         this.active = active;
     }
 
+    @Override
     public int compareTo(LiveComponent lc) {
         return Integer.compare(this.updatePriority, lc.updatePriority);
     }
-    
+
+    /**
+     * LiveComponents are considered equal if they have the same update priority
+     * @param o object to compare with
+     * @return if object is considered equal to this object
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
+
+        LiveComponent lc = (LiveComponent) o;
+        return this.updatePriority == lc.updatePriority;
+    }
+
     /**
      * Update the component.
      * Will be run every tick of the game if the component is active.
