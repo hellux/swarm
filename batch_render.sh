@@ -1,8 +1,8 @@
 #!/bin/bash
 
-RESOURCE_DIR="resources"
+# Render all layers in all SVG files in resource dir to separate PNG files.
 
-svg_files=$(find $RESOURCE_DIR -name "*.svg")
+RESOURCE_DIR="resources"
 
 function parse_layer_name {
     svg=$1
@@ -32,6 +32,8 @@ function export_image {
         --export-id=$layer_id \
         --export-png=$RESOURCE_DIR/img/$filename
 }
+
+svg_files=$(find $RESOURCE_DIR -name "*.svg")
 
 for svg in $svg_files; do
     layers=$(inkscape --query-all $svg | grep layer | cut -f 1 -d ,)
