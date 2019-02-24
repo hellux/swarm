@@ -15,6 +15,6 @@ Incomplete Java clone of the Swarm 1998 game from Reflexive Entertainment.
 
 Run in root directory:
 ```sh
-gradle build                    # compile to a jar file
-java -jar build/libs/swarm.jar  # run jar
+$ gradle build                    # compile to a jar file
+$ java -jar build/libs/swarm.jar  # run jar
 ```
