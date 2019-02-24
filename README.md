@@ -1,7 +1,7 @@
 # Swarm
 
-<img src="https://github.com/hellux/swarm/raw/master/screenshots/sc1.png" width="452">
-<img src="https://github.com/hellux/swarm/raw/master/screenshots/sc2.png" width="452">
+<img src="https://github.com/hellux/swarm/raw/master/screenshots/sc1.png" width="400">
+<img src="https://github.com/hellux/swarm/raw/master/screenshots/sc2.png" width="400">
 
 Incomplete Java clone of the Swarm 1998 game from Reflexive Entertainment.
 
